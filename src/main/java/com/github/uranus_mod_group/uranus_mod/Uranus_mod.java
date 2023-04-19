@@ -18,7 +18,11 @@ public class Uranus_mod {
 
     public Uranus_mod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        modEventBus.register(modEventBus);
+
         modEventBus.addListener(this::commonSetup);
+
         MinecraftForge.EVENT_BUS.register(this);
     }
 
