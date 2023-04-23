@@ -1,5 +1,7 @@
 package com.github.uranus_mod_group.uranus_mod;
 
+import com.github.uranus_mod_group.uranus_mod.block.ModBlocks;
+import com.github.uranus_mod_group.uranus_mod.item.ModItems;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -19,7 +21,9 @@ public class Uranus_mod {
     public Uranus_mod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        modEventBus.register(modEventBus);
+        //eventBus
+        ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
