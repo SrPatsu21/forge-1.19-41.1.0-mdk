@@ -1,6 +1,7 @@
 package com.github.uranus_mod_group.uranus_mod.block;
 
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
+import com.github.uranus_mod_group.uranus_mod.block.custom.ManaGemOre;
 import com.github.uranus_mod_group.uranus_mod.item.ModItems;
 import com.github.uranus_mod_group.uranus_mod.item.ModTab;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -15,7 +16,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
 import java.util.function.Supplier;
 
 public class ModBlocks {
@@ -28,10 +28,10 @@ public class ModBlocks {
                     BlockBehaviour
                             .Properties.of(Material.STONE)
                             .strength(6.5f)
-                            .requiresCorrectToolForDrops(),
-                    UniformInt.of(10,18)
-
-            ), ModTab.URANUS_TAB);
+                            .requiresCorrectToolForDrops()
+                            .lightLevel(state -> 10),
+                    UniformInt.of(10,12)
+                    ),ModTab.URANUS_TAB);
 
 
     //functions

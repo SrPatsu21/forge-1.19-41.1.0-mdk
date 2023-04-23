@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "uranus_mod:mana_gem_ore_placed",
+  "step": "underground_ores"
+}

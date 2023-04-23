@@ -2,6 +2,7 @@ package com.github.uranus_mod_group.uranus_mod.item;
 
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 
+import com.github.uranus_mod_group.uranus_mod.item.custom.AlchemicalTome;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -22,13 +23,15 @@ public class ModItems {
                     .tab(ModTab.URANUS_TAB)
                     .food(new FoodProperties.Builder().nutrition(6).saturationMod(6).meat().alwaysEat().effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 200, 3), 1.0f).build())
                     .stacksTo(16)
-    ));
+            )
+    );
 
     public static final RegistryObject<Item> ALCHEMICAL_TOME = ITEMS.register("alchemical_tome",
-            () -> new Item(new Item.Properties()
+            () -> new AlchemicalTome(new Item.Properties()
                     .tab(ModTab.URANUS_TAB)
                     .stacksTo(1)
-            ));
+            )
+    );
 
     //eventBus
     public static void register(IEventBus eventBus){
