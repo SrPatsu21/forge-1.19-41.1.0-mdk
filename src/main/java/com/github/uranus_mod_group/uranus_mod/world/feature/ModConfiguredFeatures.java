@@ -26,7 +26,9 @@ public class ModConfiguredFeatures {
     );
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> MANA_GEM_ORE = CONFIGURED_FEATURE.register("mana_gem_ore",
-            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(ManaGemOre.get(),7)));
+            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(ManaGemOre.get(),7)//VeinsSize
+            )
+    );
 
     public static void register(IEventBus eventBus){CONFIGURED_FEATURE.register(eventBus);}
 }
