@@ -5,5 +5,7 @@
   "block.uranus_mod.mana_gem_ore": "Mana Gem Ore",
   "block.uranus_mod.sword_support": "Sword Support",
 
-  "itemGroup.uranus_tab": "Uranus Mod"
+  "itemGroup.uranus_tab": "Uranus Mod",
+
+  "entity.minecraft.villager.uranus_mod.fight_master": "Fight Master"
 }
