@@ -2,6 +2,7 @@ package com.github.uranus_mod_group.uranus_mod;
 
 import com.github.uranus_mod_group.uranus_mod.block.ModBlocks;
 import com.github.uranus_mod_group.uranus_mod.item.ModItems;
+import com.github.uranus_mod_group.uranus_mod.villarger.ModVillargers;
 import com.github.uranus_mod_group.uranus_mod.world.feature.ModConfiguredFeatures;
 import com.github.uranus_mod_group.uranus_mod.world.feature.ModPlacedFeatures;
 import com.mojang.logging.LogUtils;
@@ -28,6 +29,7 @@ public class Uranus_mod {
         ModBlocks.register(modEventBus);
         ModConfiguredFeatures.register(modEventBus);
         ModPlacedFeatures.register(modEventBus);
+        ModVillargers.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
@@ -35,7 +37,9 @@ public class Uranus_mod {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-
+        event.enqueueWork(() -> {
+            ModVillargers.registerPOis();
+        });
     }
 
 

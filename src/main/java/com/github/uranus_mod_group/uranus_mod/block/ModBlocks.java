@@ -31,8 +31,16 @@ public class ModBlocks {
                             .requiresCorrectToolForDrops()
                             .lightLevel(state -> 10),
                     UniformInt.of(10,12)
-                    ),ModTab.URANUS_TAB);
+                    ),ModTab.URANUS_TAB
+    );
 
+    public static final RegistryObject<Block> SWORD_SUPPORT = registerBlock("sword_support",
+            () -> new Block(
+                    BlockBehaviour
+                            .Properties.of(Material.HEAVY_METAL)
+                            .strength(3f)
+            ),ModTab.URANUS_TAB
+    );
 
     //functions
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab){
