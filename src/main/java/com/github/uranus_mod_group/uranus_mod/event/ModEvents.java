@@ -4,7 +4,7 @@ import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 import com.github.uranus_mod_group.uranus_mod.item.ModItems;
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerMana;
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
-import com.github.uranus_mod_group.uranus_mod.villarger.ModVillargers;
+import com.github.uranus_mod_group.uranus_mod.villager.ModVillagers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -42,7 +42,7 @@ public class ModEvents {
                     stack,10,8,0.02F));
         }
 
-        if(event.getType() == ModVillargers.FIGHT_MASTER.get()) {
+        if(event.getType() == ModVillagers.FIGHT_MASTER.get()) {
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
             ItemStack stack = new ItemStack(ModItems.ALCHEMICAL_TOME.get(), 15);
             int villagerLevel = 1;

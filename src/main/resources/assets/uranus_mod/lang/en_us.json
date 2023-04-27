@@ -1,11 +1,17 @@
 {
+  "itemGroup.uranus_tab": "Uranus Mod",
+
   "item.uranus_mod.mana_gem": "Mana Gem",
   "item.uranus_mod.alchemical_tome": "Alchemical Tome",
 
   "block.uranus_mod.mana_gem_ore": "Mana Gem Ore",
   "block.uranus_mod.sword_support": "Sword Support",
 
-  "itemGroup.uranus_tab": "Uranus Mod",
+  "entity.minecraft.villager.uranus_mod.fight_master": "Fight Master",
 
-  "entity.minecraft.villager.uranus_mod.fight_master": "Fight Master"
+  "key.category.uranus_mod.uranus": "Uranus Mod keys",
+
+  "key.uranus_mod.skills_1" : "skills 1",
+  "key.uranus_mod.skills_2" : "skills 2",
+  "key.uranus_mod.skills_3" : "skills 3"
 }
