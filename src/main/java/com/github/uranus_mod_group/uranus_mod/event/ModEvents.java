@@ -83,7 +83,7 @@ public class ModEvents {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if(event.side == LogicalSide.SERVER) {
             event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                if(mana.getMana() < mana.getMAX_MANA() && event.player.getRandom().nextFloat() < 0.02125f) { // Once Every 1 Seconds on Avg
+                if(mana.getMana() < mana.getMAX_MANA() && event.player.getRandom().nextFloat() < 0.005f) { // Once Every 10 Seconds on Avg
                     int manaAdd = (int) (mana.getMAX_MANA()*(0.01f+0));
                     if (mana.getMana()+manaAdd > mana.getMAX_MANA()){
                         mana.addMana(mana.getMAX_MANA() - mana.getMana());
