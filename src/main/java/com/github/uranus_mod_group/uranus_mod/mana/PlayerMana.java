@@ -3,18 +3,22 @@ package com.github.uranus_mod_group.uranus_mod.mana;
 import net.minecraft.nbt.CompoundTag;
 
 public class PlayerMana {
-    private float mana;
-    private final float MIN_MANA = 0;
-    private final float MAX_MANA = 100;
+    private int mana;
+    private int Mbase = 100;
+    private byte Mlevel = 1;
+    private final int MIN_MANA = 0;
+    private final int MAX_MANA = (int) (Mbase + (Mbase*(0.5f * Mlevel)));
 
-    public float getMana(){
+    public int getMana(){
         return mana;
     }
+    public int getMAX_MANA(){return MAX_MANA;}
+
     public void addMana(int add){
         this.mana = Math.min(mana + add, MAX_MANA);
     }
     public void subMana(int sub){
-        this.mana = Math.min(mana - sub, MAX_MANA);
+        this.mana = Math.max(mana - sub, MIN_MANA);
     }
 
     public void copyFrom(PlayerMana source){
@@ -22,10 +26,10 @@ public class PlayerMana {
     }
 
     public void saveNBTData(CompoundTag nbt){
-        nbt.putFloat("mana", mana);
+        nbt.putInt("mana", mana);
     }
 
     public void loadNBTData(CompoundTag nbt){
-        nbt.getFloat("mana");
+        nbt.getInt("mana");
     }
 }

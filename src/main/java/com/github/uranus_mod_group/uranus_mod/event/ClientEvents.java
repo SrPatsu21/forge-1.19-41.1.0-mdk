@@ -2,6 +2,7 @@ package com.github.uranus_mod_group.uranus_mod.event;
 
 import com.github.uranus_mod_group.networking.ModMessages;
 import com.github.uranus_mod_group.networking.packet.ExampleC2SPacket;
+import com.github.uranus_mod_group.networking.packet.ManaC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 import com.github.uranus_mod_group.uranus_mod.util.KeyBinding;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,7 +20,7 @@ public class ClientEvents {
         @SubscribeEvent
         public static void onKeyInput(InputEvent.Key event) {
             if(KeyBinding.SKILLS_1_KEY.consumeClick()) {
-                ModMessages.sendToServer(new ExampleC2SPacket());
+                ModMessages.sendToServer(new ManaC2SPacket());
             }
             if(KeyBinding.SKILLS_2_KEY.consumeClick()) {
                 Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed skills 2!"));

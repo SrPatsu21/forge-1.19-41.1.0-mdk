@@ -82,10 +82,15 @@ public class ModEvents {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if(event.side == LogicalSide.SERVER) {
-            event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(thirst -> {
-                if(thirst.getMana() > 0 && event.player.getRandom().nextFloat() < 0.005f) { // Once Every 10 Seconds on Avg
-                    thirst.subMana(1);
-                    event.player.sendSystemMessage(Component.literal("Subtracted Thirst"));
+            event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
+                if(mana.getMana() < mana.getMAX_MANA() && event.player.getRandom().nextFloat() < 0.02125f) { // Once Every 1 Seconds on Avg
+                    int manaAdd = (int) (mana.getMAX_MANA()*(0.01f+0));
+                    if (mana.getMana()+manaAdd > mana.getMAX_MANA()){
+                        mana.addMana(mana.getMAX_MANA() - mana.getMana());
+                    }else {
+                        mana.addMana(manaAdd);
+                    }
+                    event.player.sendSystemMessage(Component.literal("mana add "+mana.getMana()+"/"+mana.getMAX_MANA()));
                 }
             });
         }
