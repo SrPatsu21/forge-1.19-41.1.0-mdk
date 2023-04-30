@@ -1,6 +1,7 @@
-package com.github.uranus_mod_group.networking.packet;
+package com.github.uranus_mod_group.uranus_mod.networking.packet;
 
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
+import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -8,8 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -46,9 +45,10 @@ public class ManaC2SPacket {
                         0.5F, level.random.nextFloat() * 0.1F + 0.9F);
                 player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->{
                     mana.subMana(1);
-                    player.sendSystemMessage(Component.literal("mana atual"+ mana.getMana()).withStyle(ChatFormatting.DARK_AQUA));
-                        }
-                        );
+                    player.sendSystemMessage(Component.literal("mana atual"+ mana.getMana())
+                            .withStyle(ChatFormatting.DARK_AQUA));
+                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()),player);
+                        });
                 // increase the water level / thirst level of player
                 // Output the current thirst level
 
@@ -56,6 +56,12 @@ public class ManaC2SPacket {
                 // Notify the player that there is no water around!
                 player.sendSystemMessage(Component.translatable(MESSAGE_NO_WATER).withStyle(ChatFormatting.RED));
                 // Output the current thirst level
+                /*player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->{
+                    mana.subMana(1);
+                    player.sendSystemMessage(Component.literal("mana atual"+ mana.getMana())
+                            .withStyle(ChatFormatting.DARK_AQUA));
+                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()),player);
+                });*/
             }
         });
         return true;

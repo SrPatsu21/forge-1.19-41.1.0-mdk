@@ -1,6 +1,6 @@
 package com.github.uranus_mod_group.uranus_mod;
 
-import com.github.uranus_mod_group.networking.ModMessages;
+import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.block.ModBlocks;
 import com.github.uranus_mod_group.uranus_mod.item.ModItems;
 import com.github.uranus_mod_group.uranus_mod.villager.ModVillagers;

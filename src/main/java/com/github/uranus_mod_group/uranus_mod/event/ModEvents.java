@@ -4,9 +4,12 @@ import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 import com.github.uranus_mod_group.uranus_mod.item.ModItems;
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerMana;
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
+import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
+import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
 import com.github.uranus_mod_group.uranus_mod.villager.ModVillagers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -16,6 +19,7 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,6 +34,7 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = Uranus_mod.ModId)
 public class ModEvents {
 
+    //villager
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event){
         if(event.getType() == VillagerProfession.TOOLSMITH) {
@@ -53,7 +58,7 @@ public class ModEvents {
         }
     }
 
-
+    //mana
     @SubscribeEvent
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
         if(event.getObject() instanceof Player) {
@@ -84,15 +89,20 @@ public class ModEvents {
         if(event.side == LogicalSide.SERVER) {
             event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                 if(mana.getMana() < mana.getMAX_MANA() && event.player.getRandom().nextFloat() < 0.005f) { // Once Every 10 Seconds on Avg
-                    int manaAdd = (int) (mana.getMAX_MANA()*(0.01f+0));
-                    if (mana.getMana()+manaAdd > mana.getMAX_MANA()){
-                        mana.addMana(mana.getMAX_MANA() - mana.getMana());
-                    }else {
-                        mana.addMana(manaAdd);
-                    }
+                    mana.addMana((int) (mana.getMAX_MANA()*(0.01f+0)));
                     event.player.sendSystemMessage(Component.literal("mana add "+mana.getMana()+"/"+mana.getMAX_MANA()));
-                }
+                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));                }
             });
+        }
+    }
+
+    public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
+        if(event.getLevel().isClientSide) {
+            if(event.getEntity()  instanceof ServerPlayer player) {
+                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
+                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), player);
+                });
+            }
         }
     }
 }

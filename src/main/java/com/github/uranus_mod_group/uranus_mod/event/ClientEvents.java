@@ -1,12 +1,13 @@
 package com.github.uranus_mod_group.uranus_mod.event;
 
-import com.github.uranus_mod_group.networking.ModMessages;
-import com.github.uranus_mod_group.networking.packet.ExampleC2SPacket;
-import com.github.uranus_mod_group.networking.packet.ManaC2SPacket;
+import com.github.uranus_mod_group.uranus_mod.client.ManaHudOverlay;
+import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
+import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 import com.github.uranus_mod_group.uranus_mod.util.KeyBinding;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -38,6 +39,11 @@ public class ClientEvents {
             event.register(KeyBinding.SKILLS_1_KEY);
             event.register(KeyBinding.SKILLS_2_KEY);
             event.register(KeyBinding.SKILLS_3_KEY);
+        }
+
+        @SubscribeEvent
+        public static void registerGuiOverLays(RegisterGuiOverlaysEvent event){
+            event.registerAboveAll("mana", ManaHudOverlay.HUD_MANA);
         }
     }
 }

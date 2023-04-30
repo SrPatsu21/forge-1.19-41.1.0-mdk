@@ -1,4 +1,4 @@
-package com.github.uranus_mod_group.networking.packet;
+package com.github.uranus_mod_group.uranus_mod.networking.packet;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
