@@ -49,7 +49,7 @@ public class ModEvents {
 
         if(event.getType() == ModVillagers.FIGHT_MASTER.get()) {
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ModItems.ALCHEMICAL_TOME.get(), 15);
+            ItemStack stack = new ItemStack(ModItems.ALCHEMICAL_TOME.get(), 1);
             int villagerLevel = 1;
 
             trades.get(villagerLevel).add((trader, rand) -> new MerchantOffer(
@@ -89,7 +89,7 @@ public class ModEvents {
         if(event.side == LogicalSide.SERVER) {
             event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                 if(mana.getMana() < mana.getMAX_MANA() && event.player.getRandom().nextFloat() < 0.005f) { // Once Every 10 Seconds on Avg
-                    mana.addMana((int) (mana.getMAX_MANA()*(0.01f+0)));
+                    mana.addMana(Math.max(1 ,(int) (mana.getMAX_MANA()*(0.01f+0))));
                     event.player.sendSystemMessage(Component.literal("mana add "+mana.getMana()+"/"+mana.getMAX_MANA()));
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));                }
             });

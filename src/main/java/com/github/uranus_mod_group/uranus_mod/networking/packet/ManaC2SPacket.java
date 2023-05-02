@@ -56,12 +56,12 @@ public class ManaC2SPacket {
                 // Notify the player that there is no water around!
                 player.sendSystemMessage(Component.translatable(MESSAGE_NO_WATER).withStyle(ChatFormatting.RED));
                 // Output the current thirst level
-                /*player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->{
+                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->{
                     mana.subMana(1);
                     player.sendSystemMessage(Component.literal("mana atual"+ mana.getMana())
                             .withStyle(ChatFormatting.DARK_AQUA));
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()),player);
-                });*/
+                });
             }
         });
         return true;

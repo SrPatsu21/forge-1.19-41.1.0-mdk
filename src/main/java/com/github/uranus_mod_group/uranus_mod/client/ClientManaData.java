@@ -1,10 +1,10 @@
 package com.github.uranus_mod_group.uranus_mod.client;
 
-public class ClientManaDATA {
+public class ClientManaData {
     private static int playerMana;
 
     public static void set(int mana){
-        ClientManaDATA.playerMana = mana;
+        ClientManaData.playerMana = mana;
     }
 
     public static int getPlayerMana(){

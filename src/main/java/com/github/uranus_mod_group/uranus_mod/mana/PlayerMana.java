@@ -7,7 +7,7 @@ public class PlayerMana {
     private int Mbase = 100;
     private byte Mlevel = 1;
     private final int MIN_MANA = 0;
-    private final int MAX_MANA = (int) (Mbase + (Mbase*(0.5f * Mlevel)));
+    private final int MAX_MANA = /*(int) (Mbase + (Mbase*(0.5f * Mlevel)))*/ 10;
 
     public int getMana(){
         return mana;
