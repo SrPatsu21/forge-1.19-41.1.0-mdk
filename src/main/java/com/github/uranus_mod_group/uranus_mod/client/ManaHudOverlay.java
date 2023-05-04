@@ -16,6 +16,8 @@ public class ManaHudOverlay {
     public static final IGuiOverlay HUD_MANA = ((gui, poseStack, partialTick, width, height) -> {
         //filled mana
         RenderSystem.setShaderTexture(0, MANA_BAR_CONTENT);
+        PlayerMana pm = new PlayerMana();
+        int MAX_MANA = pm.getMAX_MANA();
 
         for(int i = 0; i < 56; i++) {
 
