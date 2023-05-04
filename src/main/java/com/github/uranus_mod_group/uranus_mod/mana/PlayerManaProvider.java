@@ -10,9 +10,8 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
+//make player has mana
 public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-
     public static Capability<PlayerMana> PLAYER_MANA = CapabilityManager.get(new CapabilityToken<PlayerMana>() {});
     private PlayerMana mana = null;
     private final LazyOptional<PlayerMana> optional = LazyOptional.of(this::createPlayerMana);

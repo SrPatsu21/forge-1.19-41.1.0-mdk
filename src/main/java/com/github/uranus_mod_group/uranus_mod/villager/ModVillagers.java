@@ -15,26 +15,31 @@ import net.minecraftforge.registries.RegistryObject;
 import java.lang.reflect.InvocationTargetException;
 
 public class ModVillagers {
-    public static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(ForgeRegistries.POI_TYPES, Uranus_mod.ModId);
-    public static final DeferredRegister<VillagerProfession> VILLAGER_PROFESSION = DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, Uranus_mod.ModId);
-
+    //register
+    public static final DeferredRegister<PoiType> POI_TYPES =
+            DeferredRegister.create(ForgeRegistries.POI_TYPES, Uranus_mod.ModId);
+    public static final DeferredRegister<VillagerProfession> VILLAGER_PROFESSION =
+            DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, Uranus_mod.ModId);
+    //define villager table
     public static final RegistryObject<PoiType> SWORD_SUPPORT_POI = POI_TYPES.register("sword_support_poi",
-            () -> new PoiType(ImmutableSet.copyOf(ModBlocks.SWORD_SUPPORT.get().getStateDefinition().getPossibleStates()),1, 1)
+            () -> new PoiType(ImmutableSet.copyOf(ModBlocks.SWORD_SUPPORT.get().getStateDefinition().getPossibleStates()),
+                    1, 1)
     );
-
+    //profession
     public static final RegistryObject<VillagerProfession> FIGHT_MASTER = VILLAGER_PROFESSION.register("fight_master",
             () -> new VillagerProfession( "fight_master", x -> x.get() == SWORD_SUPPORT_POI.get(),
                     x -> x.get() == SWORD_SUPPORT_POI.get(), ImmutableSet.of(), ImmutableSet.of(),
                     SoundEvents.VILLAGER_WORK_TOOLSMITH));
-
+    //register villager table
     public static void registerPOis() {
         try {
-            ObfuscationReflectionHelper.findMethod(PoiType.class, "registerBlockStates", PoiType.class).invoke(null, SWORD_SUPPORT_POI.get());
+            ObfuscationReflectionHelper.findMethod(PoiType.class, "registerBlockStates", PoiType.class)
+                    .invoke(null, SWORD_SUPPORT_POI.get());
         }catch (InvocationTargetException | IllegalAccessException exception){
             exception.printStackTrace();
         }
     }
-
+    //eventBus
     public static void register(IEventBus eventBus){
         POI_TYPES.register(eventBus);
         VILLAGER_PROFESSION.register(eventBus);

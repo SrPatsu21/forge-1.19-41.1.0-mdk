@@ -1,7 +1,6 @@
 package com.github.uranus_mod_group.uranus_mod.block;
 
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
-import com.github.uranus_mod_group.uranus_mod.block.custom.ManaGemOre;
 import com.github.uranus_mod_group.uranus_mod.item.ModItems;
 import com.github.uranus_mod_group.uranus_mod.item.ModTab;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -22,7 +21,7 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Uranus_mod.ModId);
 
     //block
-
+        //mana gem ore
     public static final RegistryObject<Block> MANA_GEM_ORE = registerBlock("mana_gem_ore",
             () -> new DropExperienceBlock(
                     BlockBehaviour
@@ -33,7 +32,7 @@ public class ModBlocks {
                     UniformInt.of(10,12)
                     ),ModTab.URANUS_TAB
     );
-
+        //sword support
     public static final RegistryObject<Block> SWORD_SUPPORT = registerBlock("sword_support",
             () -> new Block(
                     BlockBehaviour

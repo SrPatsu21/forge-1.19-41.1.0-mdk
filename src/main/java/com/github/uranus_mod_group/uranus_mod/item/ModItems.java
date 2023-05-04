@@ -18,6 +18,7 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Uranus_mod.ModId);
 
     // items
+    //mana gem
     public static final RegistryObject<Item> MANA_GEM = ITEMS.register("mana_gem",
             () -> new Item(new Item.Properties()
                     .tab(ModTab.URANUS_TAB)
@@ -25,7 +26,7 @@ public class ModItems {
                     .stacksTo(16)
             )
     );
-
+    //alchemical tome
     public static final RegistryObject<Item> ALCHEMICAL_TOME = ITEMS.register("alchemical_tome",
             () -> new AlchemicalTome(new Item.Properties()
                     .tab(ModTab.URANUS_TAB)

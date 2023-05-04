@@ -26,6 +26,6 @@ public class AlchemicalTome extends Item {
     }
 
     private void outputMSG(Player player) {
-        player.sendSystemMessage(Component.literal("a "));
+        player.sendSystemMessage(Component.literal("a"));
     }
 }

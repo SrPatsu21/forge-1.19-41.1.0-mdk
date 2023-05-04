@@ -19,6 +19,7 @@ public class ClientEvents {
     @Mod.EventBusSubscriber(modid = Uranus_mod.ModId, value = Dist.CLIENT)
     public static class ClientForgeEvents {
         @SubscribeEvent
+        //key events
         public static void onKeyInput(InputEvent.Key event) {
             if(KeyBinding.SKILLS_1_KEY.consumeClick()) {
                 ModMessages.sendToServer(new ManaC2SPacket());
@@ -31,7 +32,7 @@ public class ClientEvents {
             }
         }
     }
-
+    //register key
     @Mod.EventBusSubscriber(modid = Uranus_mod.ModId, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModBusEvents {
         @SubscribeEvent

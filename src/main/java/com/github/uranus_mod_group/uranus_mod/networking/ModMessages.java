@@ -1,6 +1,5 @@
 package com.github.uranus_mod_group.uranus_mod.networking;
 
-import com.github.uranus_mod_group.uranus_mod.networking.packet.ExampleC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
@@ -27,12 +26,6 @@ public class ModMessages {
                 .serverAcceptedVersions(s -> true)
                 .simpleChannel();
         INSTANCE = net;
-
-        net.messageBuilder(ExampleC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(ExampleC2SPacket::new)
-                .encoder(ExampleC2SPacket::toBytes)
-                .consumerMainThread(ExampleC2SPacket::handle)
-                .add();
 
         net.messageBuilder(ManaC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(ManaC2SPacket::new)
