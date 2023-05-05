@@ -17,19 +17,12 @@ public class ManaHudOverlay {
         //filled mana
         PlayerMana mana = new PlayerMana();
         RenderSystem.setShaderTexture(0, MANA_BAR_CONTENT);
-
-        for(int i = 0; i < 56; i++) {
-
-            if(ClientManaData.getPlayerMana()/mana.getMAX_MANA() > i) {
-                GuiComponent.blit(poseStack,width - 620, height - 16,0,0,1+i,8,
-                        1+i,8);
-            } else {
-                break;
-            }
-        }
+            int size = (int) (ClientManaData.getPlayerMana()*112)/ mana.getMAX_MANA();
+                GuiComponent.blit(poseStack,width - 620, height - 16,0,0, size,16,
+                        size,16);
         //empty mana
         RenderSystem.setShaderTexture(0, MANA_BAR_STRUCTURE);
-            GuiComponent.blit(poseStack,width - 620, height - 16,0,0,56,8,
-                    56,8);
+            GuiComponent.blit(poseStack,width - 620, height - 16,0,0,112,16,
+                    112,16);
     });
 }
