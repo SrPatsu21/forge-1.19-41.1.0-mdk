@@ -14,15 +14,17 @@ public class ManaHudOverlay {
             "textures/mana/mana_bar_structure-56x8.png");
 
     public static final IGuiOverlay HUD_MANA = ((gui, poseStack, partialTick, width, height) -> {
+        int x = width/2;
+        int y = height/2;
         //filled mana
         PlayerMana mana = new PlayerMana();
         RenderSystem.setShaderTexture(0, MANA_BAR_CONTENT);
             int size = (int) (ClientManaData.getPlayerMana()*112)/ mana.getMAX_MANA();
-                GuiComponent.blit(poseStack,width - 620, height - 16,0,0, size,16,
+                GuiComponent.blit(poseStack,x - 310, y - 8,0,0, size,16,
                         size,16);
         //empty mana
         RenderSystem.setShaderTexture(0, MANA_BAR_STRUCTURE);
-            GuiComponent.blit(poseStack,width - 620, height - 16,0,0,112,16,
+            GuiComponent.blit(poseStack,width - 310, y - 8,0,0,112,16,
                     112,16);
     });
 }
