@@ -11,9 +11,7 @@ public class PlayerMana {
     private final int MAX_MANA = (int) (Mbase + (Mbase*(0.5f * Mlevel)));
 
     //functions
-    public int getMana(){
-        return mana;
-    }
+    public int getMana(){return mana;}
     public int getMAX_MANA(){return MAX_MANA;}
 
     public void addMana(int add){
@@ -28,11 +26,11 @@ public class PlayerMana {
     }
 
     //save on nbt
-    public void loadNBTData(CompoundTag nbt){
-        nbt.getInt("mana");
-    }
-
     public void saveNBTData(CompoundTag nbt){
         nbt.putInt("mana", mana);
+    }
+
+    public void loadNBTData(CompoundTag nbt){
+        nbt.getInt("mana");
     }
 }

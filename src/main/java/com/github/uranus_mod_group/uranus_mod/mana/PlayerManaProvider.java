@@ -12,7 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 //make player has mana
 public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    public static Capability<PlayerMana> PLAYER_MANA = CapabilityManager.get(new CapabilityToken<PlayerMana>() {});
+    public static Capability<PlayerMana> PLAYER_MANA = CapabilityManager.get(new CapabilityToken<PlayerMana>() { });
+
     private PlayerMana mana = null;
     private final LazyOptional<PlayerMana> optional = LazyOptional.of(this::createPlayerMana);
 
@@ -20,8 +21,10 @@ public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable
         if(this.mana == null){
             this.mana = new PlayerMana();
         }
+
         return this.mana;
     }
+
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if(cap == PLAYER_MANA){

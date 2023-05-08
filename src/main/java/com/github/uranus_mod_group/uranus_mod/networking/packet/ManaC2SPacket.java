@@ -33,6 +33,7 @@ public class ManaC2SPacket {
         context.enqueueWork(() -> {
             // HERE WE ARE ON THE SERVER!
             ServerPlayer player = context.getSender();
+
             player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->{
                     mana.subMana(1);
                     player.sendSystemMessage(Component.literal("mana atual"+ mana.getMana())

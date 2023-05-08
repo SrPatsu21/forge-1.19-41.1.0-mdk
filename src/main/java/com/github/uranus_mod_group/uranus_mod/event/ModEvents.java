@@ -89,21 +89,21 @@ public class ModEvents {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if(event.side == LogicalSide.SERVER) {
             event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                if(mana.getMana() < mana.getMAX_MANA() && event.player.getRandom().nextFloat() < 0.05f) { // Once Every 1 Seconds on Avg
-                    mana.addMana(Math.max(1 ,(int) (mana.getMAX_MANA()*(0.01f+0))));
+                if(mana.getMana() < mana.getMAX_MANA() && event.player.getRandom().nextFloat() < 0.001f) { //for 0.005 Once Every 1 Seconds on Avg
+                    mana.addMana(1);
                     event.player.sendSystemMessage(Component.literal("mana add "+mana.getMana()+"/"+mana.getMAX_MANA()));
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));                }
             });
         }
     }
 
-    public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
+    /*public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
         if(event.getLevel().isClientSide) {
-            if(event.getEntity()  instanceof ServerPlayer player) {
+            if(event.getEntity() instanceof ServerPlayer player) {
                 player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), player);
                 });
             }
         }
-    }
+    }*/
 }
