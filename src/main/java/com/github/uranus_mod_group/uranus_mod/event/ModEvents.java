@@ -34,30 +34,6 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = Uranus_mod.ModId)
 public class ModEvents {
 
-    //villager
-    @SubscribeEvent
-    public static void addCustomTrades(VillagerTradesEvent event){
-        if(event.getType() == VillagerProfession.TOOLSMITH) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ModItems.ALCHEMICAL_TOME.get(), 1);
-            int villagerLevel = 1;
-
-            trades.get(villagerLevel).add((trader, rand) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 1),
-                    stack,1,8,0.02F));
-        }
-
-        if(event.getType() == ModVillagers.FIGHT_MASTER.get()) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ModItems.ALCHEMICAL_TOME.get(), 1);
-            int villagerLevel = 1;
-
-            trades.get(villagerLevel).add((trader, rand) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 5),
-                    stack,10,8,0.02F));
-        }
-    }
-
     //mana
     @SubscribeEvent
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
@@ -83,13 +59,12 @@ public class ModEvents {
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         event.register(PlayerMana.class);
     }
-
     //mana regen
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if(event.side == LogicalSide.SERVER) {
             event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                if(mana.getMana() < mana.getMAX_MANA() && event.player.getRandom().nextFloat() < 0.001f) { //for 0.005 Once Every 1 Seconds on Avg
+                if(mana.getMana() < mana.getMAX_MANA() && event.player.getRandom().nextFloat() < 0.005f) { //for 0.005 Once Every 1 Seconds on Avg
                     mana.addMana(1);
                     event.player.sendSystemMessage(Component.literal("mana add "+mana.getMana()+"/"+mana.getMAX_MANA()));
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));                }
@@ -97,6 +72,7 @@ public class ModEvents {
         }
     }
 
+    /*
     public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
         if(event.getLevel().isClientSide) {
             if(event.getEntity() instanceof ServerPlayer player) {
@@ -104,6 +80,30 @@ public class ModEvents {
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(playerMana.getMana()), player);
                 });
             }
+        }
+    }
+    */
+    //villager
+    @SubscribeEvent
+    public static void addCustomTrades(VillagerTradesEvent event){
+        if(event.getType() == VillagerProfession.TOOLSMITH) {
+            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
+            ItemStack stack = new ItemStack(ModItems.ALCHEMICAL_TOME.get(), 1);
+            int villagerLevel = 1;
+
+            trades.get(villagerLevel).add((trader, rand) -> new MerchantOffer(
+                    new ItemStack(Items.EMERALD, 1),
+                    stack,1,8,0.02F));
+        }
+
+        if(event.getType() == ModVillagers.FIGHT_MASTER.get()) {
+            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
+            ItemStack stack = new ItemStack(ModItems.ALCHEMICAL_TOME.get(), 1);
+            int villagerLevel = 1;
+
+            trades.get(villagerLevel).add((trader, rand) -> new MerchantOffer(
+                    new ItemStack(Items.EMERALD, 5),
+                    stack,10,8,0.02F));
         }
     }
 }
