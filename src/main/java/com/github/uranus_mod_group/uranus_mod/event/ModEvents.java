@@ -97,13 +97,13 @@ public class ModEvents {
         }
     }
 
-    /*public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
+    public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
         if(event.getLevel().isClientSide) {
             if(event.getEntity() instanceof ServerPlayer player) {
-                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), player);
+                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> {
+                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(playerMana.getMana()), player);
                 });
             }
         }
-    }*/
+    }
 }

@@ -32,6 +32,7 @@ public class Uranus_mod {
         ModPlacedFeatures.register(modEventBus);
         ModVillagers.register(modEventBus);
 
+
         modEventBus.addListener(this::commonSetup);
 
         MinecraftForge.EVENT_BUS.register(this);
