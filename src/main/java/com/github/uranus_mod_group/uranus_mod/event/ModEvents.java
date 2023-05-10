@@ -72,7 +72,7 @@ public class ModEvents {
         }
     }
 
-    /*
+    //mana hud
     public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
         if(event.getLevel().isClientSide) {
             if(event.getEntity() instanceof ServerPlayer player) {
@@ -82,7 +82,7 @@ public class ModEvents {
             }
         }
     }
-    */
+
     //villager
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event){

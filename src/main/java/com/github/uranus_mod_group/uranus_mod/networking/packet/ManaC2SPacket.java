@@ -5,11 +5,7 @@ import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -39,7 +35,7 @@ public class ManaC2SPacket {
                     player.sendSystemMessage(Component.literal("mana atual"+ mana.getMana())
                             .withStyle(ChatFormatting.DARK_AQUA));
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()),player);
-                });
+            });
         });
         return true;
     }
