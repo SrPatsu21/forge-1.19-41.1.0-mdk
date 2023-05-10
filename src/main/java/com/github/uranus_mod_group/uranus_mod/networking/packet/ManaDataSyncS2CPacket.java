@@ -1,6 +1,8 @@
 package com.github.uranus_mod_group.uranus_mod.networking.packet;
 
 import com.github.uranus_mod_group.uranus_mod.client.ClientManaData;
+import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
+import com.google.common.graph.Network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -24,6 +26,7 @@ public class ManaDataSyncS2CPacket {
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
+            // HERE WE ARE ON THE CLIENT!
             ClientManaData.set(mana);
         });
         return true;
