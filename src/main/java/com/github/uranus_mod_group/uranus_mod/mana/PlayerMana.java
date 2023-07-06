@@ -5,14 +5,17 @@ import net.minecraft.nbt.CompoundTag;
 public class PlayerMana {
     //base stats
     private int mana;
+    private int ml = 0;
+    private final int MAX_ML = 2147483647;
+
+    //mana
     private int Mbase = 100;
-    //need to be change soon
-    private int Mlevel = 1;
     private final int MIN_MANA = 0;
-    private int MAX_MANA = (int) (Mbase + (Mbase*(0.5f * Mlevel)));
+    private int MAX_MANA = (int) (Mbase + (Mbase*(0.5f * ml)));
 
     //functions
     public int getMana(){return mana;}
+    public int getMl(){return ml;}
     public int getMAX_MANA(){return MAX_MANA;}
 
     public void addMana(int add){
@@ -21,17 +24,24 @@ public class PlayerMana {
     public void subMana(int sub){
         this.mana = Math.max(mana - sub, MIN_MANA);
     }
+    public void addML(int add){
+        this.ml = Math.min(ml + add, MAX_ML);
+    }
 
+    //source
     public void copyFrom(PlayerMana source){
         this.mana = source.mana;
+        this.ml = source.ml;
     }
 
     //save on nbt
     public void saveNBTData(CompoundTag nbt){
         nbt.putInt("mana", mana);
+        nbt.putInt("ml", ml);
     }
     //load mana
     public void loadNBTData(CompoundTag nbt){
         mana = nbt.getInt("mana");
+        ml = nbt.getInt("ml");
     }
 }
