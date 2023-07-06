@@ -22,6 +22,7 @@ public class ClientEvents {
         //key events
         public static void onKeyInput(InputEvent.Key event) {
             if(KeyBinding.SKILLS_1_KEY.consumeClick()) {
+                //this is now to sub mana
                 ModMessages.sendToServer(new ManaC2SPacket());
             }
             if(KeyBinding.SKILLS_2_KEY.consumeClick()) {
@@ -31,6 +32,7 @@ public class ClientEvents {
                 Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed skills 3!"));
             }
         }
+
     }
     //register key
     @Mod.EventBusSubscriber(modid = Uranus_mod.ModId, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -41,7 +43,7 @@ public class ClientEvents {
             event.register(KeyBinding.SKILLS_2_KEY);
             event.register(KeyBinding.SKILLS_3_KEY);
         }
-        //I dont know now , i think is mana hud
+        //I dont know now, I think it is mana hud
         @SubscribeEvent
         public static void registerGuiOverLays(RegisterGuiOverlaysEvent event){
             event.registerAboveAll("mana", ManaHudOverlay.HUD_MANA);

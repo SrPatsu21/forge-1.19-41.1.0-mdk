@@ -32,7 +32,8 @@ public class ManaC2SPacket {
 
             player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->{
                     mana.subMana(1);
-                    player.sendSystemMessage(Component.literal("mana atual"+ mana.getMana())
+                    //send a message with the current mana
+                    player.sendSystemMessage(Component.literal("current mana "+ mana.getMana())
                             .withStyle(ChatFormatting.DARK_AQUA));
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()),player);
             });

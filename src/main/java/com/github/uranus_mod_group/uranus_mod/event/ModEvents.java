@@ -28,15 +28,14 @@ import net.minecraftforge.fml.common.Mod;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.item.trading.MerchantOffer;
 
-
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = Uranus_mod.ModId)
 public class ModEvents {
 
-    //mana
     @SubscribeEvent
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
+        //mana
         if(event.getObject() instanceof Player) {
             if(!event.getObject().getCapability(PlayerManaProvider.PLAYER_MANA).isPresent()) {
                 event.addCapability(new ResourceLocation(Uranus_mod.ModId, "properties"), new PlayerManaProvider());
@@ -46,6 +45,7 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
+        //mana
         if(event.isWasDeath()) {
             event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(oldStore -> {
                 event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(newStore -> {
@@ -57,6 +57,7 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+        //mana
         event.register(PlayerMana.class);
     }
     //mana regen
@@ -71,6 +72,20 @@ public class ModEvents {
             });
         }
     }
+    //mana level up
+    /*
+    @SubscribeEvent
+    public static void onPlayer(TickEvent.PlayerTickEvent event) {
+        if(event.side == LogicalSide.SERVER) {
+            event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
+                if(mana.getMana() < mana.getMAX_MANA() && event.player.getRandom().nextFloat() < 0.005f) { //for 0.005 Once Every 1 Seconds on Avg
+                    mana.addMana(1);
+                    event.player.sendSystemMessage(Component.literal("mana add "+mana.getMana()+"/"+mana.getMAX_MANA()));
+                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));                }
+            });
+        }
+    }
+    */
 
     //mana hud
     public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {

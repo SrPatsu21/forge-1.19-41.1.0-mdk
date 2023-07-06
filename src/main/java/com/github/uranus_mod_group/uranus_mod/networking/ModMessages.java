@@ -14,11 +14,14 @@ public class ModMessages {
     private static SimpleChannel INSTANCE;
 
     private static int packerId = 0;
+    //add 1 for the Message ID for every sent message
     private static int id(){
         return packerId++;
     }
 
+    //register the massages
     public static void register(){
+        //create the chanel
         SimpleChannel net = NetworkRegistry.ChannelBuilder
                 .named(new ResourceLocation(Uranus_mod.ModId, "messages"))
                 .networkProtocolVersion(() -> "1.0")
@@ -26,13 +29,13 @@ public class ModMessages {
                 .serverAcceptedVersions(s -> true)
                 .simpleChannel();
         INSTANCE = net;
-
+        //message to player of sub mana came from ManaC2SPacket
         net.messageBuilder(ManaC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(ManaC2SPacket::new)
                 .encoder(ManaC2SPacket::toBytes)
                 .consumerMainThread(ManaC2SPacket::handle)
                 .add();
-
+        //message to ? of ? came from ManaDataSyncS2CPacket
         net.messageBuilder(ManaDataSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(ManaDataSyncS2CPacket::new)
                 .encoder(ManaDataSyncS2CPacket::toBytes)
@@ -40,10 +43,12 @@ public class ModMessages {
                 .add();
     }
 
+    //send the message to the server
     public static <MSG> void sendToServer(MSG message){
         INSTANCE.sendToServer(message);
     }
 
+    //send the message to the player
     public static <MSG> void sendToPlayer (MSG message, ServerPlayer player){
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
     }

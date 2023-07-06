@@ -39,10 +39,12 @@ public class Uranus_mod {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        //receive villagers
         event.enqueueWork(() -> {
             ModVillagers.registerPOis();
         });
 
+        //receive networking
         ModMessages.register();
     }
 
