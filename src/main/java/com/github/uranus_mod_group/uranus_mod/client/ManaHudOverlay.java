@@ -19,7 +19,7 @@ public class ManaHudOverlay {
         //filled mana
         PlayerMana mana = new PlayerMana();
         RenderSystem.setShaderTexture(0, MANA_BAR_CONTENT);
-            int size = (int) (ClientManaData.getPlayerMana()*112)/mana.getMAX_MANA();
+            int size = (int) (ClientManaData.getPlayerMana()*112)/mana.getMaxMana();
                 GuiComponent.blit(poseStack,x - 210, y - 16,0,0, size,8,
                         size,8);
         //empty mana

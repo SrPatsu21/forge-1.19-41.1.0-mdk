@@ -65,27 +65,24 @@ public class ModEvents {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if(event.side == LogicalSide.SERVER) {
             event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                if(mana.getMana() < mana.getMAX_MANA() && event.player.getRandom().nextFloat() < 0.005f) { //for 0.005 Once Every 1 Seconds on Avg
-                    mana.addMana(1);
-                    event.player.sendSystemMessage(Component.literal("mana add "+mana.getMana()+"/"+mana.getMAX_MANA()));
-                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));                }
+                if(mana.getMana() < mana.getMaxMana() && event.player.getRandom().nextFloat() < 0.005f) { //for 0.005 Once Every 1 Seconds on Avg
+                    //will be regen
+                    int add = (int) (mana.getMaxMana()*0.01f);
+                    mana.addMana(add);
+                    //xp to up
+                    mana.addMxp(add);
+                        //mana up
+                        //getMaxMana * amountOfTimesRequired
+                    if(mana.getMxp() <= mana.getMana()){
+
+                    }
+                    //message
+                    event.player.sendSystemMessage(Component.literal("mana add "+mana.getMana()+"/"+mana.getMaxMana()));
+                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));
+                }
             });
         }
     }
-    //mana level up
-    /*
-    @SubscribeEvent
-    public static void onPlayer(TickEvent.PlayerTickEvent event) {
-        if(event.side == LogicalSide.SERVER) {
-            event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                if(mana.getMana() < mana.getMAX_MANA() && event.player.getRandom().nextFloat() < 0.005f) { //for 0.005 Once Every 1 Seconds on Avg
-                    mana.addMana(1);
-                    event.player.sendSystemMessage(Component.literal("mana add "+mana.getMana()+"/"+mana.getMAX_MANA()));
-                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));                }
-            });
-        }
-    }
-    */
 
     //mana hud
     public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
