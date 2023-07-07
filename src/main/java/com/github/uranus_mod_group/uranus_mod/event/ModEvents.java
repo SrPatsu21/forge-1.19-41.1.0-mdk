@@ -61,10 +61,8 @@ public class ModEvents {
         event.register(PlayerMana.class);
     }
     //mana regen
-    //on player tick n serve pois e aleatorio
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-
         if(event.side == LogicalSide.SERVER) {
             event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                 if(mana.getMana() < mana.getMaxMana() && (event.player.getCommandSenderWorld().getGameTime() % mana.getREGEN_TIME()) == 0) {
@@ -79,7 +77,8 @@ public class ModEvents {
                     }
                     //message
                     event.player.sendSystemMessage(Component.literal("mana add "+mana.getMana()+
-                            "/"+mana.getMaxMana()+ " mana xp:"+mana.getMxp()+" mana level:"+mana.getMl()));
+                            "/"+mana.getMaxMana()+ " mana xp:"+mana.getMxp()+" mana level:"+mana.getMl()+
+                            " tick that happend:"+event.player.getCommandSenderWorld().getGameTime()));
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));
                 }
             });
