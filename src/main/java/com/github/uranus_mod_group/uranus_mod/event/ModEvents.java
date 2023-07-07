@@ -61,6 +61,7 @@ public class ModEvents {
         event.register(PlayerMana.class);
     }
     //mana regen
+    //on player tick n serve pois e aleatorio
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if(event.side == LogicalSide.SERVER) {
@@ -71,13 +72,13 @@ public class ModEvents {
                     mana.addMana(add);
                     //xp to up
                     mana.addMxp(add);
-                        //mana up
-                        //getMaxMana * amountOfTimesRequired
-                    if(mana.getMxp() <= mana.getMana()){
-
+                    //mana xp enough to up
+                    if(mana.getMxp() >= mana.getManaToUp()){
+                        mana.manaUpProcess();
                     }
                     //message
-                    event.player.sendSystemMessage(Component.literal("mana add "+mana.getMana()+"/"+mana.getMaxMana()));
+                    event.player.sendSystemMessage(Component.literal("mana add "+mana.getMana()+
+                            "/"+mana.getMaxMana()+ " mana xp:"+mana.getMxp()+" mana level:"+mana.getMl()));
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));
                 }
             });
