@@ -6,10 +6,12 @@ public class PlayerMana {
     //final
     private final int MAX_ML = 308581;
     private final int M_BASE = 100;
+    private final int REGEN_TIME = 20;
     //vars
     private int mana = 0;
     private int ml = 0;
     private int mxp = 0;
+    private float mana_regen = 0.01f;
     private int max_mana = (int) (M_BASE + (M_BASE*(0.5f * ml)));
     private int mana_to_up = (int) Math.pow(max_mana, 1);//change to 1.7f after testing
     //functions
@@ -21,7 +23,14 @@ public class PlayerMana {
     public int getManaToUp(){
         return mana_to_up;
     }
-        //sub and add
+    public float getManaRegen(){
+        return mana_regen;
+    }
+    public int getREGEN_TIME() {
+        return REGEN_TIME;
+    }
+
+    //sub and add
     public void addMana(int add){
         this.mana = Math.min(mana + add, max_mana);
     }
@@ -38,10 +47,16 @@ public class PlayerMana {
     public void subMxp(){
         this.mxp = 0;
     }
+    public void addManaRegen(float add){
+        this.mana_regen = Math.min(mana_regen + add, 100);
+    }
+    public void subManaRegen(float sub){
+        this.mana_regen = Math.min(mana_regen - sub, 100);
+    }
     //reset mana stats
     public void manaStatsReset(){
         this.max_mana = (int) (this.M_BASE + (this.M_BASE*(0.5f * this.ml)));
-        this.mana_to_up = (int) Math.pow(this.max_mana, 1);
+        this.mana_to_up = (int) Math.pow(this.max_mana, 1);//change to 1.7f after testing
     }
     //mana up
     public void manaUpProcess(){

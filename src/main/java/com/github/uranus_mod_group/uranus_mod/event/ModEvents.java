@@ -64,11 +64,12 @@ public class ModEvents {
     //on player tick n serve pois e aleatorio
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+
         if(event.side == LogicalSide.SERVER) {
             event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                if(mana.getMana() < mana.getMaxMana() && event.player.getRandom().nextFloat() < 0.005f) { //for 0.005 Once Every 1 Seconds on Avg
+                if(mana.getMana() < mana.getMaxMana() && (event.player.getCommandSenderWorld().getGameTime() % mana.getREGEN_TIME()) == 0) {
                     //will be regen
-                    int add = (int) (mana.getMaxMana()*0.01f);
+                    int add = (int) (mana.getMaxMana()*mana.getManaRegen());
                     mana.addMana(add);
                     //xp to up
                     mana.addMxp(add);
