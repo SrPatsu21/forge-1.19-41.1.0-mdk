@@ -13,7 +13,8 @@ public class PlayerMana {
     private int mxp = 0;
     private float mana_regen = 0.01f;
     private int max_mana = (int) (M_BASE + (M_BASE*(0.5f * ml)));
-    private int mana_to_up = (int) Math.pow(max_mana, 1);//change to 1.7f after testing
+    private int mana_to_up = (int) Math.pow(max_mana, 1.7f);
+
     //functions
         //get
     public int getMana(){return mana;}
@@ -56,7 +57,7 @@ public class PlayerMana {
     //reset mana stats
     public void manaStatsReset(){
         this.max_mana = (int) (this.M_BASE + (this.M_BASE*(0.5f * this.ml)));
-        this.mana_to_up = (int) Math.pow(this.max_mana, 1);//change to 1.7f after testing
+        this.mana_to_up = (int) Math.pow(this.max_mana, 1.7f);
     }
     //mana up
     public void manaUpProcess(){
@@ -83,5 +84,10 @@ public class PlayerMana {
         mxp = nbt.getInt("mxp");
         manaStatsReset();
     }
-
+    //try
+    private long tick=0;
+    public void tickSaver(long num){
+        this.tick = num;
+    }
+    public long getTick(){return this.tick;}
 }

@@ -42,7 +42,7 @@ public class ModEvents {
             }
         }
     }
-
+    //if player die
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
         //mana
@@ -66,20 +66,23 @@ public class ModEvents {
         if(event.side == LogicalSide.SERVER) {
             event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                 if(mana.getMana() < mana.getMaxMana() && (event.player.getCommandSenderWorld().getGameTime() % mana.getREGEN_TIME()) == 0) {
-                    //will be regen
-                    int add = (int) (mana.getMaxMana()*mana.getManaRegen());
-                    mana.addMana(add);
-                    //xp to up
-                    mana.addMxp(add);
-                    //mana xp enough to up
-                    if(mana.getMxp() >= mana.getManaToUp()){
-                        mana.manaUpProcess();
+                    if (mana.getTick() != event.player.getCommandSenderWorld().getGameTime()) {
+                        mana.tickSaver(event.player.getCommandSenderWorld().getGameTime());
+                        //will be regen
+                        int add = (int) (mana.getMaxMana() * mana.getManaRegen());
+                        mana.addMana(add);
+                        //xp to up
+                        mana.addMxp(add);
+                        //mana xp enough to up
+                        if (mana.getMxp() >= mana.getManaToUp()) {
+                            mana.manaUpProcess();
+                        }
+                        //message
+                        event.player.sendSystemMessage(Component.literal("mana add " + mana.getMana() +
+                                "/" + mana.getMaxMana() + " mana xp:" + mana.getMxp() + " mana level:" + mana.getMl() +
+                                " tick that happend:" + event.player.getCommandSenderWorld().getGameTime()));
+                        ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));
                     }
-                    //message
-                    event.player.sendSystemMessage(Component.literal("mana add "+mana.getMana()+
-                            "/"+mana.getMaxMana()+ " mana xp:"+mana.getMxp()+" mana level:"+mana.getMl()+
-                            " tick that happend:"+event.player.getCommandSenderWorld().getGameTime()));
-                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));
                 }
             });
         }
