@@ -43,15 +43,18 @@ public class ModEvents {
         }
     }
     //if player die
+    //save mana lvl and mana xp
     @SubscribeEvent
-    public static void onPlayerCloned(PlayerEvent.Clone event) {
+    public static void onDeath(PlayerEvent.Clone event) {
         //mana
         if(event.isWasDeath()) {
+            event.getOriginal().reviveCaps();
             event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(oldStore -> {
-                event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(newStore -> {
+                event.getEntity().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
                 });
             });
+            event.getOriginal().invalidateCaps();
         }
     }
 
@@ -63,11 +66,9 @@ public class ModEvents {
     //mana regen
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if(event.side == LogicalSide.SERVER) {
+        if(event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END) {
             event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                 if(mana.getMana() < mana.getMaxMana() && (event.player.getCommandSenderWorld().getGameTime() % mana.getREGEN_TIME()) == 0) {
-                    if (mana.getTick() != event.player.getCommandSenderWorld().getGameTime()) {
-                        mana.tickSaver(event.player.getCommandSenderWorld().getGameTime());
                         //will be regen
                         int add = (int) (mana.getMaxMana() * mana.getManaRegen());
                         mana.addMana(add);
@@ -82,7 +83,6 @@ public class ModEvents {
                                 "/" + mana.getMaxMana() + " mana xp:" + mana.getMxp() + " mana level:" + mana.getMl() +
                                 " tick that happend:" + event.player.getCommandSenderWorld().getGameTime()));
                         ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));
-                    }
                 }
             });
         }

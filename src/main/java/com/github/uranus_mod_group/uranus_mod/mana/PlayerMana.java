@@ -84,10 +84,4 @@ public class PlayerMana {
         mxp = nbt.getInt("mxp");
         manaStatsReset();
     }
-    //try
-    private long tick=0;
-    public void tickSaver(long num){
-        this.tick = num;
-    }
-    public long getTick(){return this.tick;}
 }
