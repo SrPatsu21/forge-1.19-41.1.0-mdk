@@ -1,6 +1,8 @@
 package com.github.uranus_mod_group.uranus_mod.networking;
 
-import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaC2SPacket;
+import com.github.uranus_mod_group.uranus_mod.networking.packet.AddManaC2SPacket;
+import com.github.uranus_mod_group.uranus_mod.networking.packet.FirstSpellC2SPacket;
+import com.github.uranus_mod_group.uranus_mod.networking.packet.SubManaC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -30,16 +32,29 @@ public class ModMessages {
                 .simpleChannel();
         INSTANCE = net;
         //message to player of sub mana came from ManaC2SPacket
-        net.messageBuilder(ManaC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(ManaC2SPacket::new)
-                .encoder(ManaC2SPacket::toBytes)
-                .consumerMainThread(ManaC2SPacket::handle)
+        net.messageBuilder(SubManaC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(SubManaC2SPacket::new)
+                .encoder(SubManaC2SPacket::toBytes)
+                .consumerMainThread(SubManaC2SPacket::handle)
                 .add();
+        //message to player of add mana came from ManaC2SPacket
+        net.messageBuilder(AddManaC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(AddManaC2SPacket::new)
+                .encoder(AddManaC2SPacket::toBytes)
+                .consumerMainThread(AddManaC2SPacket::handle)
+                .add();
+
         //message to ? of ? came from ManaDataSyncS2CPacket
         net.messageBuilder(ManaDataSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(ManaDataSyncS2CPacket::new)
                 .encoder(ManaDataSyncS2CPacket::toBytes)
                 .consumerMainThread(ManaDataSyncS2CPacket::handle)
+                .add();
+        //fist spell
+        net.messageBuilder(FirstSpellC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(FirstSpellC2SPacket::new)
+                .encoder(FirstSpellC2SPacket::toBytes)
+                .consumerMainThread(FirstSpellC2SPacket::handle)
                 .add();
     }
 

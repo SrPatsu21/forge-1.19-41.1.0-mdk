@@ -10,13 +10,13 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class ManaC2SPacket {
+public class SubManaC2SPacket {
 
-    public ManaC2SPacket() {
+    public SubManaC2SPacket() {
 
     }
 
-    public ManaC2SPacket(FriendlyByteBuf buf) {
+    public SubManaC2SPacket(FriendlyByteBuf buf) {
 
     }
 
@@ -34,7 +34,7 @@ public class ManaC2SPacket {
                     mana.subMana(1);
                     //send a message with the current mana
                     player.sendSystemMessage(Component.literal("current mana "+ mana.getMana())
-                            .withStyle(ChatFormatting.DARK_AQUA));
+                            .withStyle(ChatFormatting.RED));
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()),player);
             });
         });
