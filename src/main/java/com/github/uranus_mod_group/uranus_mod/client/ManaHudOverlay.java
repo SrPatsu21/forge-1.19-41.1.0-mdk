@@ -4,7 +4,9 @@ import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerMana;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
@@ -18,10 +20,18 @@ public class ManaHudOverlay {
             "textures/mana/mana_bar_background-101x23.png");
 
     public static final IGuiOverlay HUD_MANA = ((gui, poseStack, partialTick, width, height) -> {
+        PlayerMana mana = new PlayerMana();
+        if (mana.getMaxMana() == 0) {
+            return;
+        }
+
         int x = width/3;
         int y = height;
-        int tam_bar_x = 101;
-        int tam_bar_y = 23;
+        int tamBarX = 101;
+        int tamBarY = 23;
+        int tamManaX = 99;
+        int tamManaY = 23;
+        int size = (int) (ClientManaData.getPlayerMana()*tamManaX)/mana.getMaxMana();
 
         /*
         GuiComponent.blit(
@@ -39,22 +49,23 @@ public class ManaHudOverlay {
 
         //background
         RenderSystem.setShaderTexture(0, MANA_BAR_BACKGROUND);
-        GuiComponent.blit(poseStack,x - tam_bar_x, y - tam_bar_y,0,0, tam_bar_x,tam_bar_y,
-                tam_bar_x,tam_bar_y);
+        GuiComponent.blit(poseStack,x - (tamBarX + 20), y - (tamBarY + 20),0,0, tamBarX,tamBarY,
+                tamBarX,tamBarY);
 
         //mana
-        PlayerMana mana = new PlayerMana();
         RenderSystem.setShaderTexture(0, MANA_BAR_MANA);
-        int size = (int) (ClientManaData.getPlayerMana()*(tam_bar_x - 2))/mana.getMaxMana();
-        GuiComponent.blit(poseStack,(x - tam_bar_x) + 1, y - tam_bar_y,0,0, size,tam_bar_y,
-                tam_bar_x,tam_bar_y);
+        GuiComponent.blit(poseStack,x - (tamManaX + 1 + 20), y - (tamBarY + 20),0,0, size,tamBarY,
+                tamBarX,tamBarY);
 
         //mana value bellow mana_bar
-
+        Minecraft minecraft = Minecraft.getInstance();
+        String textMana = (int) ClientManaData.getPlayerMana() + " / " + mana.getMaxMana();
+        GuiComponent.drawString(poseStack, minecraft.font, textMana, x - (tamManaX), y - 10, 0x1B82AB);
 
         //structure (details)
         RenderSystem.setShaderTexture(0, MANA_BAR_STRUCTURE);
-        GuiComponent.blit(poseStack,x - tam_bar_x, y - tam_bar_y,0,0, tam_bar_x,tam_bar_y,
-                tam_bar_x,tam_bar_y);
+        GuiComponent.blit(poseStack,x - (tamBarX + 20), y - (tamBarY + 20),0,0, tamBarX,tamBarY,
+                tamBarX,tamBarY);
+
     });
 }
