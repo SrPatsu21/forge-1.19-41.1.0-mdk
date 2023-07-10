@@ -10,27 +10,34 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class SubManaC2SPacket {
+public class SubManaC2SPacket
+{
 
-    public SubManaC2SPacket() {
-
-    }
-
-    public SubManaC2SPacket(FriendlyByteBuf buf) {
+    public SubManaC2SPacket()
+    {
 
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public SubManaC2SPacket(FriendlyByteBuf buf)
+    {
 
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
+    public void toBytes(FriendlyByteBuf buf)
+    {
+
+    }
+
+    public boolean handle(Supplier<NetworkEvent.Context> supplier)
+    {
         NetworkEvent.Context context = supplier.get();
-        context.enqueueWork(() -> {
+        context.enqueueWork(() ->
+        {
             // HERE WE ARE ON THE SERVER!
             ServerPlayer player = context.getSender();
-
-            player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->{
+            //mana
+            player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
+            {
                     mana.subMana(1);
                     //send a message with the current mana
                     player.sendSystemMessage(Component.literal("current mana "+ mana.getMana())
