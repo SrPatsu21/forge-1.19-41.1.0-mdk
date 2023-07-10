@@ -21,7 +21,8 @@ public class ManaHudOverlay {
 
     public static final IGuiOverlay HUD_MANA = ((gui, poseStack, partialTick, width, height) -> {
         PlayerMana mana = new PlayerMana();
-        if (mana.getMaxMana() == 0) {
+        if (mana.getMaxMana() == 0)
+        {
             return;
         }
 

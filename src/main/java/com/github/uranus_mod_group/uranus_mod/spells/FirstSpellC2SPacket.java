@@ -1,4 +1,4 @@
-package com.github.uranus_mod_group.uranus_mod.networking.packet.spells;
+package com.github.uranus_mod_group.uranus_mod.spells;
 
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
@@ -46,7 +46,7 @@ public class FirstSpellC2SPacket
                 //magic effect
                 if (mana.getMana() >= 20)
                 {
-                    EntityType.FIREBALL.spawn(level, null, null, player.blockPosition(),
+                    EntityType.FIREBALL.spawn(level, null, null, (player.blockPosition()),
                             MobSpawnType.COMMAND, true, false);
                 }
                 //mana

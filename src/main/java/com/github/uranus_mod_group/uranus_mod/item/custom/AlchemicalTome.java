@@ -8,24 +8,30 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class AlchemicalTome extends Item {
-    public AlchemicalTome(Properties properties) {
+public class AlchemicalTome extends Item
+{
+    public AlchemicalTome(Properties properties)
+    {
         super(properties);
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
-        if (!level.isClientSide() && interactionHand == InteractionHand.MAIN_HAND) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand)
+    {
+        if (!level.isClientSide() && interactionHand == InteractionHand.MAIN_HAND)
+        {
             outputMSG(player);
             player.getCooldowns().addCooldown(this, 1);
         }
-        if (interactionHand == InteractionHand.OFF_HAND) {
+        if (interactionHand == InteractionHand.OFF_HAND)
+        {
             player.kill();
         }
         return super.use(level, player, interactionHand);
     }
 
-    private void outputMSG(Player player) {
+    private void outputMSG(Player player)
+    {
         player.sendSystemMessage(Component.literal("a"));
     }
 }

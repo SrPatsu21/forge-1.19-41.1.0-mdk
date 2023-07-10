@@ -11,15 +11,23 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 //make player has mana
-public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable<CompoundTag>
+{
     //capability
-    public static Capability<PlayerMana> PLAYER_MANA = CapabilityManager.get(new CapabilityToken<PlayerMana>() { });
+    public static Capability<PlayerMana> PLAYER_MANA = CapabilityManager.get(
+            new CapabilityToken<PlayerMana>()
+            {
+
+            }
+    );
     //create mana
     private PlayerMana mana = null;
     private final LazyOptional<PlayerMana> optional = LazyOptional.of(this::createPlayerMana);
 
-    private PlayerMana createPlayerMana(){
-        if(this.mana == null){
+    private PlayerMana createPlayerMana()
+    {
+        if(this.mana == null)
+        {
             this.mana = new PlayerMana();
         }
 
@@ -27,22 +35,26 @@ public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable
     }
     //NBT process
     @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == PLAYER_MANA){
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
+    {
+        if(cap == PLAYER_MANA)
+        {
             return optional.cast();
         }
         return LazyOptional.empty();
     }
 
     @Override
-    public CompoundTag serializeNBT() {
+    public CompoundTag serializeNBT()
+    {
         CompoundTag nbt = new CompoundTag();
         createPlayerMana().saveNBTData(nbt);
         return nbt;
     }
 
     @Override
-    public void deserializeNBT(CompoundTag nbt) {
-    createPlayerMana().loadNBTData(nbt);
+    public void deserializeNBT(CompoundTag nbt)
+    {
+        createPlayerMana().loadNBTData(nbt);
     }
 }

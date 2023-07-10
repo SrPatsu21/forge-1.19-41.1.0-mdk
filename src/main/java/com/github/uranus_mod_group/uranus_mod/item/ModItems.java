@@ -14,7 +14,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.awt.print.Book;
 
-public class ModItems {
+public class ModItems
+{
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Uranus_mod.ModId);
 
     // items
@@ -35,7 +36,8 @@ public class ModItems {
     );
 
     //eventBus
-    public static void register(IEventBus eventBus){
+    public static void register(IEventBus eventBus)
+    {
         ITEMS.register(eventBus);
     }
 }

@@ -1,7 +1,7 @@
 package com.github.uranus_mod_group.uranus_mod.networking;
 
 import com.github.uranus_mod_group.uranus_mod.networking.packet.AddManaC2SPacket;
-import com.github.uranus_mod_group.uranus_mod.networking.packet.spells.FirstSpellC2SPacket;
+import com.github.uranus_mod_group.uranus_mod.spells.FirstSpellC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.SubManaC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
@@ -59,12 +59,14 @@ public class ModMessages {
     }
 
     //send the message to the server
-    public static <MSG> void sendToServer(MSG message){
+    public static <MSG> void sendToServer(MSG message)
+    {
         INSTANCE.sendToServer(message);
     }
 
     //send the message to the player
-    public static <MSG> void sendToPlayer (MSG message, ServerPlayer player){
+    public static <MSG> void sendToPlayer (MSG message, ServerPlayer player)
+    {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
     }
 }

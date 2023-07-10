@@ -10,24 +10,29 @@ public class ManaDataSyncS2CPacket {
     private final int mana;
 
     //this mana will be that mana
-    public ManaDataSyncS2CPacket(int mana) {
+    public ManaDataSyncS2CPacket(int mana)
+    {
         this.mana = mana;
     }
 
     //this mana = buf int
-    public ManaDataSyncS2CPacket(FriendlyByteBuf buf) {
+    public ManaDataSyncS2CPacket(FriendlyByteBuf buf)
+    {
         this.mana = buf.readInt();
     }
 
     //the buf write mana
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(FriendlyByteBuf buf)
+    {
         buf.writeInt(mana);
     }
 
     //send to ClientManaData
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
+    public boolean handle(Supplier<NetworkEvent.Context> supplier)
+    {
         NetworkEvent.Context context = supplier.get();
-        context.enqueueWork(() -> {
+        context.enqueueWork(() ->
+        {
             // HERE WE ARE ON THE CLIENT!
             ClientManaData.set(mana);
         });

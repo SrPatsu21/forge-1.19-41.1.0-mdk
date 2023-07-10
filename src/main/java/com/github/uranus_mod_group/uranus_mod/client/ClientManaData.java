@@ -4,11 +4,13 @@ public class ClientManaData {
     private static int playerMana;
 
     //set mana on playerMana
-    public static void set(int mana){
+    public static void set(int mana)
+    {
         ClientManaData.playerMana = mana;
     }
 
-    public static int getPlayerMana(){
+    public static int getPlayerMana()
+    {
         return playerMana;
     }
 }

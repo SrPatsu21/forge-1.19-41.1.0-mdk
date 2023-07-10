@@ -14,7 +14,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class ModVillagers {
+public class ModVillagers
+{
     //register
     public static final DeferredRegister<PoiType> POI_TYPES =
             DeferredRegister.create(ForgeRegistries.POI_TYPES, Uranus_mod.ModId);
@@ -31,16 +32,21 @@ public class ModVillagers {
                     x -> x.get() == SWORD_SUPPORT_POI.get(), ImmutableSet.of(), ImmutableSet.of(),
                     SoundEvents.VILLAGER_WORK_TOOLSMITH));
     //register villager table
-    public static void registerPOis() {
-        try {
+    public static void registerPOis()
+    {
+        try
+        {
             ObfuscationReflectionHelper.findMethod(PoiType.class, "registerBlockStates", PoiType.class)
                     .invoke(null, SWORD_SUPPORT_POI.get());
-        }catch (InvocationTargetException | IllegalAccessException exception){
+        }
+        catch (InvocationTargetException | IllegalAccessException exception)
+        {
             exception.printStackTrace();
         }
     }
     //eventBus
-    public static void register(IEventBus eventBus){
+    public static void register(IEventBus eventBus)
+    {
         POI_TYPES.register(eventBus);
         VILLAGER_PROFESSION.register(eventBus);
     }

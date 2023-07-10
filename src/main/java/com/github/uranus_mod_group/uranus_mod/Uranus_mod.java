@@ -22,7 +22,8 @@ public class Uranus_mod {
     public static final String ModId = "uranus_mod";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public Uranus_mod() {
+    public Uranus_mod()
+    {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         //eventBus
@@ -38,9 +39,11 @@ public class Uranus_mod {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {
+    private void commonSetup(final FMLCommonSetupEvent event)
+    {
         //receive villagers
-        event.enqueueWork(() -> {
+        event.enqueueWork(() ->
+        {
             ModVillagers.registerPOis();
         });
 
@@ -49,9 +52,11 @@ public class Uranus_mod {
     }
 
     @Mod.EventBusSubscriber(modid = ModId, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class ClientModEvents {
+    public static class ClientModEvents
+    {
         @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
+        public static void onClientSetup(FMLClientSetupEvent event)
+        {
 
         }
     }

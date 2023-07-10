@@ -34,10 +34,13 @@ import java.util.List;
 public class ModEvents {
 
     @SubscribeEvent
-    public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
+    public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event)
+    {
         //mana
-        if(event.getObject() instanceof Player) {
-            if(!event.getObject().getCapability(PlayerManaProvider.PLAYER_MANA).isPresent()) {
+        if(event.getObject() instanceof Player)
+        {
+            if(!event.getObject().getCapability(PlayerManaProvider.PLAYER_MANA).isPresent())
+            {
                 event.addCapability(new ResourceLocation(Uranus_mod.ModId, "properties"), new PlayerManaProvider());
             }
         }
@@ -45,13 +48,16 @@ public class ModEvents {
     //if player die
     //save mana lvl and mana xp
     @SubscribeEvent
-    public static void onDeath(PlayerEvent.Clone event) {
+    public static void onDeath(PlayerEvent.Clone event)
+    {
         //mana
         if(event.isWasDeath())
         {
             event.getOriginal().reviveCaps();
-            event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(oldStore -> {
-                event.getEntity().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(newStore -> {
+            event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(oldStore ->
+            {
+                event.getEntity().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(newStore ->
+                {
                     newStore.copyFrom(oldStore);
                 });
             });
@@ -60,7 +66,8 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+    public static void onRegisterCapabilities(RegisterCapabilitiesEvent event)
+    {
         //mana
         event.register(PlayerMana.class);
     }
@@ -69,7 +76,8 @@ public class ModEvents {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if(event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END)
         {
-            event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
+            event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
+            {
                 if(mana.getMana() < mana.getMaxMana() && (event.player.getCommandSenderWorld().getGameTime() % mana.getREGEN_TIME()) == 0)
                 {
                     //will be regen
@@ -94,10 +102,14 @@ public class ModEvents {
     }
 
     //mana hud
-    public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
-        if(event.getLevel().isClientSide) {
-            if(event.getEntity() instanceof ServerPlayer player) {
-                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana -> {
+    public static void onPlayerJoinWorld(EntityJoinLevelEvent event)
+    {
+        if(event.getLevel().isClientSide)
+        {
+            if(event.getEntity() instanceof ServerPlayer player)
+            {
+                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana ->
+                {
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(playerMana.getMana()), player);
                 });
             }
@@ -106,8 +118,10 @@ public class ModEvents {
 
     //villager
     @SubscribeEvent
-    public static void addCustomTrades(VillagerTradesEvent event){
-        if(event.getType() == VillagerProfession.TOOLSMITH) {
+    public static void addCustomTrades(VillagerTradesEvent event)
+    {
+        if(event.getType() == VillagerProfession.TOOLSMITH)
+        {
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
             ItemStack stack = new ItemStack(ModItems.ALCHEMICAL_TOME.get(), 1);
             int villagerLevel = 1;
@@ -117,7 +131,8 @@ public class ModEvents {
                     stack,1,8,0.02F));
         }
 
-        if(event.getType() == ModVillagers.FIGHT_MASTER.get()) {
+        if(event.getType() == ModVillagers.FIGHT_MASTER.get())
+        {
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
             ItemStack stack = new ItemStack(ModItems.ALCHEMICAL_TOME.get(), 1);
             int villagerLevel = 1;
