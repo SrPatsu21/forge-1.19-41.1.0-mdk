@@ -77,7 +77,8 @@ public class ModEvents {
         }
         //mana regen
         @SubscribeEvent
-        public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        public static void onPlayerTick(TickEvent.PlayerTickEvent event)
+        {
             if(event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END)
             {
                 event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
