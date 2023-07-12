@@ -6,14 +6,17 @@ import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public abstract class MagicSphereRender extends ArrowRenderer<MagicSphereEntity> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(Uranus_mod.ModId, "textures/entity/spells/magic_sphere_texture.png");
+public abstract class MagicSphereRender extends ArrowRenderer<MagicSphereEntity>
+{
+    public static final ResourceLocation MAGIC_SPHERE_LOCATION = new ResourceLocation(Uranus_mod.ModId, "textures/entity/spells/magic_sphere_texture.png");
 
-    public MagicSphereRender(EntityRendererProvider.Context manager) {
-            super(manager);
+    public MagicSphereRender(EntityRendererProvider.Context manager)
+    {
+        super(manager);
     }
 
-    public ResourceLocation getTextureLocation(MagicSphereRender arrow) {
-        return TEXTURE;
+    public ResourceLocation getTextureLocation(MagicSphereEntity arrow)
+    {
+        return MAGIC_SPHERE_LOCATION;
     }
 }
