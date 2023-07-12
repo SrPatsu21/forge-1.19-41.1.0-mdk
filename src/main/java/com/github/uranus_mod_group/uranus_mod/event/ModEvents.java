@@ -30,116 +30,138 @@ import net.minecraft.world.item.trading.MerchantOffer;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = Uranus_mod.ModId)
 public class ModEvents {
 
-    @SubscribeEvent
-    public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event)
+    @Mod.EventBusSubscriber(modid = Uranus_mod.ModId)
+    public static class ForgeEvents
     {
-        //mana
-        if(event.getObject() instanceof Player)
-        {
-            if(!event.getObject().getCapability(PlayerManaProvider.PLAYER_MANA).isPresent())
-            {
-                event.addCapability(new ResourceLocation(Uranus_mod.ModId, "properties"), new PlayerManaProvider());
-            }
-        }
-    }
-    //if player die
-    //save mana lvl and mana xp
-    @SubscribeEvent
-    public static void onDeath(PlayerEvent.Clone event)
-    {
-        //mana
-        if(event.isWasDeath())
-        {
-            event.getOriginal().reviveCaps();
-            event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(oldStore ->
-            {
-                event.getEntity().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(newStore ->
-                {
-                    newStore.copyFrom(oldStore);
-                });
-            });
-            event.getOriginal().invalidateCaps();
-        }
-    }
 
-    @SubscribeEvent
-    public static void onRegisterCapabilities(RegisterCapabilitiesEvent event)
-    {
-        //mana
-        event.register(PlayerMana.class);
-    }
-    //mana regen
-    @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if(event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END)
+        //give mana when player joins the game
+        @SubscribeEvent
+        public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event)
         {
-            event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
+            //mana
+            if(event.getObject() instanceof Player)
             {
-                if(mana.getMana() < mana.getMaxMana() && (event.player.getCommandSenderWorld().getGameTime() % mana.getREGEN_TIME()) == 0)
+                if(!event.getObject().getCapability(PlayerManaProvider.PLAYER_MANA).isPresent())
                 {
-                    //will be regen
-                    int add = (int) (mana.getMaxMana() * mana.getManaRegen());
-                    mana.addMana(add);
-                    //xp to up
-                    mana.addMxp(add);
-                    //mana xp enough to up
-                    if (mana.getMxp() >= mana.getManaToUp())
-                    {
-                        mana.manaUpProcess();
-                    }
-                    //message
-                    event.player.sendSystemMessage(Component.literal("mana add " + mana.getMana() +
-                            "/" + mana.getMaxMana() + " mana xp:" + mana.getMxp() + " mana level:" + mana.getMl() +
-                            " tick that happened:" + event.player.getCommandSenderWorld().getGameTime()));
-                    //send mana
-                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));
+                    event.addCapability(new ResourceLocation(Uranus_mod.ModId, "properties"), new PlayerManaProvider());
                 }
-            });
+            }
         }
-    }
-
-    //mana hud
-    public static void onPlayerJoinWorld(EntityJoinLevelEvent event)
-    {
-        if(event.getLevel().isClientSide)
+        //if player die
+        //save mana lvl and mana xp
+        @SubscribeEvent
+        public static void onDeath(PlayerEvent.Clone event)
         {
-            if(event.getEntity() instanceof ServerPlayer player)
+            //mana
+            if(event.isWasDeath())
             {
-                player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana ->
+                event.getOriginal().reviveCaps();
+                event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(oldStore ->
                 {
-                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(playerMana.getMana()), player);
+                    event.getEntity().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(newStore ->
+                    {
+                        newStore.copyFrom(oldStore);
+                    });
                 });
+                event.getOriginal().invalidateCaps();
+            }
+        }
+
+        //register capabilities
+        @SubscribeEvent
+        public static void onRegisterCapabilities(RegisterCapabilitiesEvent event)
+        {
+            event.register(PlayerMana.class);
+        }
+        //mana regen
+        @SubscribeEvent
+        public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+            if(event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END)
+            {
+                event.player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
+                {
+                    if(mana.getMana() < mana.getMaxMana() && (event.player.getCommandSenderWorld().getGameTime() % mana.getREGEN_TIME()) == 0)
+                    {
+                        //will be regen
+                        int add = (int) (mana.getMaxMana() * mana.getManaRegen());
+                        mana.addMana(add);
+                        //xp to up
+                        mana.addMxp(add);
+                        //mana xp enough to up
+                        if (mana.getMxp() >= mana.getManaToUp())
+                        {
+                            mana.manaUpProcess();
+                        }
+                        //message
+                        event.player.sendSystemMessage(Component.literal("mana add " + mana.getMana() +
+                                "/" + mana.getMaxMana() + " mana xp:" + mana.getMxp() + " mana level:" + mana.getMl() +
+                                " tick that happened:" + event.player.getCommandSenderWorld().getGameTime()));
+                        //send mana
+                        ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));
+                    }
+                });
+            }
+        }
+
+        //mana hud
+        public static void onPlayerJoinWorld(EntityJoinLevelEvent event)
+        {
+            if(event.getLevel().isClientSide)
+            {
+                if(event.getEntity() instanceof ServerPlayer player)
+                {
+                    player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana ->
+                    {
+                        ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(playerMana.getMana()), player);
+                    });
+                }
+            }
+        }
+
+        //villager
+        @SubscribeEvent
+        public static void addCustomTrades(VillagerTradesEvent event)
+        {
+            if(event.getType() == VillagerProfession.TOOLSMITH)
+            {
+                Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
+                ItemStack stack = new ItemStack(ModItems.ALCHEMICAL_TOME.get(), 1);
+                int villagerLevel = 1;
+
+                trades.get(villagerLevel).add((trader, rand) -> new MerchantOffer(
+                        new ItemStack(Items.EMERALD, 1),
+                        stack,1,8,0.02F));
+            }
+
+            if(event.getType() == ModVillagers.FIGHT_MASTER.get())
+            {
+                Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
+                ItemStack stack = new ItemStack(ModItems.ALCHEMICAL_TOME.get(), 1);
+                int villagerLevel = 1;
+
+                trades.get(villagerLevel).add((trader, rand) -> new MerchantOffer(
+                        new ItemStack(Items.EMERALD, 5),
+                        stack,10,8,0.02F));
             }
         }
     }
 
-    //villager
-    @SubscribeEvent
-    public static void addCustomTrades(VillagerTradesEvent event)
-    {
-        if(event.getType() == VillagerProfession.TOOLSMITH)
+
+    @Mod.EventBusSubscriber(modid = Uranus_mod.ModId, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class ModEventBusEvents {
+
+        /*
+        this is not the case
+        //need when an entity has attributes like life...
+        @SubscribeEvent
+        public static void entityAttributeEvent (EntityAttributeCreationEvent event)
         {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ModItems.ALCHEMICAL_TOME.get(), 1);
-            int villagerLevel = 1;
-
-            trades.get(villagerLevel).add((trader, rand) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 1),
-                    stack,1,8,0.02F));
+            event.put(ModEntityTypes.MAGICBALL.get(), AttributeSupplier.builder().build());
         }
+        */
 
-        if(event.getType() == ModVillagers.FIGHT_MASTER.get())
-        {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            ItemStack stack = new ItemStack(ModItems.ALCHEMICAL_TOME.get(), 1);
-            int villagerLevel = 1;
-
-            trades.get(villagerLevel).add((trader, rand) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 5),
-                    stack,10,8,0.02F));
-        }
     }
+
 }

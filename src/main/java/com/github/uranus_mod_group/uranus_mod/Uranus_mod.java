@@ -1,5 +1,6 @@
 package com.github.uranus_mod_group.uranus_mod;
 
+import com.github.uranus_mod_group.uranus_mod.entity.ModEntityTypes;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.block.ModBlocks;
 import com.github.uranus_mod_group.uranus_mod.item.ModItems;
@@ -32,11 +33,12 @@ public class Uranus_mod {
         ModConfiguredFeatures.register(modEventBus);
         ModPlacedFeatures.register(modEventBus);
         ModVillagers.register(modEventBus);
-
+        ModEntityTypes.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
         MinecraftForge.EVENT_BUS.register(this);
+
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
