@@ -44,7 +44,7 @@ public class FirstSpellC2SPacket
             player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
             {
                 //magic effect
-                if (mana.getMana() >= 20)
+                if (mana.getMana() >= 1)
                 {
                     EntityType.FIREBALL.spawn(level, null, null, (player.blockPosition()),
                             MobSpawnType.COMMAND, true, false);

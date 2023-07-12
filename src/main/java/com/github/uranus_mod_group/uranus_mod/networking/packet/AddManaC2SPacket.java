@@ -37,7 +37,7 @@ public class AddManaC2SPacket
 
             player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
             {
-                mana.addMana(1);
+                mana.addMana(20);
                 //send a message with the current mana
                 player.sendSystemMessage(Component.literal("current mana "+ mana.getMana())
                         .withStyle(ChatFormatting.GREEN));
