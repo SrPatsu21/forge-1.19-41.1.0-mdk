@@ -30,7 +30,6 @@ public class MagicSphereEntity extends AbstractArrow{
     protected void onHitBlock(BlockHitResult ray)
     {
         super.onHitBlock(ray);
-        BlockState theBlockYouHit = this.level.getBlockState(ray.getBlockPos());
     }
 
     @Override
@@ -41,9 +40,8 @@ public class MagicSphereEntity extends AbstractArrow{
     //make despawn
     @Override
     protected void tickDespawn() {
-        if (this.inGroundTime > 30){
-            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 4.0f, true, Explosion.BlockInteraction.BREAK);
-            this.remove(null);
+        if (this.inGroundTime > 200){
+            this.discard();
         }
     }
     //render the entity
