@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 
 public class MasterWizardEntity extends Monster
 {
-    //the entity
+    //create entity
     public MasterWizardEntity(EntityType<? extends Monster> entityType, Level level)
     {
         super(entityType, level);

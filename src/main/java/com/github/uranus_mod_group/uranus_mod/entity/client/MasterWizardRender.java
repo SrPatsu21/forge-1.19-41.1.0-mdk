@@ -7,8 +7,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-import javax.swing.text.html.parser.Entity;
-
 public class MasterWizardRender extends MobRenderer<MasterWizardEntity, MasterWizardModel>
 {
     private static final ResourceLocation MASTER_WIZARD_LOCATION = new ResourceLocation(

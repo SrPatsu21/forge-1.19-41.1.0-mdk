@@ -2,7 +2,9 @@ package com.github.uranus_mod_group.uranus_mod.event;
 
 import com.github.uranus_mod_group.uranus_mod.client.ManaHudOverlay;
 import com.github.uranus_mod_group.uranus_mod.entity.ModEntityTypes;
+import com.github.uranus_mod_group.uranus_mod.entity.client.MagicSphereRender;
 import com.github.uranus_mod_group.uranus_mod.entity.client.MasterWizardRender;
+import com.github.uranus_mod_group.uranus_mod.entity.model.MagicSphereModel;
 import com.github.uranus_mod_group.uranus_mod.entity.model.MasterWizardModel;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.AddManaC2SPacket;
@@ -61,17 +63,19 @@ public class ClientEvents {
         {
             event.registerAboveAll("mana", ManaHudOverlay.HUD_MANA);
         }
-        //master wizard texture
+        //entities texture
         @SubscribeEvent
         public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event)
         {
             event.registerEntityRenderer(ModEntityTypes.MASTERWIZARD.get(), MasterWizardRender::new);
+            event.registerEntityRenderer(ModEntityTypes.MAGIC_SPHERE.get(), MagicSphereRender::new);
         }
-        //master wizard layer
+        //entities layer
         @SubscribeEvent
         public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
         {
             event.registerLayerDefinition(MasterWizardModel.LAYER_LOCATION, MasterWizardModel::createBodyLayer);
+            event.registerLayerDefinition(MagicSphereModel.LAYER_LOCATION, MagicSphereModel::createBodyLayer);
         }
 
     }

@@ -3,6 +3,7 @@ package com.github.uranus_mod_group.uranus_mod.entity.model;// Made with Blockbe
 // Paste this class into your mod and generate all required imports
 
 
+import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 import com.github.uranus_mod_group.uranus_mod.entity.custom.MasterWizardEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -12,13 +13,13 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 
 public class MasterWizardModel extends EntityModel<MasterWizardEntity>
 {
 
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "com.github.uranus_mod_group.uranus_mod.entity.model.unknown"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(
+			Uranus_mod.ModId, "master_wizard"), "main");
 	private final ModelPart Head;
 	private final ModelPart Body;
 	private final ModelPart Arms;

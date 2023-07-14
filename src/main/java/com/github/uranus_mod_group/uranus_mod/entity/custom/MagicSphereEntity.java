@@ -18,18 +18,18 @@ public class MagicSphereEntity extends AbstractArrow{
     {
         super(entityType, world);
     }
-    //explode on hit by entity
+    //hit by entity
     @Override
-    protected void onHitEntity(EntityHitResult ray) {
+    protected void onHitEntity(EntityHitResult ray)
+    {
         super.onHitEntity(ray);
         this.level.explode(this, this.getX(), this.getY(), this.getZ(), 4.0f, true, Explosion.BlockInteraction.BREAK);
     }
-
-    //when hit a block
+    //when hit by block
     @Override
-    protected void onHitBlock(BlockHitResult ray) {
+    protected void onHitBlock(BlockHitResult ray)
+    {
         super.onHitBlock(ray);
-        BlockState theBlockYouHit = this.level.getBlockState(ray.getBlockPos());
     }
 
     @Override
@@ -40,9 +40,8 @@ public class MagicSphereEntity extends AbstractArrow{
     //make despawn
     @Override
     protected void tickDespawn() {
-        if (this.inGroundTime > 30){
-            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 4.0f, true, Explosion.BlockInteraction.BREAK);
-            this.remove(null);
+        if (this.inGroundTime > 200){
+            this.discard();
         }
     }
     //render the entity

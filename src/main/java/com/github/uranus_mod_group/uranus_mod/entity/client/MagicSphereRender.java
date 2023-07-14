@@ -8,7 +8,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class MagicSphereRender extends ArrowRenderer<MagicSphereEntity>
 {
-    public static final ResourceLocation MAGIC_SPHERE_LOCATION = new ResourceLocation(Uranus_mod.ModId, "textures/entity/spells/magic_sphere_texture.png");
+    public static final ResourceLocation MAGIC_SPHERE_LOCATION = new ResourceLocation(
+            Uranus_mod.ModId, "textures/entity/spells/magic_sphere.png");
 
     public MagicSphereRender(EntityRendererProvider.Context manager)
     {
