@@ -1,6 +1,9 @@
 package com.github.uranus_mod_group.uranus_mod.event;
 
 import com.github.uranus_mod_group.uranus_mod.client.ManaHudOverlay;
+import com.github.uranus_mod_group.uranus_mod.entity.ModEntityTypes;
+import com.github.uranus_mod_group.uranus_mod.entity.client.MasterWizardRender;
+import com.github.uranus_mod_group.uranus_mod.entity.model.MasterWizardModel;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.AddManaC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.spells.FirstSpellC2SPacket;
@@ -8,6 +11,7 @@ import com.github.uranus_mod_group.uranus_mod.networking.packet.SubManaC2SPacket
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 import com.github.uranus_mod_group.uranus_mod.util.KeyBinding;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -57,5 +61,18 @@ public class ClientEvents {
         {
             event.registerAboveAll("mana", ManaHudOverlay.HUD_MANA);
         }
+        //master wizard texture
+        @SubscribeEvent
+        public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event)
+        {
+            event.registerEntityRenderer(ModEntityTypes.MASTERWIZARD.get(), MasterWizardRender::new);
+        }
+        //master wizard layer
+        @SubscribeEvent
+        public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
+        {
+            event.registerLayerDefinition(MasterWizardModel.LAYER_LOCATION, MasterWizardModel::createBodyLayer);
+        }
+
     }
 }

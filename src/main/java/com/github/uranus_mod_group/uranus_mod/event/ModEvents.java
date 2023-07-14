@@ -1,6 +1,8 @@
 package com.github.uranus_mod_group.uranus_mod.event;
 
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
+import com.github.uranus_mod_group.uranus_mod.entity.ModEntityTypes;
+import com.github.uranus_mod_group.uranus_mod.entity.custom.MasterWizardEntity;
 import com.github.uranus_mod_group.uranus_mod.item.ModItems;
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerMana;
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
@@ -19,6 +21,7 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -30,7 +33,8 @@ import net.minecraft.world.item.trading.MerchantOffer;
 
 import java.util.List;
 
-public class ModEvents {
+public class ModEvents
+{
 
     @Mod.EventBusSubscriber(modid = Uranus_mod.ModId)
     public static class ForgeEvents
@@ -153,15 +157,13 @@ public class ModEvents {
     @Mod.EventBusSubscriber(modid = Uranus_mod.ModId, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEventBusEvents {
 
-        /*
-        this is not the case
+
         //need when an entity has attributes like life...
         @SubscribeEvent
         public static void entityAttributeEvent (EntityAttributeCreationEvent event)
         {
-            event.put(ModEntityTypes.MAGICBALL.get(), AttributeSupplier.builder().build());
+            event.put(ModEntityTypes.MASTERWIZARD.get(), MasterWizardEntity.getMasterWizardAttributes().build());
         }
-        */
 
     }
 
