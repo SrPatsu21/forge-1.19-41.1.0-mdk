@@ -33,6 +33,7 @@ public class ManaHudOverlay {
         int tamManaX = 99;
         int tamManaY = 23;
         int size = (int) (ClientManaData.getPlayerMana()*tamManaX)/mana.getMaxMana();
+        Minecraft minecraft = Minecraft.getInstance();
 
         /*
         GuiComponent.blit(
@@ -50,22 +51,21 @@ public class ManaHudOverlay {
 
         //background
         RenderSystem.setShaderTexture(0, MANA_BAR_BACKGROUND);
-        GuiComponent.blit(poseStack,x - (tamBarX + 20), y - (tamBarY + 20),0,0, tamBarX,tamBarY,
+        GuiComponent.blit(poseStack,x - (tamBarX + 20), y - ( tamBarY + 5),0,0, tamBarX,tamBarY,
                 tamBarX,tamBarY);
 
         //mana
         RenderSystem.setShaderTexture(0, MANA_BAR_MANA);
-        GuiComponent.blit(poseStack,x - (tamManaX + 1 + 20), y - (tamBarY + 20),0,0, size,tamBarY,
+        GuiComponent.blit(poseStack,x - (tamManaX + 1 + 20), y - ( tamBarY + 5),0,0, size,tamBarY,
                 tamBarX,tamBarY);
 
         //mana value bellow mana_bar
-        Minecraft minecraft = Minecraft.getInstance();
-        String textMana = (int) ClientManaData.getPlayerMana() + " / " + mana.getMaxMana();
-        GuiComponent.drawString(poseStack, minecraft.font, textMana, x - (tamManaX), y - 10, 0x1B82AB);
+        String textMana = Integer.toString(ClientManaData.getPlayerMana());
+        GuiComponent.drawString(poseStack, minecraft.font, textMana, x - ( tamBarX/2 + 30), y - (tamBarY + 13), 0x1B82AB);
 
         //structure (details)
         RenderSystem.setShaderTexture(0, MANA_BAR_STRUCTURE);
-        GuiComponent.blit(poseStack,x - (tamBarX + 20), y - (tamBarY + 20),0,0, tamBarX,tamBarY,
+        GuiComponent.blit(poseStack,x - (tamBarX + 20), y - ( tamBarY + 5),0,0, tamBarX,tamBarY,
                 tamBarX,tamBarY);
 
     });
