@@ -67,7 +67,7 @@ public class ClientEvents {
         @SubscribeEvent
         public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event)
         {
-            event.registerEntityRenderer(ModEntityTypes.MASTERWIZARD.get(), MasterWizardRender::new);
+            event.registerEntityRenderer(ModEntityTypes.MASTER_WIZARD.get(), MasterWizardRender::new);
             event.registerEntityRenderer(ModEntityTypes.MAGIC_SPHERE.get(), MagicSphereRender::new);
         }
         //entities layer

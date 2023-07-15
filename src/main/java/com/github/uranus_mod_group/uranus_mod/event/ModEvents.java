@@ -159,10 +159,11 @@ public class ModEvents
 
 
         //need when an entity has attributes like life...
+        //master wizard attributes
         @SubscribeEvent
         public static void entityAttributeEvent (EntityAttributeCreationEvent event)
         {
-            event.put(ModEntityTypes.MASTERWIZARD.get(), MasterWizardEntity.getMasterWizardAttributes().build());
+            event.put(ModEntityTypes.MASTER_WIZARD.get(), MasterWizardEntity.getMasterWizardAttributes().build());
         }
 
     }
