@@ -17,7 +17,8 @@ import net.minecraft.world.phys.*;
 import javax.annotation.Nullable;
 
 
-public class MagicSphereEntity extends Projectile  {
+public class MagicSphereEntity extends Projectile
+{
     @Nullable
     private int life;
     @Nullable
@@ -27,9 +28,11 @@ public class MagicSphereEntity extends Projectile  {
         super(entityType, level);
     }
     //render distance
-    public boolean shouldRenderAtSqrDistance(double d3) {
+    public boolean shouldRenderAtSqrDistance(double d3)
+    {
         double d0 = this.getBoundingBox().getSize() * 10.0D;
-        if (Double.isNaN(d0)) {
+        if (Double.isNaN(d0))
+        {
             d0 = 1.0D;
         }
 
@@ -38,14 +41,16 @@ public class MagicSphereEntity extends Projectile  {
     }
 
     @Override
-    protected void defineSynchedData() {
+    protected void defineSynchedData()
+    {
 
     }
 
     //tick event
-    public void tick() {
+    public void tick()
+    {
         super.tick();
-        tickDespawn();
+        //tickDespawn();
         HitResult hitresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
         boolean flag = false;
         //if hit at a block is a portal
@@ -85,6 +90,7 @@ public class MagicSphereEntity extends Projectile  {
         //if is underwater
         if (this.isInWater())
         {
+            //particle
             for(int i = 0; i < 4; ++i)
             {
                 this.level.addParticle(ParticleTypes.BUBBLE, d2 - vec3.x * 0.25D,
@@ -108,10 +114,10 @@ public class MagicSphereEntity extends Projectile  {
     //tick count to entity disappear
     protected void tickDespawn()
     {
-        ++this.life;
+        this.life++;
         if (this.life >= 1200)
         {
-            //this.discard();
+            this.discard();
         }
     }
     //on hit at an entity
