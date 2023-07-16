@@ -12,6 +12,7 @@ import com.github.uranus_mod_group.uranus_mod.spells.FirstSpellC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.SubManaC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 import com.github.uranus_mod_group.uranus_mod.util.KeyBinding;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;

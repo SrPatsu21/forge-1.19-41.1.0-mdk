@@ -19,7 +19,7 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<MagicSphereEntity>> MAGIC_SPHERE =
             ENTITY_TYPES.register("magic_sphere", () -> EntityType.Builder.of(MagicSphereEntity::new, MobCategory.MISC)
                             //hit box
-                            .sized(1.0f, 1.0f)
+                            .sized(0.3f, 0.3f)
                             //I think it is to find teh texture
                             .build(new ResourceLocation(Uranus_mod.ModId, "magic_sphere").toString())
             );
