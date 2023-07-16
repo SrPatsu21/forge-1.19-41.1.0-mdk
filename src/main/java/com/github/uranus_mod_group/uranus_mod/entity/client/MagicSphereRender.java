@@ -19,7 +19,7 @@ public class MagicSphereRender extends EntityRenderer<MagicSphereEntity>
 {
     public static final ResourceLocation MAGIC_SPHERE_LOCATION = new ResourceLocation(
             Uranus_mod.ModId, "textures/entity/spells/magic_sphere.png");
-    public static final RenderType RENDER_TYPE = RenderType.entityTranslucent(MAGIC_SPHERE_LOCATION);
+    public static final RenderType RENDER_TYPE = RenderType.entityDecal(MAGIC_SPHERE_LOCATION);
     public final MagicSphereModel<MagicSphereEntity> model;
 
     public MagicSphereRender(EntityRendererProvider.Context manager)
@@ -37,7 +37,7 @@ public class MagicSphereRender extends EntityRenderer<MagicSphereEntity>
                        MultiBufferSource bufferSource, int p_115867_) {
         poseStack.pushPose();
         //animation
-
+        /*
         float f = Mth.rotlerp(entity.yRotO, entity.getYRot(), p_115864_);
         float f1 = Mth.lerp(p_115864_, entity.xRotO, entity.getXRot());
         float f2 = (float)entity.tickCount + p_115864_;
@@ -47,14 +47,12 @@ public class MagicSphereRender extends EntityRenderer<MagicSphereEntity>
         poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.sin(f2 * 0.15F) * 360.0F));
         poseStack.scale(-1F, -1F, 0.5F);
         this.model.setupAnim(entity, 0.0F, 0.0F, 0.0F, f, f1);
-
-        //texture???
+        */
+        //texture
         VertexConsumer vertexconsumer = bufferSource.getBuffer(this.model.renderType(MAGIC_SPHERE_LOCATION));
         //
-        /*
         this.model.renderToBuffer(poseStack, vertexconsumer, p_115867_,
                 OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-         */
         //escale
         poseStack.scale(2F, 2F, 2F);
         //
