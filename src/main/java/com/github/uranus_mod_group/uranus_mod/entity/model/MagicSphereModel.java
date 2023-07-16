@@ -16,42 +16,37 @@ public class MagicSphereModel<T extends Entity> extends EntityModel<T> {
 			Uranus_mod.ModId, "magic_sphere"), "main");
 
 	private static final String MAIN = "main";
-	private final ModelPart root;
 	private final ModelPart main;
 
 	public MagicSphereModel(ModelPart modelpart) {
-		this.root = modelpart;
 		this.main = modelpart.getChild("main");
 	}
 
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
+		//the grup
 		PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(),
-				PartPose.offset(8.0F, 2.0F, -8.0F));
-
-		PartDefinition cube_r1 = main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 4)
-						.addBox(-1.0F, -1.0F, -1.0F, 3.0F, 3.0F, 3.0F,
+				PartPose.offset(0.0F, 0.0F, 0.0F));
+		//group parts
+		PartDefinition cube_r1 = main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 8).
+						addBox(-2.0F, -2.0F, -2.0F, 4.0F, 4.0F, 4.0F,
 								new CubeDeformation(0.0F)),
-				PartPose.offsetAndRotation(-8.0F, -1.0F, 8.0F, -0.7854F, 0.0F, 0.0F));
+				PartPose.offsetAndRotation(0.0F, 3.0F, 0.0F, -0.7854F, 0.0F, 0.0F));
 
 		PartDefinition cube_r2 = main.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 8)
-						.addBox(-1.0F, -1.0F, -1.0F, 3.0F, 3.0F, 3.0F,
+						.addBox(-2.0F, -2.0F, -2.0F, 4.0F, 4.0F, 4.0F,
 								new CubeDeformation(0.0F)),
-				PartPose.offsetAndRotation(-8.0F, -1.0F, 8.0F, 0.0F, -0.7854F, 0.0F));
+				PartPose.offsetAndRotation(0.0F, 3.0F, 0.0F, 0.0F, -0.7854F, 0.0F));
 
-		PartDefinition cube_r3 = main.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(0, 12)
-						.addBox(-1.0F, -1.0F, -1.0F, 3.0F, 3.0F, 3.0F,
+		PartDefinition cube_r3 = main.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(0, 8)
+						.addBox(-2.0F, -2.0F, -2.0F, 4.0F, 4.0F, 4.0F,
 								new CubeDeformation(0.0F)),
-				PartPose.offsetAndRotation(-8.0F, -1.0F, 8.0F, 0.0F, 0.0F, 0.7854F));
+				PartPose.offsetAndRotation(0.0F, 3.0F, 0.0F, 0.0F, 0.0F, 0.7854F));
+
 		//mash is the png
 		return LayerDefinition.create(meshdefinition, 16, 16);
 	}
-
-	public ModelPart root() {
-		return this.root;
-	}
-
 
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
