@@ -27,7 +27,7 @@ public class MagicSphereModel<T extends Entity> extends EntityModel<T> {
 		PartDefinition partdefinition = meshdefinition.getRoot();
 		//the grup
 		PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(),
-				PartPose.offset(0.0F, 0.0F, 0.0F));
+				PartPose.offset(0.0F, -3.0F, 0.0F));
 		//group parts
 		PartDefinition cube_r1 = main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 8).
 						addBox(-2.0F, -2.0F, -2.0F, 4.0F, 4.0F, 4.0F,

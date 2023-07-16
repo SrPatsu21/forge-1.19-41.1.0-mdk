@@ -32,9 +32,10 @@ public class MagicSphereRender extends EntityRenderer<MagicSphereEntity>
     {
         return 15;
     }
-
+    //how does it work?
     public void render(MagicSphereEntity entity, float p_115863_, float p_115864_, PoseStack poseStack,
-                       MultiBufferSource bufferSource, int p_115867_) {
+                       MultiBufferSource bufferSource, int p_115867_)
+    {
         poseStack.pushPose();
         //animation
         float f = Mth.rotlerp(entity.yRotO, entity.getYRot(), p_115864_);
@@ -43,19 +44,19 @@ public class MagicSphereRender extends EntityRenderer<MagicSphereEntity>
         poseStack.translate(0.0D, (double)0.15F, 0.0D);
         poseStack.mulPose(Vector3f.YP.rotationDegrees(Mth.sin(f2 * 0.1F) * 180.0F));
         poseStack.mulPose(Vector3f.XP.rotationDegrees(Mth.cos(f2 * 0.1F) * 180.0F));
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.sin(f2 * 0.15F) * 360.0F));
-        poseStack.scale(-1F, -1F, 0.5F);
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.sin(f2 * 0.1F) * 180.0F));
+        poseStack.scale(1F, 1F, 1F);
         this.model.setupAnim(entity, 0.0F, 0.0F, 0.0F, f, f1);
         //texture
         VertexConsumer vertexconsumer = bufferSource.getBuffer(this.model.renderType(MAGIC_SPHERE_LOCATION));
-        //
+        //model proportion
         this.model.renderToBuffer(poseStack, vertexconsumer, p_115867_,
                 OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-        //escale
+        //scale
         poseStack.scale(2F, 2F, 2F);
         //
         VertexConsumer vertexconsumer1 = bufferSource.getBuffer(RENDER_TYPE);
-        //render
+        //I think we could use this to change color
         this.model.renderToBuffer(poseStack, vertexconsumer1, p_115867_, OverlayTexture.NO_OVERLAY
                 , 1.0F, 1.0F, 1.0F, 0.15F);
         //set poseStack to ".removeLast()" ???
