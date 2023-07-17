@@ -7,6 +7,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -50,7 +51,7 @@ public class MagicSphereEntity extends Projectile
     public void tick()
     {
         super.tick();
-        //tickDespawn();
+        tickDespawn();
         HitResult hitresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
         boolean flag = false;
         //if hit at a block is a portal
@@ -81,11 +82,11 @@ public class MagicSphereEntity extends Projectile
         //position
         this.checkInsideBlocks();
         Vec3 vec3 = this.getDeltaMovement();
-        double d2 = this.getX() + vec3.x;
-        double d0 = this.getY() + vec3.y;
-        double d1 = this.getZ() + vec3.z;
+        double d2 = this.getX() + vec3.x*0.1;
+        double d0 = this.getY() + vec3.y*0.1;
+        double d1 = this.getZ() + vec3.z*0.1;
         this.updateRotation();
-        //speed i think
+        //speed, I think
         float f;
         //if is underwater
         if (this.isInWater())
@@ -111,14 +112,27 @@ public class MagicSphereEntity extends Projectile
 
         this.setPos(d2, d0, d1);
     }
+
     //tick count to entity disappear
-    protected void tickDespawn()
+    private void tickDespawn()
     {
         this.life++;
         if (this.life >= 1200)
         {
             this.discard();
         }
+    }
+    //on hit
+    protected void onHit(HitResult hitResult)
+    {
+        super.onHit(hitResult);
+        if (!this.level.isClientSide)
+        {
+            this.level.broadcastEntityEvent(this, (byte)3);
+            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 4.0f, true, Explosion.BlockInteraction.BREAK);
+            this.discard();
+        }
+
     }
     //on hit at an entity
     protected void onHitEntity(EntityHitResult hitResult)
@@ -128,30 +142,16 @@ public class MagicSphereEntity extends Projectile
         int i = entity instanceof Blaze ? 3 : 0;
         entity.hurt(DamageSource.thrown(this, this.getOwner()), (float)i);
     }
-    //on hit
-    protected void onHit(HitResult hitResult)
-    {
-        super.onHit(hitResult);
-        if (!this.level.isClientSide)
-        {
-            this.level.broadcastEntityEvent(this, (byte)3);
-            this.discard();
-        }
-
-    }
-    //find the entity to hit
-    @Nullable
-    protected EntityHitResult findHitEntity(Vec3 position1, Vec3 position2)
-    {
-        return ProjectileUtil.getEntityHitResult(this.level, this, position1, position2,
-                this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), this::canHitEntity);
+    //on hit a block
+    protected void onHitBlock(BlockHitResult p_37258_) {
+        super.onHitBlock(p_37258_);
+        this.discard();
     }
     //set player and verify if is a player
     public void setOwner(@Nullable Entity entity)
     {
         super.setOwner(entity);
     }
-
     //say that projectile cant be attack
     public boolean isAttackable()
     {
@@ -165,6 +165,7 @@ public class MagicSphereEntity extends Projectile
     //when the projectile is fall
     protected float getGravity()
     {
-        return 0.1F;
+        return 0.01F;
     }
+
 }

@@ -51,14 +51,14 @@ public class MagicSphereRender extends EntityRenderer<MagicSphereEntity>
         VertexConsumer vertexconsumer = bufferSource.getBuffer(this.model.renderType(MAGIC_SPHERE_LOCATION));
         //model proportion
         this.model.renderToBuffer(poseStack, vertexconsumer, p_115867_,
-                OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                OverlayTexture.NO_OVERLAY, 0.3F, 0.0F, 0.3F, 1.0F);
         //scale
         poseStack.scale(2F, 2F, 2F);
         //
         VertexConsumer vertexconsumer1 = bufferSource.getBuffer(RENDER_TYPE);
-        //I think we could use this to change color
+        //I dont know
         this.model.renderToBuffer(poseStack, vertexconsumer1, p_115867_, OverlayTexture.NO_OVERLAY
-                , 1.0F, 1.0F, 1.0F, 0.15F);
+                , 1.0F, 0.0F, 0.0F, 1.0F);
         //set poseStack to ".removeLast()" ???
         poseStack.popPose();
         //call the superrender

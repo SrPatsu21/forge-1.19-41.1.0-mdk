@@ -9,10 +9,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraft.world.entity.MobSpawnType;
 
@@ -50,8 +47,8 @@ public class FirstSpellC2SPacket
                 //magic effect
                 if (mana.getMana() >= 20)
                 {
-                    BlockPos posistion = new BlockPos(player.getX(), (player.getY() + 1), player.getZ());
-                    EntityType.FIREBALL.spawn(level, null, null, posistion,
+                    BlockPos position = new BlockPos(player.getX(), (player.getY() + 1), player.getZ());
+                    EntityType.FIREBALL.spawn(level, null, null, position,
                             MobSpawnType.COMMAND, true, false);
                 }
                 //mana
