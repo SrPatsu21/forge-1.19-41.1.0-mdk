@@ -11,7 +11,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
 {
     private float gravity = 0.2F;
     private int life = 1200;
-    private float speed = 0.9F;
+    private float speed = 0.3F;
     private float speed_on_water_r = 0.1F;
     private float damage = 0.0F;
 
@@ -28,6 +28,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType, Level level, LivingEntity entity)
     {
         this(entityEntityType, level, entity.getX(),entity.getEyeY() - (double)0.1F, entity.getZ());
+        this.setOwner(entity);
         super.setOwner(entity);
     }
 

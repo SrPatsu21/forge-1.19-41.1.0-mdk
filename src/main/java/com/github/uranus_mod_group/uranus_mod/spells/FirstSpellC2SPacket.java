@@ -1,6 +1,7 @@
 package com.github.uranus_mod_group.uranus_mod.spells;
 
 import com.github.uranus_mod_group.uranus_mod.entity.ModEntityTypes;
+import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.MagicSphereEntity;
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
@@ -49,9 +50,15 @@ public class FirstSpellC2SPacket
                 //magic effect
                 if (mana.getMana() >= 20)
                 {
+                    if (!level.isClientSide) {
+                    /*
                     BlockPos block_pos = new BlockPos(player.getX(), player.getY(), player.getBlockZ());
                     ModEntityTypes.MAGIC_SPHERE.get().spawn(level,null, player, block_pos
                             , MobSpawnType.EVENT, true, true);
+                     */
+                        MagicSphereEntity magic_sphere = new Spells().createMagicSphere(level, player);
+                        level.addFreshEntity(magic_sphere);
+                    }
                 }
                 //manass
                 mana.subMana(1);
