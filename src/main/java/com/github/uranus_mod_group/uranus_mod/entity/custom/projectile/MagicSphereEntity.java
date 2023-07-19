@@ -28,7 +28,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType, Level level, LivingEntity entity)
     {
         this(entityEntityType, level, entity.getX(),entity.getEyeY() - (double)0.1F, entity.getZ());
-        this.setOwner(entity);
+        super.setOwner(entity);
     }
 
 
@@ -42,10 +42,15 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         double d2 = this.getX() + vec3delta.x;
         double d0 = this.getY() + vec3delta.y;
         double d1 = this.getZ() + vec3delta.z;
+        double d4 = 0.0D;
+        double d3 = 0.0D;
+        double d5 = 0.0D;
         //movement
-        double d4 = super.getOwner().getX();
-        double d3 = super.getOwner().getY();
-        double d5 = super.getOwner().getZ();
+        if (this.getOwner() != null){
+            d4 = this.getOwner().getX();
+            d3 = this.getOwner().getY();
+            d5 = this.getOwner().getZ();
+        }
 
         this.updateRotation();
         //speed
@@ -92,7 +97,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     }
     //speed
     protected float getSpeed(){
-        return this.getSpeed();
+        return this.speed;
     }
     protected float getSpeed_on_water_r(){
         return (this.speed + this.speed_on_water_r);
@@ -103,25 +108,34 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         super.onHit(hitResult);
         if (!this.level.isClientSide)
         {
-            this.level.broadcastEntityEvent(this, (byte)3);
-            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 4.0f, true, Explosion.BlockInteraction.BREAK);
-            this.discard();
+            if (this.getOwner() != null)
+            {
+                this.level.broadcastEntityEvent(this, (byte) 3);
+                this.level.explode(this, this.getX(), this.getY(), this.getZ(), 4.0f, true, Explosion.BlockInteraction.BREAK);
+                this.discard();
+            }
         }
 
     }
     //on hit at an entity
     protected void onHitEntity(EntityHitResult hitResult)
     {
-        super.onHitEntity(hitResult);
-        Entity entity = hitResult.getEntity();
-        int i = entity instanceof Blaze ? 3 : 0;
-        entity.hurt(DamageSource.thrown(this, this.getOwner()), (float)i);
+        if (this.getOwner() != null)
+        {
+            super.onHitEntity(hitResult);
+            Entity entity = hitResult.getEntity();
+            int i = entity instanceof Blaze ? 3 : 0;
+            entity.hurt(DamageSource.thrown(this, this.getOwner()), (float)i);
+        }
     }
     //on hit a block
-    protected void onHitBlock(BlockHitResult p_37258_)
+    protected void onHitBlock(BlockHitResult hitResult)
     {
-        super.onHitBlock(p_37258_);
-        this.discard();
+        if (this.getOwner() != null)
+        {
+            super.onHitBlock(hitResult);
+            this.discard();
+        }
     }
     @Override
     protected void defineSynchedData()

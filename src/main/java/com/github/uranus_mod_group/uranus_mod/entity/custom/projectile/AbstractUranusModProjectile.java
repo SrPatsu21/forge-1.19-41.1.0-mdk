@@ -81,13 +81,6 @@ public abstract class AbstractUranusModProjectile extends Projectile {
     protected void onHit(HitResult hitResult)
     {
         super.onHit(hitResult);
-        if (!this.level.isClientSide)
-        {
-            this.level.broadcastEntityEvent(this, (byte)3);
-            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 4.0f, true, Explosion.BlockInteraction.BREAK);
-            this.discard();
-        }
-
     }
     //on hit at an entity
     protected void onHitEntity(EntityHitResult hitResult)
@@ -95,9 +88,9 @@ public abstract class AbstractUranusModProjectile extends Projectile {
         super.onHitEntity(hitResult);
     }
     //on hit a block
-    protected void onHitBlock(BlockHitResult p_37258_)
+    protected void onHitBlock(BlockHitResult hitResult)
     {
-        super.onHitBlock(p_37258_);
+        super.onHitBlock(hitResult);
         this.discard();
     }
     @Override
