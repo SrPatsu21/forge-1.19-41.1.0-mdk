@@ -1,7 +1,7 @@
 package com.github.uranus_mod_group.uranus_mod.entity;
 
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
-import com.github.uranus_mod_group.uranus_mod.entity.custom.MagicSphereEntity;
+import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.MagicSphereEntity;
 import com.github.uranus_mod_group.uranus_mod.entity.custom.MasterWizardEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
@@ -16,7 +16,7 @@ public class ModEntityTypes{
     //create the registry object
     //magic sphere
     public static RegistryObject<EntityType<MagicSphereEntity>> MAGIC_SPHERE =
-            ENTITY_TYPES.register("magic_sphere", () -> EntityType.Builder.of(MagicSphereEntity::new, MobCategory.MISC)
+            ENTITY_TYPES.register("magic_sphere", () -> EntityType.Builder.<MagicSphereEntity>of(MagicSphereEntity::new, MobCategory.MISC)
                             //hit box
                             .sized(0.4f, 0.4f)
                             //I think it is to find teh texture

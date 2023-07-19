@@ -1,7 +1,7 @@
 package com.github.uranus_mod_group.uranus_mod.entity.client;
 
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
-import com.github.uranus_mod_group.uranus_mod.entity.custom.MagicSphereEntity;
+import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.MagicSphereEntity;
 import com.github.uranus_mod_group.uranus_mod.entity.model.MagicSphereModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

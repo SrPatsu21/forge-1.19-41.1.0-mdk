@@ -1,5 +1,6 @@
 package com.github.uranus_mod_group.uranus_mod.spells;
 
+import com.github.uranus_mod_group.uranus_mod.entity.ModEntityTypes;
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
@@ -10,6 +11,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.monster.Ghast;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraft.world.entity.MobSpawnType;
 
@@ -33,7 +36,6 @@ public class FirstSpellC2SPacket
     {
 
     }
-
     public boolean handle(Supplier<NetworkEvent.Context> supplier)
     {
         NetworkEvent.Context context = supplier.get();
@@ -47,11 +49,9 @@ public class FirstSpellC2SPacket
                 //magic effect
                 if (mana.getMana() >= 20)
                 {
-                    BlockPos position = new BlockPos(player.getX(), (player.getY() + 1), player.getZ());
-                    EntityType.FIREBALL.spawn(level, null, null, position,
-                            MobSpawnType.COMMAND, true, false);
+                    level.addFreshEntity(Spells.CreateMagicSphere(level, player));
                 }
-                //mana
+                //manass
                 mana.subMana(1);
                 //send a message with the current mana
                 player.sendSystemMessage(Component.literal("Fist spell; current mana "+ mana.getMana())

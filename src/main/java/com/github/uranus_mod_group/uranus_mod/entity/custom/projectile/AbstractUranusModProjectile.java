@@ -1,9 +1,9 @@
-package com.github.uranus_mod_group.uranus_mod.entity.custom;
+package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -13,20 +13,16 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.TheEndGatewayBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nullable;
 
-
-public class MagicSphereEntity extends Projectile
-{
-    @Nullable
-    private int life;
-    @Nullable
-    //create entity
-    public MagicSphereEntity(EntityType<? extends Projectile> entityType, Level level)
-    {
-        super(entityType, level);
+public abstract class AbstractUranusModProjectile extends Projectile {
+    //constructor
+    protected AbstractUranusModProjectile(EntityType<? extends Projectile> entity_type, Level level) {
+        super(entity_type, level);
     }
     //render distance
     public boolean shouldRenderAtSqrDistance(double d3)
@@ -40,20 +36,17 @@ public class MagicSphereEntity extends Projectile
         d0 *= 64.0D * getViewScale();
         return d3 < d0 * d0;
     }
-
-    @Override
-    protected void defineSynchedData()
+    public boolean isAttackable()
     {
-
+        return false;
     }
-
     //tick event
     public void tick()
     {
         super.tick();
-        tickDespawn();
         HitResult hitresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
         boolean flag = false;
+
         //if hit at a block is a portal
         if (hitresult.getType() == HitResult.Type.BLOCK) {
             BlockPos blockpos = ((BlockHitResult)hitresult).getBlockPos();
@@ -79,50 +72,12 @@ public class MagicSphereEntity extends Projectile
                 && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
             this.onHit(hitresult);
         }
-        //position
-        this.checkInsideBlocks();
-        Vec3 vec3 = this.getDeltaMovement();
-        double d2 = this.getX() + vec3.x*0.1;
-        double d0 = this.getY() + vec3.y*0.1;
-        double d1 = this.getZ() + vec3.z*0.1;
-        this.updateRotation();
-        //speed, I think
-        float f;
-        //if is underwater
-        if (this.isInWater())
-        {
-            //particle
-            for(int i = 0; i < 4; ++i)
-            {
-                this.level.addParticle(ParticleTypes.BUBBLE, d2 - vec3.x * 0.25D,
-                        d0 - vec3.y * 0.25D, d1 - vec3.z * 0.25D, vec3.x, vec3.y, vec3.z);
-            }
-
-            f = 0.8F;
-        } else
-        {
-            f = 0.99F;
-        }
-        this.setDeltaMovement(vec3.scale((double)f));
-        //if it has gravity
-        if (!this.isNoGravity()) {
-            Vec3 vec31 = this.getDeltaMovement();
-            this.setDeltaMovement(vec31.x, vec31.y - (double)this.getGravity(), vec31.z);
-        }
-
-        this.setPos(d2, d0, d1);
     }
-
-    //tick count to entity disappear
-    private void tickDespawn()
+    //owner
+    public void setOwner(@Nullable Entity entity)
     {
-        this.life++;
-        if (this.life >= 1200)
-        {
-            this.discard();
-        }
+        super.setOwner(entity);
     }
-    //on hit
     protected void onHit(HitResult hitResult)
     {
         super.onHit(hitResult);
@@ -138,34 +93,16 @@ public class MagicSphereEntity extends Projectile
     protected void onHitEntity(EntityHitResult hitResult)
     {
         super.onHitEntity(hitResult);
-        Entity entity = hitResult.getEntity();
-        int i = entity instanceof Blaze ? 3 : 0;
-        entity.hurt(DamageSource.thrown(this, this.getOwner()), (float)i);
     }
     //on hit a block
-    protected void onHitBlock(BlockHitResult p_37258_) {
+    protected void onHitBlock(BlockHitResult p_37258_)
+    {
         super.onHitBlock(p_37258_);
         this.discard();
     }
-    //set player and verify if is a player
-    public void setOwner(@Nullable Entity entity)
+    @Override
+    protected void defineSynchedData()
     {
-        super.setOwner(entity);
-    }
-    //say that projectile cant be attack
-    public boolean isAttackable()
-    {
-        return false;
-    }
-    //??????
-    protected float getEyeHeight(Pose p_36752_, EntityDimensions p_36753_)
-    {
-        return 0.13F;
-    }
-    //when the projectile is fall
-    protected float getGravity()
-    {
-        return 0.01F;
-    }
 
+    }
 }
