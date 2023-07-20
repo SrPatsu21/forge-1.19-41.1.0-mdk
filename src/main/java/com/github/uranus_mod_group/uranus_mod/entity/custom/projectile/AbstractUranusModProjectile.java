@@ -73,6 +73,10 @@ public abstract class AbstractUranusModProjectile extends Projectile {
             this.onHit(hitresult);
         }
     }
+    protected boolean isInRain() {
+        BlockPos blockpos = this.blockPosition();
+        return this.level.isRainingAt(blockpos) || this.level.isRainingAt(new BlockPos((double)blockpos.getX(), this.getBoundingBox().maxY, (double)blockpos.getZ()));
+    }
     //owner
     public void setOwner(@Nullable Entity entity)
     {

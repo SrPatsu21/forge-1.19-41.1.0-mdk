@@ -1,5 +1,6 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Blaze;
@@ -9,11 +10,12 @@ import net.minecraft.world.phys.*;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
 {
-    private float gravity = 0.01F;
-    private int life = 1200;
-    private float speed = 0.8F;
-    private float speed_on_water_r = 0.1F;
-    private float damage = 0.0F;
+    private float gravity = -0.05F;
+    private int life = 200;
+    private final float speed = 1F;
+    private final float speed_on_water_r = -0.1F;
+    private final float speed_on_rain_r = -0.07F;
+    private final float damage = 0.0F;
 
     //constructor
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType,Level level)
@@ -32,7 +34,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         super.setOwner(entity);
     }
 
-
     public void tick(){
         super.tick();
         tickOutSpawn();
@@ -43,9 +44,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         double d2 = this.getX() + vec3delta.x;
         double d0 = this.getY() + vec3delta.y;
         double d1 = this.getZ() + vec3delta.z;
-        double d4 = 0.0D;
-        double d3 = 0.0D;
-        double d5 = 0.0D;
 
         this.updateRotation();
         //speed
@@ -54,7 +52,12 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         if (this.isInWater())
         {
             f = getSpeed_on_water_r();
-        } else
+        }
+        else if(this.isInRain())
+        {
+            f = getSpeed_on_rain_r();
+        }
+        else
         {
             f = getSpeed();
         }
@@ -63,11 +66,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         //if it has gravity it will move
         if (!this.isNoGravity()) {
             Vec3 vec3delta2 = this.getDeltaMovement();
-            this.setDeltaMovement(vec3delta2.x+d4, vec3delta2.y - (double)getGravity() +d3, vec3delta2.z+d5);
-        }
-        //movement
-        if (this.getOwner() != null){
-            //shootFromRotation(this.getOwner(), this.getOwner().getXRot(), this.getOwner().getYRot(), this.getGravity(), this.getSpeed(), 0.0F);
+            this.setDeltaMovement(vec3delta2.x, vec3delta2.y + (double)getGravity(), vec3delta2.z);
         }
 
         this.setPos(d2, d0, d1);
@@ -100,6 +99,9 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     }
     public float getSpeed_on_water_r(){
         return (this.speed + this.speed_on_water_r);
+    }
+    public float getSpeed_on_rain_r(){
+        return (this.speed + this.speed_on_rain_r);
     }
     //on hit
     protected void onHit(HitResult hitResult)
