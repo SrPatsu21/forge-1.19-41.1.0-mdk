@@ -50,15 +50,15 @@ public class FirstSpellC2SPacket
                 //magic effect
                 if (mana.getMana() >= 20)
                 {
-                    if (!level.isClientSide) {
                     /*
                     BlockPos block_pos = new BlockPos(player.getX(), player.getY(), player.getBlockZ());
                     ModEntityTypes.MAGIC_SPHERE.get().spawn(level,null, player, block_pos
                             , MobSpawnType.EVENT, true, true);
                      */
                         MagicSphereEntity magic_sphere = new Spells().createMagicSphere(level, player);
+
                         level.addFreshEntity(magic_sphere);
-                    }
+
                 }
                 //manass
                 mana.subMana(1);

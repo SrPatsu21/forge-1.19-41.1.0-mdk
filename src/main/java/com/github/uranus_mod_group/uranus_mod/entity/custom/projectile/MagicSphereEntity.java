@@ -9,9 +9,9 @@ import net.minecraft.world.phys.*;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
 {
-    private float gravity = 0.2F;
+    private float gravity = 0.01F;
     private int life = 1200;
-    private float speed = 0.3F;
+    private float speed = 0.8F;
     private float speed_on_water_r = 0.1F;
     private float damage = 0.0F;
 
@@ -46,12 +46,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         double d4 = 0.0D;
         double d3 = 0.0D;
         double d5 = 0.0D;
-        //movement
-        if (this.getOwner() != null){
-            d4 = this.getOwner().getX();
-            d3 = this.getOwner().getY();
-            d5 = this.getOwner().getZ();
-        }
 
         this.updateRotation();
         //speed
@@ -71,6 +65,10 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             Vec3 vec3delta2 = this.getDeltaMovement();
             this.setDeltaMovement(vec3delta2.x+d4, vec3delta2.y - (double)getGravity() +d3, vec3delta2.z+d5);
         }
+        //movement
+        if (this.getOwner() != null){
+            //shootFromRotation(this.getOwner(), this.getOwner().getXRot(), this.getOwner().getYRot(), this.getGravity(), this.getSpeed(), 0.0F);
+        }
 
         this.setPos(d2, d0, d1);
     }
@@ -84,7 +82,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         }
     }
     //gravity
-    private float getGravity()
+    public float getGravity()
     {
         return this.gravity;
     }
@@ -97,10 +95,10 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         this.gravity -= gravity;
     }
     //speed
-    protected float getSpeed(){
+    public float getSpeed(){
         return this.speed;
     }
-    protected float getSpeed_on_water_r(){
+    public float getSpeed_on_water_r(){
         return (this.speed + this.speed_on_water_r);
     }
     //on hit
