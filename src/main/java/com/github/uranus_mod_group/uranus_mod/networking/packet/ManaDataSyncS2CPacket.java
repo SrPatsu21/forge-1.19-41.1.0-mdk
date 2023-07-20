@@ -7,24 +7,24 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public class ManaDataSyncS2CPacket {
-    private final int mana;
+    private double mana;
 
     //this mana will be that mana
-    public ManaDataSyncS2CPacket(int mana)
+    public ManaDataSyncS2CPacket(double mana)
     {
         this.mana = mana;
     }
 
-    //this mana = buf int
+    //this mana = buf double
     public ManaDataSyncS2CPacket(FriendlyByteBuf buf)
     {
-        this.mana = buf.readInt();
+        this.mana = buf.readDouble();
     }
 
     //the buf write mana
     public void toBytes(FriendlyByteBuf buf)
     {
-        buf.writeInt(mana);
+        buf.writeDouble(mana);
     }
 
     //send to ClientManaData
