@@ -21,11 +21,11 @@ public class ManaHudOverlay extends GuiComponent{
 
     public static final IGuiOverlay HUD_MANA = ((gui, poseStack, partialTick, width, height) -> {
         PlayerMana mana = new PlayerMana();
-        /*
+
         if (mana.getMaxMana() == 0) {
             return;
         }
-        */
+
 
         int manaBarLength = 101;
         int manaBarPosX = 10;
@@ -40,8 +40,9 @@ public class ManaHudOverlay extends GuiComponent{
         GuiComponent.drawString(poseStack, Minecraft.getInstance().font, manaValue, manaBarPosX, manaBarPosY-10, 0x1B82AB);
 
         // mana
+        int size = (int) (ClientManaData.getPlayerMana()*(manaBarLength - 2))/mana.getMaxMana();
         RenderSystem.setShaderTexture(0,MANA_BAR_MANA);
-        GuiComponent.blit(poseStack, manaBarPosX + 2, manaBarPosY, 0, 0, 99, 23, 99, 23);
+        GuiComponent.blit(poseStack, manaBarPosX + 1, manaBarPosY, 0, 0, size, 23, 99, 23);
 
         // stucture (details)
         RenderSystem.setShaderTexture(0, MANA_BAR_STRUCTURE);
