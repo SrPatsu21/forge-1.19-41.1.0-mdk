@@ -12,7 +12,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
 {
     private float gravity = -0.05F;
     private int life = 200;
-    private final float speed = 1F;
+    private final float speed = 0.999F;
     private final float speed_on_water_r = -0.1F;
     private final float speed_on_rain_r = -0.07F;
     private final float damage = 0.0F;

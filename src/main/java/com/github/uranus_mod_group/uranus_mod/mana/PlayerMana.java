@@ -8,7 +8,7 @@ public class PlayerMana {
     private final int M_BASE = 100;
     private final int REGEN_TIME = 20;
     //vars
-    private int mana = 0;
+    private double mana = 0;
     private int ml = 0;
     private int mxp = 0;
     private float mana_regen = 0.01f;
@@ -17,7 +17,7 @@ public class PlayerMana {
 
     //functions
         //get
-    public int getMana()
+    public double getMana()
     {
         return mana;
     }
@@ -47,11 +47,11 @@ public class PlayerMana {
     }
 
     //sub and add
-    public void addMana(int add)
+    public void addMana(float add)
     {
         this.mana = Math.min(mana + add, max_mana);
     }
-    public void subMana(int sub)
+    public void subMana(float sub)
     {
         this.mana = Math.max(mana - sub, 0);
     }
@@ -102,14 +102,14 @@ public class PlayerMana {
     //save on nbt
     public void saveNBTData(CompoundTag nbt)
     {
-        nbt.putInt("mana", mana);
+        nbt.putDouble("mana", mana);
         nbt.putInt("ml", ml);
         nbt.putInt("mxp", mxp);
     }
     //load mana
     public void loadNBTData(CompoundTag nbt)
     {
-        mana = nbt.getInt("mana");
+        mana = nbt.getDouble("mana");
         ml = nbt.getInt("ml");
         mxp = nbt.getInt("mxp");
         manaStatsReset();
