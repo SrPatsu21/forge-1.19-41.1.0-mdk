@@ -36,7 +36,7 @@ public class ManaHudOverlay extends GuiComponent{
         GuiComponent.blit(poseStack, manaBarPosX, manaBarPosY, 0, 0, 101, 23, 101, 23);
 
         // value mana
-        String manaValue = Double.toString(ClientManaData.getPlayerMana());
+        String manaValue = Integer.toString((int) ClientManaData.getPlayerMana());
         GuiComponent.drawString(poseStack, Minecraft.getInstance().font, manaValue, manaBarPosX, manaBarPosY-10, 0x1B82AB);
 
         // mana
