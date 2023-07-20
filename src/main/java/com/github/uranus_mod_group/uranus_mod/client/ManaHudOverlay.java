@@ -30,14 +30,13 @@ public class ManaHudOverlay extends GuiComponent{
         int manaBarLength = 101;
         int manaBarPosX = 10;
         int manaBarPosY = height - (23 + 5);
-        System.out.println("manaBarPosX - "+manaBarPosX);
-        System.out.println("manaBarPosY - "+manaBarPosY);
+
         // background
         RenderSystem.setShaderTexture(0, MANA_BAR_BACKGROUND);
         GuiComponent.blit(poseStack, manaBarPosX, manaBarPosY, 0, 0, 101, 23, 101, 23);
 
         // value mana
-        String manaValue = Integer.toString(ClientManaData.getPlayerMana());
+        String manaValue = Double.toString(ClientManaData.getPlayerMana());
         GuiComponent.drawString(poseStack, Minecraft.getInstance().font, manaValue, manaBarPosX, manaBarPosY-10, 0x1B82AB);
 
         // mana
