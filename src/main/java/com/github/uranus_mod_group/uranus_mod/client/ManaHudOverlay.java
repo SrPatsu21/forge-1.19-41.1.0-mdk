@@ -60,7 +60,7 @@ public class ManaHudOverlay {
                 tamBarX,tamBarY);
 
         //mana value bellow mana_bar
-        String textMana = Integer.toString(ClientManaData.getPlayerMana());
+        String textMana = Double.toString(ClientManaData.getPlayerMana());
         GuiComponent.drawString(poseStack, minecraft.font, textMana, x - ( tamBarX/2 + 30), y - (tamBarY + 13), 0x1B82AB);
 
         //structure (details)

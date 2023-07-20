@@ -90,10 +90,10 @@ public class ModEvents
                     if(mana.getMana() < mana.getMaxMana() && (event.player.getCommandSenderWorld().getGameTime() % mana.getREGEN_TIME()) == 0)
                     {
                         //will be regen
-                        int add = (int) (mana.getMaxMana() * mana.getManaRegen());
+                        float add = (float) (mana.getMaxMana() * mana.getManaRegen());
                         mana.addMana(add);
                         //xp to up
-                        mana.addMxp(add);
+                        mana.addMxp((int)add);
                         //mana xp enough to up
                         if (mana.getMxp() >= mana.getManaToUp())
                         {
