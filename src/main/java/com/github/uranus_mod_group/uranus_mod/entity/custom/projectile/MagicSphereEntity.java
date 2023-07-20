@@ -1,6 +1,5 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Blaze;
@@ -12,10 +11,10 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
 {
     private float gravity = -0.05F;
     private int life = 200;
-    private final float speed = 1F;
+    private final float speed = 0.999F;
     private final float speed_on_water_r = -0.1F;
     private final float speed_on_rain_r = -0.07F;
-    private final float damage = 0.0F;
+    private float damage = 0.0F;
 
     //constructor
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType,Level level)
@@ -112,7 +111,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             if (this.getOwner() != null)
             {
                 this.level.broadcastEntityEvent(this, (byte) 3);
-                this.level.explode(this, this.getX(), this.getY(), this.getZ(), 4.0f, true, Explosion.BlockInteraction.BREAK);
+                this.level.explode(this, this.getX(), this.getY(), this.getZ(), 50.0f, true, Explosion.BlockInteraction.BREAK);
                 this.discard();
             }
         }
