@@ -65,7 +65,7 @@ public class FirstSpellC2SPacket
                 //send a message with the current mana
                 player.sendSystemMessage(Component.literal("Fist spell; current mana "+ mana.getMana())
                         .withStyle(ChatFormatting.AQUA));
-                ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()),player);
+                ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()),player);
             });
         });
         return true;

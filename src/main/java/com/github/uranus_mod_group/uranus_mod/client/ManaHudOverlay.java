@@ -1,7 +1,6 @@
 package com.github.uranus_mod_group.uranus_mod.client;
 
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
-import com.github.uranus_mod_group.uranus_mod.mana.PlayerMana;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -20,9 +19,8 @@ public class ManaHudOverlay extends GuiComponent{
             "textures/mana/mana_bar_background-101x23.png");
 
     public static final IGuiOverlay HUD_MANA = ((gui, poseStack, partialTick, width, height) -> {
-        PlayerMana mana = new PlayerMana();
 
-        if (mana.getMaxMana() == 0) {
+        if (ClientManaData.getPlayerManaMax() == 0) {
             return;
         }
 
@@ -40,7 +38,7 @@ public class ManaHudOverlay extends GuiComponent{
         GuiComponent.drawString(poseStack, Minecraft.getInstance().font, manaValue, manaBarPosX, manaBarPosY-10, 0x1B82AB);
 
         // mana
-        int size = (int) (ClientManaData.getPlayerMana()*(manaBarLength - 2))/mana.getMaxMana();
+        int size = (int) ((int) (ClientManaData.getPlayerMana()*(manaBarLength - 2))/ClientManaData.getPlayerManaMax());
         RenderSystem.setShaderTexture(0,MANA_BAR_MANA);
         GuiComponent.blit(poseStack, manaBarPosX + 1, manaBarPosY, 0, 0, size, 23, 99, 23);
 

@@ -104,7 +104,7 @@ public class ModEvents
                                 "/" + mana.getMaxMana() + " mana xp:" + mana.getMxp() + " mana level:" + mana.getMl() +
                                 " tick that happened:" + event.player.getCommandSenderWorld().getGameTime()));
                         //send mana
-                        ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), ((ServerPlayer) event.player));
+                        ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), ((ServerPlayer) event.player));
                     }
                 });
             }
@@ -119,7 +119,7 @@ public class ModEvents
                 {
                     player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(playerMana ->
                     {
-                        ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(playerMana.getMana()), player);
+                        ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(playerMana.getMana(), playerMana.getMaxMana()), player);
                     });
                 }
             }
