@@ -3,6 +3,7 @@ package com.github.uranus_mod_group.uranus_mod.item;
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 
 import com.github.uranus_mod_group.uranus_mod.item.custom.AlchemicalTome;
+import com.github.uranus_mod_group.uranus_mod.item.custom.ManaController;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -30,6 +31,13 @@ public class ModItems
     //alchemical tome
     public static final RegistryObject<Item> ALCHEMICAL_TOME = ITEMS.register("alchemical_tome",
             () -> new AlchemicalTome(new Item.Properties()
+                    .tab(ModTab.URANUS_TAB)
+                    .stacksTo(1)
+            )
+    );
+    //mana level control
+    public static final RegistryObject<Item> MANA_CONTROLLER  = ITEMS.register("mana_controller",
+            () -> new ManaController(new Item.Properties()
                     .tab(ModTab.URANUS_TAB)
                     .stacksTo(1)
             )
