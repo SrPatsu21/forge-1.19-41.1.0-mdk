@@ -39,8 +39,8 @@ public class AddManaC2SPacket
             {
                 mana.addMana(20);
                 //send a message with the current mana
-                player.sendSystemMessage(Component.literal("current mana "+ mana.getMana())
-                        .withStyle(ChatFormatting.GREEN));
+//                player.sendSystemMessage(Component.literal("current mana "+ mana.getMana())
+//                        .withStyle(ChatFormatting.GREEN));
                 ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()),player);
             });
         });

@@ -100,9 +100,9 @@ public class ModEvents
                             mana.manaUpProcess();
                         }
                         //message
-                        event.player.sendSystemMessage(Component.literal("mana add " + mana.getMana() +
-                                "/" + mana.getMaxMana() + " mana xp:" + mana.getMxp() + " mana level:" + mana.getMl() +
-                                " tick that happened:" + event.player.getCommandSenderWorld().getGameTime()));
+//                        event.player.sendSystemMessage(Component.literal("mana add " + mana.getMana() +
+//                                "/" + mana.getMaxMana() + " mana xp:" + mana.getMxp() + " mana level:" + mana.getMl() +
+//                                " tick that happened:" + event.player.getCommandSenderWorld().getGameTime()));
                         //send mana
                         ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), ((ServerPlayer) event.player));
                     }

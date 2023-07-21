@@ -35,17 +35,12 @@ public class ManaController extends Item
                 mana.manaStatsReset();
             });
         }
-        outputMSG(player);
-        player.getCooldowns().addCooldown(this, 1);
-        return super.use(level, player, interactionHand);
-    }
-
-    private void outputMSG(Player player)
-    {
         player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
         {
             player.sendSystemMessage(Component.literal("mana level:"+ mana.getMl()));
         });
+        player.getCooldowns().addCooldown(this, 2);
+        return super.use(level, player, interactionHand);
     }
 
 }

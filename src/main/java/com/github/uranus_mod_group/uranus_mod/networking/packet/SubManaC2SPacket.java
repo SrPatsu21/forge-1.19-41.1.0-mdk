@@ -40,8 +40,8 @@ public class SubManaC2SPacket
             {
                     mana.subMana(1);
                     //send a message with the current mana
-                    player.sendSystemMessage(Component.literal("current mana "+ mana.getMana())
-                            .withStyle(ChatFormatting.RED));
+//                    player.sendSystemMessage(Component.literal("current mana "+ mana.getMana())
+//                            .withStyle(ChatFormatting.RED));
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()),player);
             });
         });
