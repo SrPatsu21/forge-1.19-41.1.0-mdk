@@ -13,7 +13,7 @@ public class PlayerMana {
     private int mxp = 0;
     private float mana_regen = 0.01f;
     private int max_mana = (int) (M_BASE + (M_BASE*(0.5f * ml)));
-    private int mana_to_up = (int) Math.pow(max_mana, 1.5f);
+    private int mana_to_up = (int) Math.pow(max_mana, 1.7f);
 
     //functions
         //get
@@ -83,7 +83,7 @@ public class PlayerMana {
     public void manaStatsReset()
     {
         this.max_mana = (int) (this.M_BASE + (this.M_BASE*(0.5f * this.ml)));
-        this.mana_to_up = (int) Math.pow(this.max_mana, 1.5f);
+        this.mana_to_up = (int) Math.pow(this.max_mana, 1.7f);
     }
     //mana up
     public void manaUpProcess()
