@@ -65,7 +65,7 @@ public class PlayerMana {
     }
     public void addMxp(int add)
     {
-        this.mxp = Math.min(mxp + add, MAX_ML);
+        this.mxp = mxp + add;
     }
     public void subMxp()
     {

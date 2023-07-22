@@ -8,6 +8,7 @@ import com.github.uranus_mod_group.uranus_mod.mana.PlayerMana;
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
+import com.github.uranus_mod_group.uranus_mod.skills.PlayerSkillsProvider;
 import com.github.uranus_mod_group.uranus_mod.villager.ModVillagers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -69,6 +70,13 @@ public class ModEvents
                         newStore.copyFrom(oldStore);
                     });
                 });
+                event.getOriginal().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(oldStore ->
+                {
+                    event.getEntity().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(newStore ->
+                    {
+                        newStore.copyFrom(oldStore);
+                    });
+                });
                 event.getOriginal().invalidateCaps();
             }
         }
@@ -100,9 +108,9 @@ public class ModEvents
                             mana.manaUpProcess();
                         }
                         //message
-//                        event.player.sendSystemMessage(Component.literal("mana add " + mana.getMana() +
-//                                "/" + mana.getMaxMana() + " mana xp:" + mana.getMxp() + " mana level:" + mana.getMl() +
-//                                " tick that happened:" + event.player.getCommandSenderWorld().getGameTime()));
+                        event.player.sendSystemMessage(Component.literal("mana add " + mana.getMana() +
+                                "/" + mana.getMaxMana() + " mana xp:" + mana.getMxp() + " mana level:" + mana.getMl() +
+                                " tick that happened:" + event.player.getCommandSenderWorld().getGameTime() + " xp to up:"+ mana.getManaToUp()));
                         //send mana
                         ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), ((ServerPlayer) event.player));
                     }
