@@ -41,7 +41,7 @@ public class ModEvents
     public static class ForgeEvents
     {
 
-        //give mana when player joins the game
+        //give mana/skills when player joins the game
         @SubscribeEvent
         public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event)
         {
@@ -50,7 +50,11 @@ public class ModEvents
             {
                 if(!event.getObject().getCapability(PlayerManaProvider.PLAYER_MANA).isPresent())
                 {
-                    event.addCapability(new ResourceLocation(Uranus_mod.ModId, "properties"), new PlayerManaProvider());
+                    event.addCapability(new ResourceLocation(Uranus_mod.ModId, "properties_u_mana"), new PlayerManaProvider());
+                }
+                if(!event.getObject().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).isPresent())
+                {
+                    event.addCapability(new ResourceLocation(Uranus_mod.ModId, "properties_u_skills"), new PlayerSkillsProvider());
                 }
             }
         }
@@ -70,6 +74,7 @@ public class ModEvents
                         newStore.copyFrom(oldStore);
                     });
                 });
+                //skills
                 event.getOriginal().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(oldStore ->
                 {
                     event.getEntity().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(newStore ->
@@ -108,9 +113,9 @@ public class ModEvents
                             mana.manaUpProcess();
                         }
                         //message
-                        event.player.sendSystemMessage(Component.literal("mana add " + mana.getMana() +
-                                "/" + mana.getMaxMana() + " mana xp:" + mana.getMxp() + " mana level:" + mana.getMl() +
-                                " tick that happened:" + event.player.getCommandSenderWorld().getGameTime() + " xp to up:"+ mana.getManaToUp()));
+//                        event.player.sendSystemMessage(Component.literal("mana add " + mana.getMana() +
+//                                "/" + mana.getMaxMana() + " mana xp:" + mana.getMxp() + " mana level:" + mana.getMl() +
+//                                " tick that happened:" + event.player.getCommandSenderWorld().getGameTime() + " xp to up:"+ mana.getManaToUp()));
                         //send mana
                         ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), ((ServerPlayer) event.player));
                     }
