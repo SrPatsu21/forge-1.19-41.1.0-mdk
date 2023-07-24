@@ -39,7 +39,8 @@ public class SkillsDataSyncS2CPacket
         context.enqueueWork(() ->
         {
             // HERE WE ARE ON THE CLIENT!
-            ClientSkillsData.set(skills_level, skill_xp);
+            ClientSkillsData.setSkillsLevel(skills_level);
+            ClientSkillsData.setSkillXp(skill_xp);
         });
         return true;
     }

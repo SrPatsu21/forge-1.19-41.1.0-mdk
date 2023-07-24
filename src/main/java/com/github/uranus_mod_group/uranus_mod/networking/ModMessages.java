@@ -1,6 +1,7 @@
 package com.github.uranus_mod_group.uranus_mod.networking;
 
 import com.github.uranus_mod_group.uranus_mod.networking.packet.AddManaC2SPacket;
+import com.github.uranus_mod_group.uranus_mod.networking.packet.SkillsDataSyncS2CPacket;
 import com.github.uranus_mod_group.uranus_mod.spells.FirstSpellC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.SubManaC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
@@ -49,6 +50,11 @@ public class ModMessages {
                 .decoder(ManaDataSyncS2CPacket::new)
                 .encoder(ManaDataSyncS2CPacket::toBytes)
                 .consumerMainThread(ManaDataSyncS2CPacket::handle)
+                .add();
+        net.messageBuilder(SkillsDataSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SkillsDataSyncS2CPacket::new)
+                .encoder(SkillsDataSyncS2CPacket::toBytes)
+                .consumerMainThread(SkillsDataSyncS2CPacket::handle)
                 .add();
         //fist spell
         net.messageBuilder(FirstSpellC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)

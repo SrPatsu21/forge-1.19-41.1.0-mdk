@@ -5,17 +5,20 @@ public class ClientSkillsData {
     private static int [] skill_xp;
 
     //set mana on playerMana
-    public static void set(byte [] skills_level, int [] skill_xp)
+    public static void setSkillsLevel(byte [] skills_level)
     {
         ClientSkillsData.skills_level = skills_level;
+    }
+    public static void setSkillXp(int [] skill_xp)
+    {
         ClientSkillsData.skill_xp = skill_xp;
     }
 
-    public static byte[] getPlayerMana()
+    public static byte[] getSkillsLevel()
     {
         return skills_level;
     }
-    public static int[] getPlayerManaMax()
+    public static int[] getSkillXp()
     {
         return skill_xp;
     }

@@ -1,41 +1,48 @@
 package com.github.uranus_mod_group.uranus_mod.skills;
 
+import com.github.uranus_mod_group.uranus_mod.client.ClientSkillsData;
 import com.github.uranus_mod_group.uranus_mod.entity.ModEntityTypes;
+import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.AbstractUranusModProjectile;
 import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.MagicSphereEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
+
 public class CreateSkills {
-    private int skill_kind;
+    private int skill_kind = 0;
     private Level level;
     private byte[] skill_attributes;
     private LivingEntity owner;
-
-    public CreateSkills(int skill_kind, byte [] attributes, LivingEntity entity, Level level)
+    public CreateSkills(Level level, LivingEntity entity, int skill_kind,@Nullable byte [] attributes)
     {
+        this.setLevel(level);
         this.setOwner(entity);
         this.setSkill_kind(skill_kind);
         this.setSkill_attributes(attributes);
-        this.setLevel(level);
     }
     //set
-    private void setSkill_kind(int skill_kind)
-    {
-        this.skill_kind = skill_kind;
-    }
-    private void setSkill_attributes(byte[] attributes)
-    {
-        this.skill_attributes = attributes;
-    }
-    private void setOwner(LivingEntity entity)
-    {
-        this.owner = entity;
-    }
-    private void setLevel(Level level)
+    public void setLevel(Level level)
     {
         this.level = level;
     }
+    public void setOwner(LivingEntity entity)
+    {
+        this.owner = entity;
+    }
+    public void setSkill_kind(int skill_kind)
+    {
+        this.skill_kind = skill_kind;
+    }
+    public void setSkill_attributes(byte[] attributes)
+    {
+        this.skill_attributes = attributes;
+    }
     //get
+    public Level getLevel()
+    {
+        return this.level;
+    }
     public int getSkill_kind()
     {
         return this.skill_kind;
@@ -48,11 +55,26 @@ public class CreateSkills {
     {
         return this.owner;
     }
-//    public MagicSphereEntity createSkill(Level level, LivingEntity Owner)
-//    {
-//        MagicSphereEntity magic_sphere = new MagicSphereEntity(ModEntityTypes.MAGIC_SPHERE.get() ,level, Owner);
-//        magic_sphere.shootFromRotation(magic_sphere.getOwner(), magic_sphere.getOwner().getXRot(), magic_sphere.getOwner().getYRot(),
-//                0.0F, magic_sphere.getSpeed() * 3.0F, 0.0F);
-//        return magic_sphere;
-//    }
+    //get player attributes
+    public byte [] getPlayerAttributes()
+    {
+        return ClientSkillsData.getSkillsLevel();
+    }
+
+    public void createSkill()
+    {
+        if(getSkill_kind() == 1){
+
+            MagicSphereEntity magic_sphere = new MagicSphereEntity(ModEntityTypes.MAGIC_SPHERE.get() , getLevel(), getOwner());
+            magic_sphere.shootFromRotation(magic_sphere.getOwner(), magic_sphere.getOwner().getXRot(), magic_sphere.getOwner().getYRot(),
+                    0.0F, magic_sphere.getSpeed() * 3.0F, 0.0F);
+            level.addFreshEntity(magic_sphere);
+
+        }else {
+            MagicSphereEntity magic_sphere = new MagicSphereEntity(ModEntityTypes.MAGIC_SPHERE.get() , getLevel(), getOwner());
+            magic_sphere.shootFromRotation(magic_sphere.getOwner(), magic_sphere.getOwner().getXRot(), magic_sphere.getOwner().getYRot(),
+                    0.0F, magic_sphere.getSpeed() * 0.0F, 0.0F);
+            level.addFreshEntity(magic_sphere);
+        }
+    }
 }
