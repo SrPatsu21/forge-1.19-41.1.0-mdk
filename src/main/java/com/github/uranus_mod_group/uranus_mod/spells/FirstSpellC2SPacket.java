@@ -49,7 +49,7 @@ public class FirstSpellC2SPacket
                     ModEntityTypes.MAGIC_SPHERE.get().spawn(level,null, player, block_pos
                             , MobSpawnType.EVENT, true, true);
                      */
-                    new CreateSkills(level, player, 1, null).createSkill();
+                    new CreateSkills(level, player, 1, null).createSkill(3.0F);
 
                 }
                 //manass

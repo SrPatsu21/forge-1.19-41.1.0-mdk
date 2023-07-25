@@ -47,11 +47,11 @@ public class PlayerMana {
     }
 
     //sub and add
-    public void addMana(float add)
+    public void addMana(double add)
     {
         this.mana = Math.min(mana + add, max_mana);
     }
-    public void subMana(float sub)
+    public void subMana(double sub)
     {
         this.mana = Math.max(mana - sub, 0);
     }
