@@ -2,7 +2,6 @@ package com.github.uranus_mod_group.uranus_mod.skills;
 
 import com.github.uranus_mod_group.uranus_mod.client.ClientSkillsData;
 import com.github.uranus_mod_group.uranus_mod.entity.ModEntityTypes;
-import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.AbstractUranusModProjectile;
 import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.MagicSphereEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -14,6 +13,51 @@ public class CreateSkills {
     private Level level;
     private byte[] skill_attributes;
     private LivingEntity owner;
+//1    fire
+//2    water
+//3    stone
+//4    air
+//5    elektron
+//6    lava
+//7    break
+//8    build
+//9    heal
+//10   poison
+//11   wither
+//12   teleport
+//13   light
+//14   shadows
+//15   cold/warm
+//16   blood
+//17   give mana/remove mana
+//18   explosion
+//19   gravitational
+//20   pull/push
+//21   summon
+    private int[] value_of_attributes =
+    {
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+    };
     public CreateSkills(Level level, LivingEntity entity, int skill_kind,@Nullable byte [] attributes)
     {
         this.setLevel(level);
