@@ -31,35 +31,15 @@ public class FirstSpellC2SPacket
     {
 
     }
+    /*
+    NetworkEvent.Context context = supplier.get();
+        new CreateSkills(context, 1, null).createSkill(3.0F);
+        return true;
+    */
     public boolean handle(Supplier<NetworkEvent.Context> supplier)
     {
         NetworkEvent.Context context = supplier.get();
-        context.enqueueWork(() ->
-        {
-            // HERE WE ARE ON THE SERVER!
-            ServerPlayer player = context.getSender();
-            ServerLevel level = player.getLevel();
-            player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
-            {
-                //magic effect
-                if (mana.getMana() >= 20)
-                {
-                    /*
-                    BlockPos block_pos = new BlockPos(player.getX(), player.getY(), player.getBlockZ());
-                    ModEntityTypes.MAGIC_SPHERE.get().spawn(level,null, player, block_pos
-                            , MobSpawnType.EVENT, true, true);
-                     */
-                    new CreateSkills(level, player, 1, null).createSkill(3.0F);
-
-                }
-                //manass
-                mana.subMana(1);
-                //send a message with the current mana
-                player.sendSystemMessage(Component.literal("Fist spell; current mana "+ mana.getMana())
-                        .withStyle(ChatFormatting.DARK_AQUA));
-                ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()),player);
-            });
-        });
+        new CreateSkills(context, 1, null).createSkill(3.0F);
         return true;
     }
 }

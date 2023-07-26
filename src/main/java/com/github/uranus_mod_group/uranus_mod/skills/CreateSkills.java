@@ -7,19 +7,43 @@ import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkEvent;
 
 import javax.annotation.Nullable;
 
 public class CreateSkills {
     private int skill_kind = 0;
     private Level level;
-    @Nullable
-    private byte[] skill_attributes;
+    //just for test
+    private byte[] skill_attributes = {
+                2,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+    };
     private ServerPlayer owner;
-    private double value_of_skill;
-//1    fire
+    private double value_of_skill = 0.0D;
+    private NetworkEvent.Context context;
+//1    ignite
 //2    water
 //3    stone
 //4    air
@@ -66,12 +90,14 @@ public class CreateSkills {
         30,
         40
     };
-    public CreateSkills(Level level, ServerPlayer player, int skill_kind,@Nullable byte [] attributes)
+    public CreateSkills(NetworkEvent.Context context, int skill_kind,@Nullable byte [] attributes)
     {
-        this.setLevel(level);
-        this.setOwner(player);
+        this.setContext(context);
+        this.setOwner(context.getSender());
+        this.setLevel(context.getSender().getLevel());
         this.setSkill_kind(skill_kind);
-        this.setSkill_attributes(attributes);
+        //is off for test
+//        this.setSkill_attributes(attributes);
     }
     //set
     public void setLevel(Level level)
@@ -91,11 +117,14 @@ public class CreateSkills {
     {
         this.skill_attributes = attributes;
     }
+    public void setContext(NetworkEvent.Context context) {
+        this.context = context;
+    }
     private void setValueOfSkill(double add)
     {
-        for(int i: this.value_of_attributes)
+        for(int i = 0; i < this.value_of_attributes.length; i++)
         {
-            this.value_of_skill += this.value_of_attributes[i] * getPlayerAttributes()[i];
+            this.value_of_skill += this.value_of_attributes[i] * (int) getSkill_attributes()[i];
         }
         this.value_of_skill += add;
     }
@@ -108,6 +137,7 @@ public class CreateSkills {
     {
         return this.skill_kind;
     }
+    @Nullable
     public byte[] getSkill_attributes()
     {
         return this.skill_attributes;
@@ -120,8 +150,10 @@ public class CreateSkills {
     {
         return this.value_of_skill;
     }
+    public NetworkEvent.Context getContext() {
+        return context;
+    }
     //get player attributes
-    @Nullable
     public byte [] getPlayerAttributes()
     {
         return ClientSkillsData.getSkillsLevel();
@@ -129,22 +161,25 @@ public class CreateSkills {
 
     public void createSkill(float speed_plus)
     {
-        if(getSkill_kind() != 0 && getSkill_attributes() != null)
+        // && getSkill_attributes() != null
+        if(getSkill_kind() != 0)
         {
-            if(getSkill_kind() == 1)
+            getContext().enqueueWork(() ->
             {
-                setValueOfSkill(10);
-                //fazer o if mana para reduzir a mana
-                getOwner().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
-                {
-                   if(mana.getMana() >= getValue_of_skill())
-                   {
-                       createMagicSphereEntity(speed_plus);
-                   }
-                   mana.subMana(getValue_of_skill());
-                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()),getOwner());
-                });
-            }
+                //magic sphere
+                if (getSkill_kind() == 1) {
+                    setValueOfSkill(10.0D);
+                    //if player has mana, works
+                    getOwner().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
+                    {
+                        if (mana.getMana() >= getValue_of_skill()) {
+                            createMagicSphereEntity(speed_plus);
+                        }
+                        mana.subMana(getValue_of_skill());
+                        ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), getOwner());
+                    });
+                }
+            });
         }
     }
     public void createMagicSphereEntity (float speed_plus)
