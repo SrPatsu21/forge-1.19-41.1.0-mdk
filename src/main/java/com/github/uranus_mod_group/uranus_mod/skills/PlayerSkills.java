@@ -4,11 +4,12 @@ import net.minecraft.nbt.CompoundTag;
 
 public class PlayerSkills {
     //skills
-//1    fire
-//2    water
-//3    stone
-//4    air
-//5    elektron
+//0    fire
+//1    water
+//2    stone
+//3    air
+//4    elektron
+//5    lava
 //6    construct
 //7    body manipulation
 //8    ender magic
@@ -35,6 +36,7 @@ public class PlayerSkills {
             0,
             0,
             0,
+            0
     };
     int [] skill_xp = {
             0,
@@ -52,6 +54,7 @@ public class PlayerSkills {
             0,
             0,
             0,
+            0
     };
     //get
     public int getSkillLevel(int i)
@@ -82,7 +85,7 @@ public class PlayerSkills {
     }
     public void subSkillLevel(int i, int sub)
     {
-        this.skill_level[i] = (byte) Math.max(skill_level[i] + sub, 10);
+        this.skill_level[i] = (byte) Math.max(skill_level[i] + sub, 0);
     }
     public void addSkillXp(int i, int add)
     {

@@ -37,7 +37,6 @@ public class CreateSkills {
                 0,
                 0,
                 0,
-                0,
                 0
     };
     private ServerPlayer owner;
@@ -55,17 +54,16 @@ public class CreateSkills {
 //10   poison
 //11   wither
 //12   teleport
-//13   light
-//14   shadows
-//15   cold/warm
-//16   blood
-//17   give mana
-//18   remove mana
-//19   explosion
-//20   gravitational
-//21   pull/push
-//22   summon
-    private int[] value_of_attributes =
+//13   light/shadows
+//14   cold/warm
+//15   blood
+//16   give mana
+//17   remove mana
+//18   explosion
+//19   gravitational
+//20   pull/push
+//21   summon
+    private byte[] value_of_attributes =
     {
         10,
         10,
@@ -80,7 +78,6 @@ public class CreateSkills {
         60,
         40,
         50,
-        50,
         35,
         20,
         20,
@@ -90,13 +87,13 @@ public class CreateSkills {
         30,
         40
     };
+    //constructor
     public CreateSkills(NetworkEvent.Context context, int skill_kind,@Nullable byte [] attributes)
     {
         this.setContext(context);
         this.setOwner(context.getSender());
         this.setLevel(context.getSender().getLevel());
         this.setSkill_kind(skill_kind);
-        //is off for test
 //        this.setSkill_attributes(attributes);
     }
     //set
@@ -112,7 +109,6 @@ public class CreateSkills {
     {
         this.skill_kind = skill_kind;
     }
-    @Nullable
     public void setSkill_attributes(byte[] attributes)
     {
         this.skill_attributes = attributes;
@@ -120,7 +116,7 @@ public class CreateSkills {
     public void setContext(NetworkEvent.Context context) {
         this.context = context;
     }
-    private void setValueOfSkill(double add)
+    private void setValueOfSkillMana(float add)
     {
         for(int i = 0; i < this.value_of_attributes.length; i++)
         {
@@ -168,7 +164,7 @@ public class CreateSkills {
             {
                 //magic sphere
                 if (getSkill_kind() == 1) {
-                    setValueOfSkill(10.0D);
+                    setValueOfSkillMana(10.0F);
                     //if player has mana, works
                     getOwner().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
                     {
@@ -184,7 +180,7 @@ public class CreateSkills {
     }
     public void createMagicSphereEntity (float speed_plus)
     {
-        MagicSphereEntity magic_sphere = new MagicSphereEntity(ModEntityTypes.MAGIC_SPHERE.get() , getLevel(), getOwner());
+        MagicSphereEntity magic_sphere = new MagicSphereEntity(ModEntityTypes.MAGIC_SPHERE.get() , getLevel(), getOwner(), getSkill_attributes(), getPlayerAttributes());
         magic_sphere.shootFromRotation(magic_sphere.getOwner(), magic_sphere.getOwner().getXRot(), magic_sphere.getOwner().getYRot(),
                 0.0F, magic_sphere.getSpeed() * speed_plus, 0.0F);
         level.addFreshEntity(magic_sphere);
