@@ -76,7 +76,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         super.setOwner(entity);
         this.skill_attributes = skill_attributes;
         this.player_attributes = player_attributes;
-        //this.setDamage(skill_attributes, player_attributes);
+        this.setDamage(skill_attributes, player_attributes);
     }
     //on tick event
     public void tick(){
@@ -154,7 +154,9 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         for(int i = 0; i < skill_attributes.length; i++)
         {
-            this.damage += (float) skill_attributes[i] * player_attributes[(this.respective_skill[i])];
+            //((int) this.respective_skill[i])
+            //o problema e player_attributes
+            this.damage += (float) skill_attributes[i] * (float) player_attributes[1];
         }
     }
     public float getDamage()
