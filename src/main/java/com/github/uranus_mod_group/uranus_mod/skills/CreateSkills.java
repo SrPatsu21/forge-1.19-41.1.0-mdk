@@ -16,29 +16,7 @@ public class CreateSkills {
     private int skill_kind = 0;
     private Level level;
     //just for test
-    private byte[] skill_attributes = {
-                2,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-    };
+    private byte[] skill_attributes;
     private ServerPlayer owner;
     private double value_of_skill = 0.0D;
     private NetworkEvent.Context context;
@@ -94,7 +72,7 @@ public class CreateSkills {
         this.setOwner(context.getSender());
         this.setLevel(context.getSender().getLevel());
         this.setSkill_kind(skill_kind);
-//        this.setSkill_attributes(attributes);
+        this.setSkill_attributes(attributes);
     }
     //set
     public void setLevel(Level level)
@@ -180,9 +158,12 @@ public class CreateSkills {
     }
     public void createMagicSphereEntity (float speed_plus)
     {
-        MagicSphereEntity magic_sphere = new MagicSphereEntity(ModEntityTypes.MAGIC_SPHERE.get() , getLevel(), getOwner(), getSkill_attributes(), getPlayerAttributes());
-        magic_sphere.shootFromRotation(magic_sphere.getOwner(), magic_sphere.getOwner().getXRot(), magic_sphere.getOwner().getYRot(),
-                0.0F, magic_sphere.getSpeed() * speed_plus, 0.0F);
+        MagicSphereEntity magic_sphere = new MagicSphereEntity(ModEntityTypes.MAGIC_SPHERE.get() , getLevel(), getOwner()
+                , getSkill_attributes(), getPlayerAttributes());
+
+        magic_sphere.shootFromRotation(magic_sphere.getOwner(), magic_sphere.getOwner().getXRot(), magic_sphere.getOwner().getYRot()
+                , 0.0F, magic_sphere.getSpeed() * speed_plus, 0.0F);
+
         level.addFreshEntity(magic_sphere);
     }
     public void createFailMagicSkill()

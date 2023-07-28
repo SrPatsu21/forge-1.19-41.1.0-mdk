@@ -2,8 +2,6 @@ package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.monster.Blaze;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 
@@ -35,29 +33,29 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
 //15   summon 21
     //Skill that it will up
     private final byte [] respective_skill =
-            {
-                    0,
-                    1,
-                    2,
-                    3,
-                    4,
-                    5,
-                    6,
-                    6,
-                    7,
-                    7,
-                    7,
-                    8,
-                    9,
-                    10,
-                    11,
-                    12,
-                    12,
-                    13,
-                    14,
-                    14,
-                    15
-            };
+    {
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        6,
+        7,
+        7,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        12,
+        13,
+        14,
+        14,
+        15
+    };
 
     //constructor
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType,Level level)
@@ -76,7 +74,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         super.setOwner(entity);
         this.skill_attributes = skill_attributes;
         this.player_attributes = player_attributes;
-        this.setDamage(skill_attributes, player_attributes);
+        this.setDamage();
     }
     //on tick event
     public void tick(){
@@ -150,13 +148,13 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         return (this.speed + this.speed_on_rain_r);
     }
     //damage
-    private void setDamage(byte[] skill_attributes, byte[] player_attributes)
+    private void setDamage()
     {
-        for(int i = 0; i < skill_attributes.length; i++)
+        for(int i = 0; i < this.skill_attributes.length; i++)
         {
-            //((int) this.respective_skill[i])
-            //o problema e player_attributes
-            this.damage += (float) skill_attributes[i] * (float) player_attributes[1];
+            //(this.respective_skill[i])
+            //* this.player_attributes[0]
+            this.damage += (float) this.skill_attributes[i];
         }
     }
     public float getDamage()

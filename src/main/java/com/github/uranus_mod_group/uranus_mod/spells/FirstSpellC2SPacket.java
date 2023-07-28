@@ -8,6 +8,30 @@ import java.util.function.Supplier;
 
 public class FirstSpellC2SPacket
 {
+    private byte[] skill_attributes =
+    {
+        2,
+        2,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    };
 
     public FirstSpellC2SPacket()
     {
@@ -26,7 +50,7 @@ public class FirstSpellC2SPacket
     public boolean handle(Supplier<NetworkEvent.Context> supplier)
     {
         NetworkEvent.Context context = supplier.get();
-        new CreateSkills(context, 1, null).createSkill(3.0F);
+        new CreateSkills(context, 1, this.skill_attributes).createSkill(3.0F);
         return true;
     }
 }

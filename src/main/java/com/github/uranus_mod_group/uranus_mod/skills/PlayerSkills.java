@@ -57,9 +57,17 @@ public class PlayerSkills {
             0
     };
     //get
+    public byte[] getSkillsLevel()
+    {
+        return this.skill_level;
+    }
     public int getSkillLevel(int i)
     {
         return this.skill_level[i];
+    }
+    public int[] getSkillsXp()
+    {
+        return this.skill_xp;
     }
     public int getSkillXp(int i)
     {
