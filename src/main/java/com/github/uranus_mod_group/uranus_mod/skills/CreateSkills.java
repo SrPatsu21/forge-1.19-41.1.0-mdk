@@ -21,27 +21,27 @@ public class CreateSkills {
     private double value_of_skill = 0.0D;
     private NetworkEvent.Context context;
     private float damage = 0.0F;
-    //1    ignite
-//2    water
-//3    stone
-//4    air
-//5    elektron
-//6    lava
-//7    break
-//8    build
-//9    heal
-//10   poison
-//11   wither
-//12   teleport
-//13   light/shadows
-//14   cold/warm
-//15   blood
-//16   give mana
-//17   remove mana
-//18   explosion
-//19   gravitational
-//20   pull/push
-//21   summon
+//0    ignite
+//1    water
+//2    stone
+//3    air
+//4    elektron
+//5    lava
+//6    break
+//7    build
+//8    heal
+//9    poison
+//10   wither
+//11   teleport
+//12   light/shadows
+//13   cold/warm
+//14   blood
+//15   give mana
+//16   remove mana
+//17   explosion
+//18   gravitational
+//19   pull/push
+//20   summon
     private byte[] value_of_attributes =
     {
         10,
@@ -68,6 +68,10 @@ public class CreateSkills {
     };
     byte [] player_attributes =
     {
+        1,
+        1,
+        1,
+        1,
         0,
         0,
         0,
@@ -79,28 +83,24 @@ public class CreateSkills {
         0,
         0,
         0,
-        0,
-        0,
-        0,
-        0,
-        0
+        1
     };
-//0    fire 1
-//1    water 2
-//2    stone 3
-//3    air 4
-//4    elektron 5
-//5    lava 6
-//6    construct 7 8
-//7    body manipulation 9 10 11
-//8    ender magic 12
-//9    lux 13
-//10   heat 14
-//11   blood 15
-//12   mana manipulation 16 17
-//13   explosion 18
-//14   gravity 19 20
-//15   summon 21
+//0    fire 0
+//1    water 1
+//2    stone 2
+//3    air 3
+//4    elektron 4
+//5    lava 5
+//6    construct 6 7
+//7    body manipulation 8 9 10
+//8    ender magic 11
+//9    lux 12
+//10   heat 13
+//11   blood 14
+//12   mana manipulation 15 16
+//13   explosion 17
+//14   gravity 18 19
+//15   summon 20
     private final byte [] respective_skill =
     {
         0,
@@ -171,31 +171,24 @@ public class CreateSkills {
         }
         this.value_of_skill += add;
     }
-    //xp
-    public void setPlayerXpSkill(int i, int xp)
-    {
-        getOwner().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(skill ->
-        {
-            skill.setSkillXp(i, xp);
-            ModMessages.sendToPlayer(new SkillsDataSyncS2CPacket(skill.getSkillsLevel(), skill.getSkillsXp()), getOwner());
-        });
-    }
     public void setPlayerXpSkills()
     {
-        for(int i =0;i < this.getSkill_attributes().length; i++)
-        {
-            if(getSkill_attributes()[i] != 0){
-                int xp = this.getSkill_attributes()[i];
-                setPlayerXpSkill((this.respective_skill[i]), xp);
+        getOwner().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(skill -> {
+            for (int i = 0; i < this.getSkill_attributes().length; i++) {
+                if (getSkill_attributes()[i] != 0) {
+                    skill.addSkillXp((this.respective_skill[i]), (this.getSkill_attributes()[i]));
+                }
             }
-        }
+            ModMessages.sendToPlayer(new SkillsDataSyncS2CPacket(skill.getSkillsLevel(), skill.getSkillsXp()), getOwner());
+        });
     }
     //damage
     private void setDamage()
     {
-        for(int i = 0; i < this.getSkill_attributes().length; i++)
+        for(int i = 0; i < this.respective_skill.length-1; i++)
         {
-            this.damage += (float) this.getSkill_attributes()[i] * this.getPlayerAttributes()[(this.respective_skill[i])];
+            System.out.println(this.getPlayerAttributes()[(this.respective_skill[i])] + " / " + this.respective_skill[i] + " / "+ i+ " / "+ this.getSkill_attributes()[i] +" / "+ this.damage);
+            this.damage += (float) ((float) this.getSkill_attributes()[i]) * ((float) this.getPlayerAttributes()[((int) this.respective_skill[i])]);
         }
     }
     //get
@@ -237,7 +230,7 @@ public class CreateSkills {
         // && getSkill_attributes() != null
         if(getSkill_kind() != 0)
         {
-            //setPlayerXpSkills();
+            setPlayerXpSkills();
             getContext().enqueueWork(() ->
             {
                 //magic sphere

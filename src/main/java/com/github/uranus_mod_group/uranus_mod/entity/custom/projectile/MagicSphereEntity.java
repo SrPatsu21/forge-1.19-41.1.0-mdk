@@ -19,32 +19,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     private float damage = 0.0F;
     private byte[] skill_attributes;
 
-    //Skill that it will up
-    private final byte [] respective_skill =
-    {
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        6,
-        7,
-        7,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        12,
-        13,
-        14,
-        14,
-        15
-    };
-
     //constructor
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType,Level level)
     {
