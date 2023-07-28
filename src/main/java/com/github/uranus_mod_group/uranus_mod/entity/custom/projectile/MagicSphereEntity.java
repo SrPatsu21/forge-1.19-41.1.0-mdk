@@ -152,9 +152,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         for(int i = 0; i < this.skill_attributes.length; i++)
         {
-            //(this.respective_skill[i])
-            //* this.player_attributes[0]
-            this.damage += (float) this.skill_attributes[i];
+            this.damage += (float) this.skill_attributes[i] * this.player_attributes[(this.respective_skill[i])];
         }
     }
     public float getDamage()

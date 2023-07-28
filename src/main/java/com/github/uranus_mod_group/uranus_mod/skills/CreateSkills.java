@@ -1,6 +1,5 @@
 package com.github.uranus_mod_group.uranus_mod.skills;
 
-import com.github.uranus_mod_group.uranus_mod.client.ClientSkillsData;
 import com.github.uranus_mod_group.uranus_mod.entity.ModEntityTypes;
 import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.MagicSphereEntity;
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
@@ -65,6 +64,24 @@ public class CreateSkills {
         30,
         40
     };
+    byte [] player_attributes = {
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+    };
     //constructor
     public CreateSkills(NetworkEvent.Context context, int skill_kind,@Nullable byte [] attributes)
     {
@@ -73,6 +90,7 @@ public class CreateSkills {
         this.setLevel(context.getSender().getLevel());
         this.setSkill_kind(skill_kind);
         this.setSkill_attributes(attributes);
+        setPlayerAttributes(getOwner());
     }
     //set
     public void setLevel(Level level)
@@ -93,6 +111,13 @@ public class CreateSkills {
     }
     public void setContext(NetworkEvent.Context context) {
         this.context = context;
+    }
+    public void setPlayerAttributes(ServerPlayer owner)
+    {
+        owner.getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(skill ->
+        {
+            this.player_attributes = skill.getSkillsLevel();
+        });
     }
     private void setValueOfSkillMana(float add)
     {
@@ -130,7 +155,7 @@ public class CreateSkills {
     //get player attributes
     public byte [] getPlayerAttributes()
     {
-        return ClientSkillsData.getSkillsLevel();
+        return this.player_attributes;
     }
 
     public void createSkill(float speed_plus)
