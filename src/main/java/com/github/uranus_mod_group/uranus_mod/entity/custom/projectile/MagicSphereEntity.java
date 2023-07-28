@@ -1,5 +1,6 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
+import com.github.uranus_mod_group.uranus_mod.skills.PlayerSkillsProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
@@ -75,6 +76,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         this.skill_attributes = skill_attributes;
         this.player_attributes = player_attributes;
         this.setDamage();
+        setPlayerXpSkills();
     }
     //on tick event
     public void tick(){
@@ -153,6 +155,24 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         for(int i = 0; i < this.skill_attributes.length; i++)
         {
             this.damage += (float) this.skill_attributes[i] * this.player_attributes[(this.respective_skill[i])];
+        }
+    }
+    //xp
+    public void setPlayerXpSkill(int i, int xp)
+    {
+        getOwner().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(skill ->
+        {
+            skill.setSkillXp(i, xp);
+        });
+    }
+    public void setPlayerXpSkills()
+    {
+        for(int i =0;i < this.skill_attributes.length; i++)
+        {
+            if(skill_attributes[i] != 0){
+                int xp = this.skill_attributes[i];
+                setPlayerXpSkill((this.respective_skill[i]), xp);
+            }
         }
     }
     public float getDamage()
