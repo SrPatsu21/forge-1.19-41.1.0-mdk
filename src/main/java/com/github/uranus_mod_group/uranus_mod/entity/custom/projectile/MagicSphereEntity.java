@@ -1,5 +1,8 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
+import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
+import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
+import com.github.uranus_mod_group.uranus_mod.networking.packet.SkillsDataSyncS2CPacket;
 import com.github.uranus_mod_group.uranus_mod.skills.PlayerSkillsProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -15,23 +18,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     private final float speed_on_rain_r = -0.07F;
     private float damage = 0.0F;
     private byte[] skill_attributes;
-    private byte[] player_attributes;
-//0    fire 1
-//1    water 2
-//2    stone 3
-//3    air 4
-//4    elektron 5
-//5    lava 6
-//6    construct 7 8
-//7    body manipulation 9 10 11
-//8    ender magic 12
-//9    lux 13
-//10   heat 14
-//11   blood 15
-//12   mana manipulation 16 17
-//13   explosion 18
-//14   gravity 19 20
-//15   summon 21
+
     //Skill that it will up
     private final byte [] respective_skill =
     {
@@ -69,14 +56,12 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         this.setPos(x, y, z);
     }
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType, Level level, LivingEntity entity,
-                             byte[] skill_attributes, byte[] player_attributes)
+                             byte[] skill_attributes, float damage)
     {
         this(entityEntityType, level, entity.getX(),entity.getEyeY() - (double)0.1F, entity.getZ());
         super.setOwner(entity);
         this.skill_attributes = skill_attributes;
-        this.player_attributes = player_attributes;
-        this.setDamage();
-        setPlayerXpSkills();
+        this.setDamage(damage);
     }
     //on tick event
     public void tick(){
@@ -138,7 +123,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         this.gravity -= gravity;
     }
-
     //speed
     public float getSpeed(){
         return this.speed;
@@ -150,30 +134,9 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         return (this.speed + this.speed_on_rain_r);
     }
     //damage
-    private void setDamage()
+    private void setDamage(float damage)
     {
-        for(int i = 0; i < this.skill_attributes.length; i++)
-        {
-            this.damage += (float) this.skill_attributes[i] * this.player_attributes[(this.respective_skill[i])];
-        }
-    }
-    //xp
-    public void setPlayerXpSkill(int i, int xp)
-    {
-        getOwner().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(skill ->
-        {
-            skill.setSkillXp(i, xp);
-        });
-    }
-    public void setPlayerXpSkills()
-    {
-        for(int i =0;i < this.skill_attributes.length; i++)
-        {
-            if(skill_attributes[i] != 0){
-                int xp = this.skill_attributes[i];
-                setPlayerXpSkill((this.respective_skill[i]), xp);
-            }
-        }
+        this.damage = damage;
     }
     public float getDamage()
     {
