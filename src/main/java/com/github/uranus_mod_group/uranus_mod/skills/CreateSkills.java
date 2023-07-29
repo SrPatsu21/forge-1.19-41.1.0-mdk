@@ -66,41 +66,22 @@ public class CreateSkills {
         30,
         40
     };
-    byte [] player_attributes =
-    {
-        1,
-        1,
-        1,
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1
-    };
-//0    fire 0
+    private byte[] player_attributes;
+//0    fire 0 5
 //1    water 1
 //2    stone 2
 //3    air 3
 //4    elektron 4
-//5    lava 5
-//6    construct 6 7
-//7    body manipulation 8 9 10
-//8    ender magic 11
-//9    lux 12
-//10   heat 13
-//11   blood 14
-//12   mana manipulation 15 16
-//13   explosion 17
-//14   gravity 18 19
-//15   summon 20
+//5    construct 6 7
+//6    body manipulation 8 9 10
+//7    ender magic 11
+//8    lux 12
+//9    heat 13
+//10   blood 14
+//11   mana manipulation 15 16
+//12   explosion 17
+//13   gravity 18 19
+//14   summon 20
     private final byte [] respective_skill =
     {
         0,
@@ -108,22 +89,22 @@ public class CreateSkills {
         2,
         3,
         4,
+        0,
+        5,
         5,
         6,
         6,
-        7,
-        7,
+        6,
         7,
         8,
         9,
         10,
         11,
-        12,
+        11,
         12,
         13,
-        14,
-        14,
-        15
+        13,
+        14
     };
     //constructor
     public CreateSkills(NetworkEvent.Context context, int skill_kind,@Nullable byte [] attributes)
@@ -134,7 +115,7 @@ public class CreateSkills {
         this.setSkill_kind(skill_kind);
         this.setSkill_attributes(attributes);
         setPlayerAttributes(getOwner());
-        //setDamage();
+        setDamage();
     }
     //set
     public void setLevel(Level level)
@@ -159,9 +140,7 @@ public class CreateSkills {
     public void setPlayerAttributes(ServerPlayer owner)
     {
         owner.getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(skill ->
-        {
-            this.player_attributes = skill.getSkillsLevel();
-        });
+                this.player_attributes = skill.getSkillsLevel());
     }
     private void setValueOfSkillMana(float add)
     {
@@ -185,10 +164,9 @@ public class CreateSkills {
     //damage
     private void setDamage()
     {
-        for(int i = 0; i < this.respective_skill.length-1; i++)
+        for(int i = 0; i < this.respective_skill.length; i++)
         {
-            System.out.println(this.getPlayerAttributes()[(this.respective_skill[i])] + " / " + this.respective_skill[i] + " / "+ i+ " / "+ this.getSkill_attributes()[i] +" / "+ this.damage);
-            this.damage += (float) ((float) this.getSkill_attributes()[i]) * ((float) this.getPlayerAttributes()[((int) this.respective_skill[i])]);
+            this.damage += (float) (this.getSkill_attributes()[i]) * (this.getPlayerAttributes()[(this.respective_skill[i])]);
         }
     }
     //get

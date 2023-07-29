@@ -9,52 +9,49 @@ public class PlayerSkills {
 //2    stone
 //3    air
 //4    elektron
-//5    lava
-//6    construct
-//7    body manipulation
-//8    ender magic
-//9    lux
-//10   heat
-//11   blood
-//12   mana manipulation
-//13   explosion
-//14   gravity
-//15   summon
-    byte [] skill_level = {
-            1,
-            1,
-            1,
-            1,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
+//5    construct
+//6    body manipulation
+//7    ender magic
+//8    lux
+//9   heat
+//10   blood
+//11   mana manipulation
+//12   explosion
+//13   gravity
+//14   summon
+    byte [] skill_level =
+    {
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
     };
-    int [] skill_xp = {
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
+    int [] skill_xp =
+    {
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
     };
     //get
     public byte[] getSkillsLevel()
