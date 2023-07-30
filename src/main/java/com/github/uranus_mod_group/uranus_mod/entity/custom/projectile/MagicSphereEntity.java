@@ -21,7 +21,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     private float damage = 0.0F;
     private byte[] skill_attributes =
     {
-        2,
+        16,
         2,
         3,
         0,
@@ -146,6 +146,42 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         return this.skill_attributes[i];
     }
+    //action area
+    public int getVolume(int size)
+    {
+        int v;
+        if (size > 1) {
+            v = (int) Math.pow(size, 3)+1;
+        }else{
+            v = (int) Math.pow(0, 3)+1;
+        }
+        return v;
+    }
+    public BlockPos[] actionArea(BlockPos block_pos, int size)
+    {
+        if (size > 1) {
+            size /= 2;
+        }
+        BlockPos[] action_area = new BlockPos[getVolume(size)];
+        int vec3s = 0;
+        for(int z = -size; z < size; z++)
+        {
+            for(int y = -size; y < size; y++)
+            {
+                for(int x = -size; x < size; x++)
+                {
+                    if((Math.abs(x)+Math.abs(y)+Math.abs(z)) < size)
+                    {
+                        action_area[vec3s] = new BlockPos(block_pos.getX()+x-size, block_pos.getY()+y, block_pos.getZ()+z);
+                        System.out.println(action_area[vec3s]);
+                        vec3s++;
+                    }
+                }
+            }
+        }
+        return action_area;
+    }
+
     //on hit
     protected void onHit(HitResult hitResult)
     {
@@ -156,7 +192,11 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             getLevel().broadcastEntityEvent(this, (byte) 3);
             if(getSkillAttributes(0) != 0)
             {
-                getLevel().setBlockAndUpdate(block_pos, BaseFireBlock.getState(this.level, block_pos));
+                BlockPos[] actionArea = actionArea(block_pos, getSkillAttributes(0));
+                for(int i = 0; i < actionArea.length; i++)
+                {
+                    getLevel().setBlockAndUpdate(actionArea[i], BaseFireBlock.getState(this.level, block_pos));
+                }
             }
             this.discard();
         }
