@@ -7,8 +7,10 @@ import com.github.uranus_mod_group.uranus_mod.skills.PlayerSkillsProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.item.FlintAndSteelItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.*;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
@@ -173,10 +175,13 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             getLevel().broadcastEntityEvent(this, (byte) 3);
             if(getSkillAttributes(0) != 0)
             {
-                BlockPos[] actionArea = actionArea(block_pos, getSkillAttributes(0));
-                for(int i = 0; i < actionArea.length; i++)
+                BlockPos[] action_area = actionArea(block_pos, getSkillAttributes(0));
+                for(BlockPos block : action_area)
                 {
-                    getLevel().setBlockAndUpdate(actionArea[i], BaseFireBlock.getState(this.level, block_pos));
+                    if (getLevel().getBlockState(block).isAir())
+                    {
+                        getLevel().setBlockAndUpdate(block, BaseFireBlock.getState(this.level, block_pos));
+                    }
                 }
             }
             this.discard();
@@ -191,10 +196,10 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             super.onHitEntity(hitResult);
             Entity entity = hitResult.getEntity();
             entity.hurt(DamageSource.thrown(this, this.getOwner()), getDamage());
-            if(getSkillAttributes(0) > 0)
-            {
-                entity.setSecondsOnFire(getSkillAttributes(0));
-            }
+//            if(getSkillAttributes(0) != 0)
+//            {
+//                entity.setSecondsOnFire(getSkillAttributes(0));
+//            }
         }
     }
     //on hit a block
