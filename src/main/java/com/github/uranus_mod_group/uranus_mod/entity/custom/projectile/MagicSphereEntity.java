@@ -19,30 +19,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     private final float speed_on_water_r = -0.1F;
     private final float speed_on_rain_r = -0.07F;
     private float damage = 0.0F;
-    private byte[] skill_attributes =
-    {
-        16,
-        2,
-        3,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-    };
+    private byte[] skill_attributes;
 
     //constructor
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType,Level level)
@@ -147,34 +124,38 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         return this.skill_attributes[i];
     }
     //action area
+    //1 or >=5
     public int getVolume(int size)
     {
         int v;
         if (size > 1) {
-            v = (int) Math.pow(size, 3)+1;
+            v = (int) Math.pow(size, 3)- size+1;
         }else{
-            v = (int) Math.pow(0, 3)+1;
+            v = 1;
         }
         return v;
     }
     public BlockPos[] actionArea(BlockPos block_pos, int size)
     {
-        if (size > 1) {
-            size /= 2;
+        if (size > 3) {
+            size = size/2;
+        }else {
+            size = 0;
         }
+
         BlockPos[] action_area = new BlockPos[getVolume(size)];
-        int vec3s = 0;
-        for(int z = -size; z < size; z++)
+        int cont = 0;
+
+        for(int z = -size+1; z < size; z++)
         {
-            for(int y = -size; y < size; y++)
+            for(int y = -size+1; y < size; y++)
             {
-                for(int x = -size; x < size; x++)
+                for(int x = -size+1; x < size; x++)
                 {
-                    if((Math.abs(x)+Math.abs(y)+Math.abs(z)) < size)
+                    if((Math.abs(x)+Math.abs(y)+Math.abs(z)) < size &&  cont < getVolume(size))
                     {
-                        action_area[vec3s] = new BlockPos(block_pos.getX()+x-size, block_pos.getY()+y, block_pos.getZ()+z);
-                        System.out.println(action_area[vec3s]);
-                        vec3s++;
+                        action_area[cont] = new BlockPos(block_pos.getX()+x, block_pos.getY()+y, block_pos.getZ()+z);
+                        cont++;
                     }
                 }
             }
