@@ -4,9 +4,11 @@ import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.SkillsDataSyncS2CPacket;
 import com.github.uranus_mod_group.uranus_mod.skills.PlayerSkillsProvider;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.phys.*;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
@@ -17,7 +19,30 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     private final float speed_on_water_r = -0.1F;
     private final float speed_on_rain_r = -0.07F;
     private float damage = 0.0F;
-    private byte[] skill_attributes;
+    private byte[] skill_attributes =
+    {
+        2,
+        2,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    };
 
     //constructor
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType,Level level)
@@ -116,18 +141,24 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         return this.damage;
     }
+    //skill attributes
+    public byte getSkillAttributes(int i)
+    {
+        return this.skill_attributes[i];
+    }
     //on hit
     protected void onHit(HitResult hitResult)
     {
         super.onHit(hitResult);
-        if (!this.level.isClientSide)
+        if (!getLevel().isClientSide)
         {
-            if (this.getOwner() != null)
+            BlockPos block_pos = blockPosition();
+            getLevel().broadcastEntityEvent(this, (byte) 3);
+            if(getSkillAttributes(0) != 0)
             {
-//                this.level.broadcastEntityEvent(this, (byte) 3);
-//                this.level.explode(this, this.getX(), this.getY(), this.getZ(), 4.0f, true, Explosion.BlockInteraction.BREAK);
-                this.discard();
+                getLevel().setBlockAndUpdate(block_pos, BaseFireBlock.getState(this.level, block_pos));
             }
+            this.discard();
         }
 
     }
@@ -139,6 +170,10 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             super.onHitEntity(hitResult);
             Entity entity = hitResult.getEntity();
             entity.hurt(DamageSource.thrown(this, this.getOwner()), getDamage());
+            if(getSkillAttributes(0) > 0)
+            {
+                entity.setSecondsOnFire(getSkillAttributes(0));
+            }
         }
     }
     //on hit a block
