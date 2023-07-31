@@ -6,6 +6,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.phys.*;
+import org.jetbrains.annotations.NotNull;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
 {
@@ -28,7 +29,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         this.setPos(x, y, z);
     }
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType, Level level, LivingEntity entity,
-                             byte[] skill_attributes, float damage)
+                             @NotNull byte[] skill_attributes, float damage)
     {
         this(entityEntityType, level, entity.getX(),entity.getEyeY() - (double)0.1F, entity.getZ());
         super.setOwner(entity);
@@ -163,6 +164,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     protected void onHit(HitResult hitResult)
     {
         super.onHit(hitResult);
+        this.discard();
         if (!getLevel().isClientSide)
         {
             BlockPos block_pos = blockPosition();
@@ -178,22 +180,21 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                     }
                 }
             }
-            this.discard();
         }
-
     }
     //on hit at an entity
     protected void onHitEntity(EntityHitResult hitResult)
     {
+        super.onHitEntity(hitResult);
+        this.discard();
+        Entity entity = hitResult.getEntity();
         if (this.getOwner() != null)
         {
-            super.onHitEntity(hitResult);
-            Entity entity = hitResult.getEntity();
             entity.hurt(DamageSource.thrown(this, this.getOwner()), getDamage());
-//            if(getSkillAttributes(0) != 0)
-//            {
-//                entity.setSecondsOnFire(getSkillAttributes(0));
-//            }
+            if(getSkillAttributes(0) != 0)
+            {
+                entity.setSecondsOnFire(getSkillAttributes(0));
+            }
         }
     }
     //on hit a block

@@ -96,7 +96,6 @@ public abstract class AbstractUranusModProjectile extends Projectile {
     protected void onHitBlock(BlockHitResult hitResult)
     {
         super.onHitBlock(hitResult);
-        this.discard();
     }
     @Override
     protected void defineSynchedData()
