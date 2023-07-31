@@ -1,16 +1,10 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
-import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
-import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
-import com.github.uranus_mod_group.uranus_mod.networking.packet.SkillsDataSyncS2CPacket;
-import com.github.uranus_mod_group.uranus_mod.skills.PlayerSkillsProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.item.FlintAndSteelItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.*;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
