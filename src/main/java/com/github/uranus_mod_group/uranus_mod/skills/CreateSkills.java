@@ -107,15 +107,17 @@ public class CreateSkills {
         14
     };
     //constructor
-    public CreateSkills(NetworkEvent.Context context, int skill_kind,@Nullable byte [] attributes)
+    public CreateSkills(NetworkEvent.Context context, int skill_kind, byte [] attributes)
     {
         this.setContext(context);
         this.setOwner(context.getSender());
         this.setLevel(context.getSender().getLevel());
-        this.setSkill_kind(skill_kind);
-        this.setSkill_attributes(attributes);
-        setPlayerAttributes(getOwner());
-        setDamage();
+        this.setSkillKind(skill_kind);
+        this.setSkillAttributes(attributes);
+        this.setPlayerAttributes(getOwner());
+        this.setDamage();
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
     }
     //set
     public void setLevel(Level level)
@@ -126,11 +128,11 @@ public class CreateSkills {
     {
         this.owner = player;
     }
-    public void setSkill_kind(int skill_kind)
+    public void setSkillKind(int skill_kind)
     {
         this.skill_kind = skill_kind;
     }
-    public void setSkill_attributes(byte[] attributes)
+    public void setSkillAttributes(byte[] attributes)
     {
         this.skill_attributes = attributes;
     }
@@ -146,16 +148,16 @@ public class CreateSkills {
     {
         for(int i = 0; i < this.value_of_attributes.length; i++)
         {
-            this.value_of_skill += this.value_of_attributes[i] * (int) getSkill_attributes()[i];
+            this.value_of_skill += this.value_of_attributes[i] * (int) getSkillAttributes()[i];
         }
         this.value_of_skill += add;
     }
     public void setPlayerXpSkills()
     {
         getOwner().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(skill -> {
-            for (int i = 0; i < this.getSkill_attributes().length; i++) {
-                if (getSkill_attributes()[i] != 0) {
-                    skill.addSkillXp((this.respective_skill[i]), (this.getSkill_attributes()[i]));
+            for (int i = 0; i < this.getSkillAttributes().length; i++) {
+                if (getSkillAttributes()[i] != 0) {
+                    skill.addSkillXp((this.respective_skill[i]), (this.getSkillAttributes()[i]));
                 }
             }
             ModMessages.sendToPlayer(new SkillsDataSyncS2CPacket(skill.getSkillsLevel(), skill.getSkillsXp()), getOwner());
@@ -166,7 +168,7 @@ public class CreateSkills {
     {
         for(int i = 0; i < this.respective_skill.length; i++)
         {
-            this.damage += (float) (this.getSkill_attributes()[i]) * (this.getPlayerAttributes()[(this.respective_skill[i])]);
+            this.damage += (float) (this.getSkillAttributes()[i]) * (this.getPlayerAttributes()[(this.respective_skill[i])]);
         }
     }
     //get
@@ -178,8 +180,7 @@ public class CreateSkills {
     {
         return this.skill_kind;
     }
-    @Nullable
-    public byte[] getSkill_attributes()
+    public byte[] getSkillAttributes()
     {
         return this.skill_attributes;
     }
@@ -229,8 +230,9 @@ public class CreateSkills {
     }
     public void createMagicSphereEntity (float speed_plus)
     {
+        System.out.println("asdasdas");
         MagicSphereEntity magic_sphere = new MagicSphereEntity(ModEntityTypes.MAGIC_SPHERE.get() , getLevel(), getOwner()
-                , getSkill_attributes(), getDamage());
+                , getSkillAttributes(), getDamage());
 
         magic_sphere.shootFromRotation(magic_sphere.getOwner(), magic_sphere.getOwner().getXRot(), magic_sphere.getOwner().getYRot()
                 , 0.0F, magic_sphere.getSpeed() * speed_plus, 0.0F);

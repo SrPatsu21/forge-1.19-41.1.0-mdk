@@ -34,10 +34,12 @@ public class PlayerSkills {
         0,
         0,
         0,
+        0,
         0
     };
     int [] skill_xp =
     {
+        0,
         0,
         0,
         0,
