@@ -10,9 +10,9 @@ public class FirstSpellC2SPacket
 {
     private byte[] skill_attributes =
     {
-        6,
-        2,
-        3,
+        5,
+        0,
+        0,
         0,
         0,
         0,
