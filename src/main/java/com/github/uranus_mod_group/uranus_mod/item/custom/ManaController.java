@@ -25,6 +25,7 @@ public class ManaController extends Item
             {
                 mana.addML(1);
                 mana.manaStatsReset();
+                player.sendSystemMessage(Component.literal("mana level:"+ mana.getMl()));
             });
         }
         if (interactionHand == InteractionHand.OFF_HAND)
@@ -33,13 +34,9 @@ public class ManaController extends Item
             {
                 mana.subMl(1);
                 mana.manaStatsReset();
+                player.sendSystemMessage(Component.literal("mana level:"+ mana.getMl()));
             });
         }
-        player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
-        {
-            player.sendSystemMessage(Component.literal("mana level:"+ mana.getMl()));
-        });
-        player.getCooldowns().addCooldown(this, 2);
         return super.use(level, player, interactionHand);
     }
 

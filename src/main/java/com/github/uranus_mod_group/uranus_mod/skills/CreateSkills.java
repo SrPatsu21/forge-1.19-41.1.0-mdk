@@ -116,8 +116,6 @@ public class CreateSkills {
         this.setSkillAttributes(attributes);
         this.setPlayerAttributes(getOwner());
         this.setDamage();
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-
     }
     //set
     public void setLevel(Level level)
@@ -206,7 +204,6 @@ public class CreateSkills {
     //create skill as set
     public void createSkill(float speed_plus)
     {
-        // && getSkill_attributes() != null
         if(getSkill_kind() != 0)
         {
             setPlayerXpSkills();
@@ -230,7 +227,6 @@ public class CreateSkills {
     }
     public void createMagicSphereEntity (float speed_plus)
     {
-        System.out.println("asdasdas");
         MagicSphereEntity magic_sphere = new MagicSphereEntity(ModEntityTypes.MAGIC_SPHERE.get() , getLevel(), getOwner()
                 , getSkillAttributes(), getDamage());
 

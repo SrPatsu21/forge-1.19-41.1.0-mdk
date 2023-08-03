@@ -1,11 +1,14 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.phys.*;
+import org.openjdk.nashorn.internal.objects.annotations.Function;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
 {
@@ -124,41 +127,31 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         return this.skill_attributes[i];
     }
-    //action area
-    //1 or >=5
-    public int getVolume(int size)
+    //skill functions
+    public void setFire(BlockPos block_pos)
     {
-        int v;
-        if (size > 1) {
-            v = (int) Math.pow(size, 3)- size+1;
-        }else{
-            v = 1;
-        }
-        return v;
-    }
-    public BlockPos[] actionArea(BlockPos block_pos, int size)
-    {
-        size = (int) size/4 +1;
-        BlockPos[] action_area = new BlockPos[getVolume(size)];
-        int cont = 0;
-
-        for(int z = -size+1; z < size; z++)
+        int size = (int) getSkillAttributes(0)/4 +1;
+        BlockPos block_pos2;
+        for(int y = -size+1; y < size; y++)
         {
-            for(int y = -size+1; y < size; y++)
+            for(int z = -size+1; z < size; z++)
             {
                 for(int x = -size+1; x < size; x++)
                 {
-                    if((Math.abs(x)+Math.abs(y)+Math.abs(z)) < size &&  cont < getVolume(size))
+                    if((Math.abs(x)+Math.abs(y)+Math.abs(z)) < size)
                     {
-                        action_area[cont] = new BlockPos(block_pos.getX()+x, block_pos.getY()+y, block_pos.getZ()+z);
-                        cont++;
+                        block_pos2 = new BlockPos(block_pos.getX()+x, block_pos.getY()+y, block_pos.getZ()+z);
+                        if (getLevel().getBlockState(block_pos2).isAir())
+                        {
+                            getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos));
+                            getLevel().addParticle(ParticleTypes.FALLING_WATER, block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
+                                    0.0D, 0.0D, 0.0D);
+                        }
                     }
                 }
             }
         }
-        return action_area;
     }
-
     //on hit
     protected void onHit(HitResult hitResult)
     {
@@ -167,17 +160,12 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         {
             BlockPos block_pos = blockPosition();
             getLevel().broadcastEntityEvent(this, (byte) 3);
-            if(getSkillAttributes(0) != 0)
+            //fire skill
+            if(getSkillAttributes(0) > 0)
             {
-                BlockPos[] action_area = actionArea(block_pos, getSkillAttributes(0));
-                for(BlockPos block : action_area)
-                {
-                    if (getLevel().getBlockState(block).isAir())
-                    {
-                        getLevel().setBlockAndUpdate(block, BaseFireBlock.getState(this.level, block_pos));
-                    }
-                }
+                this.setFire(block_pos);
             }
+            //water
         }
     }
     //on hit at an entity
