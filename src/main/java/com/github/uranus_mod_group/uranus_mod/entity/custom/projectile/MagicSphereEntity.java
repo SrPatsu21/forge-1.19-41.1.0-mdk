@@ -7,6 +7,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.phys.*;
 import org.openjdk.nashorn.internal.objects.annotations.Function;
 
@@ -43,7 +44,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         super.tick();
         tickOutSpawn();
-
         //position
         this.checkInsideBlocks();
         Vec3 vec3delta = this.getDeltaMovement();
@@ -130,7 +130,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     //skill functions
     public void setFire(BlockPos block_pos)
     {
-        int size = (int) getSkillAttributes(0)/4 +1;
+        int size = (int) getSkillAttributes(0)/5 +1;
         BlockPos block_pos2;
         for(int y = -size+1; y < size; y++)
         {
@@ -144,8 +144,14 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                         if (getLevel().getBlockState(block_pos2).isAir())
                         {
                             getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos));
-                            getLevel().addParticle(ParticleTypes.FALLING_WATER, block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
-                                    0.0D, 0.0D, 0.0D);
+                        }
+                        for(int k = 0; k < 4; k++) {
+                            getLevel().addAlwaysVisibleParticle(ParticleTypes.ANGRY_VILLAGER, (double)block_pos2.getX() + 0.5D,
+                                    (double)block_pos2.getY() + 0.5D,
+                                    (double)block_pos2.getZ() + 0.5D,
+                                    0.0D,
+                                    5.0E-5D, 0.0D);
+                            System.out.println(k);
                         }
                     }
                 }
