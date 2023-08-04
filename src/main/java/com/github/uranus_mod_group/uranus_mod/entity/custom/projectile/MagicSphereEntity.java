@@ -1,14 +1,23 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.FlameParticle;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.TntBlock;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.*;
+import net.minecraftforge.event.TickEvent;
 import org.openjdk.nashorn.internal.objects.annotations.Function;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
@@ -128,6 +137,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         return this.skill_attributes[i];
     }
     //skill functions
+
     public void setFire(BlockPos block_pos)
     {
         int size = (int) getSkillAttributes(0)/5 +1;
@@ -144,20 +154,27 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                         if (getLevel().getBlockState(block_pos2).isAir())
                         {
                             getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos));
-                        }
-                        for(int k = 0; k < 4; k++) {
-                            getLevel().addAlwaysVisibleParticle(ParticleTypes.ANGRY_VILLAGER, (double)block_pos2.getX() + 0.5D,
-                                    (double)block_pos2.getY() + 0.5D,
-                                    (double)block_pos2.getZ() + 0.5D,
-                                    0.0D,
-                                    5.0E-5D, 0.0D);
-                            System.out.println(k);
+//                            getLevel().gameEvent();
+                            getLevel().addParticle(ParticleTypes.FLAME, block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(), 0.0D, 0.2D, 0.0D);
                         }
                     }
                 }
             }
         }
     }
+    //does not have a way to add particles
+//    Explosion
+//    if (this.level.isClientSide) {
+//        this.level.playLocalSound(this.x, this.y, this.z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0F, (1.0F + (this.level.random.nextFloat() - this.level.random.nextFloat()) * 0.2F) * 0.7F, false);
+//    }
+//    boolean flag = this.blockInteraction != Explosion.BlockInteraction.NONE;
+//    if (p_46076_) {
+//        if (!(this.radius < 2.0F) && flag) {
+//            this.level.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
+//        } else {
+//            this.level.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
+//        }
+//    }
     //on hit
     protected void onHit(HitResult hitResult)
     {
