@@ -1,9 +1,11 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
+import com.google.common.collect.Sets;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -15,10 +17,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.TntBlock;
+import net.minecraft.world.level.gameevent.EntityPositionSource;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.event.TickEvent;
 import org.openjdk.nashorn.internal.objects.annotations.Function;
+
+import java.util.Set;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
 {
@@ -142,6 +147,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         int size = (int) getSkillAttributes(0)/5 +1;
         BlockPos block_pos2;
+        Set<BlockPos> set = Sets.newHashSet();
         for(int y = -size+1; y < size; y++)
         {
             for(int z = -size+1; z < size; z++)
@@ -154,8 +160,12 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                         if (getLevel().getBlockState(block_pos2).isAir())
                         {
                             getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos));
-//                            getLevel().gameEvent();
-                            getLevel().addParticle(ParticleTypes.FLAME, block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(), 0.0D, 0.2D, 0.0D);
+                            getLevel().addParticle(ParticleTypes.FLAME,
+                                    block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
+                                    0.0D, 0.2D, 0.0D);
+                            getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK_MARKER, getLevel().getBlockState(block_pos2)),
+                                    block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
+                                    0.0D, 0.2D, 0.0D);
                         }
                     }
                 }
