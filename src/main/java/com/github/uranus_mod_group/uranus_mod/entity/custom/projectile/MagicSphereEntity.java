@@ -23,6 +23,8 @@ import net.minecraft.world.phys.*;
 import net.minecraftforge.event.TickEvent;
 import org.openjdk.nashorn.internal.objects.annotations.Function;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
@@ -145,7 +147,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
 
     public void setFire(BlockPos block_pos)
     {
-        int size = (int) getSkillAttributes(0)/5 +1;
+        int size = (int) getSkillAttributes(0)/1 +1;
         BlockPos block_pos2;
         Set<BlockPos> set = Sets.newHashSet();
         for(int y = -size+1; y < size; y++)
@@ -160,9 +162,23 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                         if (getLevel().getBlockState(block_pos2).isAir())
                         {
                             getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos));
+
                             getLevel().addParticle(ParticleTypes.FLAME,
                                     block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
                                     0.0D, 0.2D, 0.0D);
+
+                            List<Entity> list = this.level.getEntities(this.getOwner(), new AABB(
+                                    (double)block_pos2.getX(), (double)block_pos2.getY(), (double)block_pos2.getZ(),
+                                    (double)block_pos2.getX()+1, (double)block_pos2.getY()+1, (double)block_pos2.getZ()+1
+                            ));
+                            if(list != null)
+                            {
+                                for(int e = 0; e < list.size(); e++)
+                                {
+                                    Entity entity = list.get(e);
+                                    entity.setSecondsOnFire(size);
+                                }
+                            }
                             getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK_MARKER, getLevel().getBlockState(block_pos2)),
                                     block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
                                     0.0D, 0.2D, 0.0D);
