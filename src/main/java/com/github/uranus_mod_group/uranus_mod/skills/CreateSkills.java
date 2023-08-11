@@ -42,6 +42,7 @@ public class CreateSkills {
 //18   gravitational
 //19   pull/push
 //20   summon
+//21   radius
     private byte[] value_of_attributes =
     {
         10,
@@ -64,7 +65,8 @@ public class CreateSkills {
         80,
         30,
         30,
-        40
+        40,
+        20
     };
     private byte[] player_attributes;
 //0    fire 0 5
@@ -144,7 +146,7 @@ public class CreateSkills {
     }
     private void setValueOfSkillMana(float add)
     {
-        for(int i = 0; i < this.value_of_attributes.length; i++)
+        for(int i = 0; i < (this.value_of_attributes.length-1); i++)
         {
             this.value_of_skill += this.value_of_attributes[i] * (int) getSkillAttributes()[i];
         }
@@ -153,7 +155,7 @@ public class CreateSkills {
     public void setPlayerXpSkills()
     {
         getOwner().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(skill -> {
-            for (int i = 0; i < this.getSkillAttributes().length; i++) {
+            for (int i = 0; i < (this.getSkillAttributes().length-1); i++) {
                 if (getSkillAttributes()[i] != 0) {
                     skill.addSkillXp((this.respective_skill[i]), (this.getSkillAttributes()[i]));
                 }
@@ -164,7 +166,7 @@ public class CreateSkills {
     //damage
     private void setDamage()
     {
-        for(int i = 0; i < this.respective_skill.length; i++)
+        for(int i = 0; i < (this.respective_skill.length-1); i++)
         {
             this.damage += (float) (this.getSkillAttributes()[i]) * (this.getPlayerAttributes()[(this.respective_skill[i])]);
         }

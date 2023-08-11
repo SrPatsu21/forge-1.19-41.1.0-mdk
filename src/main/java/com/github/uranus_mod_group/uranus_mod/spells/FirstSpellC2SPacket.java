@@ -30,7 +30,8 @@ public class FirstSpellC2SPacket
         0,
         0,
         0,
-        0
+        0,
+        3
     };
 
     public FirstSpellC2SPacket()

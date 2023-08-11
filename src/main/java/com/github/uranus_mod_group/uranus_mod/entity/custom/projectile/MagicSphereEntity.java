@@ -1,31 +1,16 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
-import com.google.common.collect.Sets;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.FlameParticle;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.level.Explosion;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
-import net.minecraft.world.level.block.CampfireBlock;
-import net.minecraft.world.level.block.TntBlock;
-import net.minecraft.world.level.gameevent.EntityPositionSource;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.*;
-import net.minecraftforge.event.TickEvent;
-import org.openjdk.nashorn.internal.objects.annotations.Function;
+
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
 {
@@ -107,14 +92,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         return this.gravity;
     }
-    private void addGravity(float gravity)
-    {
-        this.gravity += gravity;
-    }
-    private void subGravity(float gravity)
-    {
-        this.gravity -= gravity;
-    }
     //speed
     public float getSpeed(){
         return this.speed;
@@ -145,62 +122,46 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     }
     //skill functions
 
-    public void setFire(BlockPos block_pos)
+    public void skillsReactions(BlockPos block_pos)
     {
-        int size = (int) getSkillAttributes(0)/1 +1;
+        int radius = (int) getSkillAttributes(21)+1;
         BlockPos block_pos2;
-        Set<BlockPos> set = Sets.newHashSet();
-        for(int y = -size+1; y < size; y++)
+        for(int y = -radius+1; y < radius; y++)
         {
-            for(int z = -size+1; z < size; z++)
+        for(int z = -radius+1; z < radius; z++)
+        {
+        for(int x = -radius+1; x < radius; x++)
+        {
+        if((Math.abs(x)+Math.abs(y)+Math.abs(z)) < radius)
+        {
+            block_pos2 = new BlockPos(block_pos.getX()+x, block_pos.getY()+y, block_pos.getZ()+z);
+            if (getLevel().getBlockState(block_pos2).isAir())
             {
-                for(int x = -size+1; x < size; x++)
+                getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos));
+                getLevel().addParticle(ParticleTypes.FLAME,
+                        block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
+                        0.0D, 0.2D, 0.0D);
+                List<Entity> list = this.level.getEntities(this.getOwner(), new AABB(
+                        block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
+                        (double)block_pos2.getX()+1, (double)block_pos2.getY()+1, (double)block_pos2.getZ()+1
+                ));
+                if(list != null)
                 {
-                    if((Math.abs(x)+Math.abs(y)+Math.abs(z)) < size)
+                    for(int e = 0; e < list.size(); e++)
                     {
-                        block_pos2 = new BlockPos(block_pos.getX()+x, block_pos.getY()+y, block_pos.getZ()+z);
-                        if (getLevel().getBlockState(block_pos2).isAir())
-                        {
-                            getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos));
-
-                            getLevel().addParticle(ParticleTypes.FLAME,
-                                    block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
-                                    0.0D, 0.2D, 0.0D);
-
-                            List<Entity> list = this.level.getEntities(this.getOwner(), new AABB(
-                                    (double)block_pos2.getX(), (double)block_pos2.getY(), (double)block_pos2.getZ(),
-                                    (double)block_pos2.getX()+1, (double)block_pos2.getY()+1, (double)block_pos2.getZ()+1
-                            ));
-                            if(list != null)
-                            {
-                                for(int e = 0; e < list.size(); e++)
-                                {
-                                    Entity entity = list.get(e);
-                                    entity.setSecondsOnFire(size);
-                                }
-                            }
-                            getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK_MARKER, getLevel().getBlockState(block_pos2)),
-                                    block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
-                                    0.0D, 0.2D, 0.0D);
+                        Entity entity = list.get(e);
+                        if (getSkillAttributes(0)>0){
+                            entity.setSecondsOnFire(getSkillAttributes(0));
                         }
                     }
                 }
             }
         }
+        }
+        }
+        }
     }
-    //does not have a way to add particles
-//    Explosion
-//    if (this.level.isClientSide) {
-//        this.level.playLocalSound(this.x, this.y, this.z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0F, (1.0F + (this.level.random.nextFloat() - this.level.random.nextFloat()) * 0.2F) * 0.7F, false);
-//    }
-//    boolean flag = this.blockInteraction != Explosion.BlockInteraction.NONE;
-//    if (p_46076_) {
-//        if (!(this.radius < 2.0F) && flag) {
-//            this.level.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
-//        } else {
-//            this.level.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
-//        }
-//    }
+
     //on hit
     protected void onHit(HitResult hitResult)
     {
@@ -212,7 +173,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             //fire skill
             if(getSkillAttributes(0) > 0)
             {
-                this.setFire(block_pos);
+                this.skillsReactions(block_pos);
             }
             //water
         }
