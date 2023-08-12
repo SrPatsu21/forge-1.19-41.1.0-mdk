@@ -121,44 +121,64 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         return this.skill_attributes[i];
     }
     //skill functions
+    public void reactionOnBlock(BlockPos block_pos2){
+        if (getLevel().getBlockState(block_pos2).isAir())
+        {
+            //flame
+            if (getSkillAttributes(0)>0)
+            {
+//                getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos2));
+            }
+        }
+    }
+    public void reactionOnEntity(BlockPos block_pos2, float distance_from_0)
+    {
+        List<Entity> list = this.level.getEntities(this.getOwner(), new AABB(
+                block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
+                (double)block_pos2.getX()+1, (double)block_pos2.getY()+1, (double)block_pos2.getZ()+1
+        ));
+        if(list != null)
+        {
+            for(int e = 0; e < list.size(); e++)
+            {
+                Entity entity = list.get(e);
+                //damage
+                if (this.getOwner() != null)
+                {
+                    entity.hurt(DamageSource.thrown(this, this.getOwner()), (getDamage()*(1-distance_from_0)));
+                    System.out.println((getDamage()*(1-distance_from_0)));
+                }
 
+                //flame
+                if (getSkillAttributes(0)>0)
+                {
+//                    entity.setSecondsOnFire(getSkillAttributes(0));
+                }
+
+            }
+        }
+    }
     public void skillsReactions(BlockPos block_pos)
     {
         int radius = (int) getSkillAttributes(21)+1;
         BlockPos block_pos2;
         for(int y = -radius+1; y < radius; y++)
         {
-        for(int z = -radius+1; z < radius; z++)
-        {
-        for(int x = -radius+1; x < radius; x++)
-        {
-        if((Math.abs(x)+Math.abs(y)+Math.abs(z)) < radius)
-        {
-            block_pos2 = new BlockPos(block_pos.getX()+x, block_pos.getY()+y, block_pos.getZ()+z);
-            if (getLevel().getBlockState(block_pos2).isAir())
+            for(int z = -radius+1; z < radius; z++)
             {
-                getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos));
-                getLevel().addParticle(ParticleTypes.FLAME,
-                        block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
-                        0.0D, 0.2D, 0.0D);
-                List<Entity> list = this.level.getEntities(this.getOwner(), new AABB(
-                        block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
-                        (double)block_pos2.getX()+1, (double)block_pos2.getY()+1, (double)block_pos2.getZ()+1
-                ));
-                if(list != null)
+                for(int x = -radius+1; x < radius; x++)
                 {
-                    for(int e = 0; e < list.size(); e++)
+                    //distance of the 0 point
+                    double distance = ((Math.abs(x)+Math.abs(y)+Math.abs(z))/3) *3.14;
+                    if(distance < radius)
                     {
-                        Entity entity = list.get(e);
-                        if (getSkillAttributes(0)>0){
-                            entity.setSecondsOnFire(getSkillAttributes(0));
-                        }
+                        float distance_from_0 = (float) distance/radius;
+                        block_pos2 = new BlockPos(block_pos.getX()+x, block_pos.getY()+y, block_pos.getZ()+z);
+                        reactionOnBlock(block_pos2);
+                        reactionOnEntity(block_pos2, distance_from_0);
                     }
                 }
             }
-        }
-        }
-        }
         }
     }
 
@@ -169,28 +189,19 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         if (!getLevel().isClientSide)
         {
             BlockPos block_pos = blockPosition();
+            //??????????
             getLevel().broadcastEntityEvent(this, (byte) 3);
-            //fire skill
+
             if(getSkillAttributes(0) > 0)
             {
                 this.skillsReactions(block_pos);
             }
-            //water
         }
     }
     //on hit at an entity
     protected void onHitEntity(EntityHitResult hitResult)
     {
         super.onHitEntity(hitResult);
-        Entity entity = hitResult.getEntity();
-        if (this.getOwner() != null && this.skill_attributes != null)
-        {
-            entity.hurt(DamageSource.thrown(this, this.getOwner()), getDamage());
-            if(getSkillAttributes(0) != 0)
-            {
-                entity.setSecondsOnFire(getSkillAttributes(0));
-            }
-        }
         this.discard();
     }
     //on hit a block
