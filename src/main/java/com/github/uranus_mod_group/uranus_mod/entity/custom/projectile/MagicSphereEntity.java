@@ -6,7 +6,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.*;
 
 
@@ -124,10 +126,15 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     public void reactionOnBlock(BlockPos block_pos2){
         if (getLevel().getBlockState(block_pos2).isAir())
         {
-            //flame
+            //ignite
             if (getSkillAttributes(0)>0)
             {
-//                getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos2));
+                getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos2));
+            }
+            //water
+            if (getSkillAttributes(1)>0)
+            {
+                getLevel().setBlock(block_pos2, new Blocks().BIG_DRIPLEAF.defaultBlockState(), 3);
             }
         }
     }
@@ -146,13 +153,17 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                 if (this.getOwner() != null)
                 {
                     entity.hurt(DamageSource.thrown(this, this.getOwner()), (getDamage()*(1-distance_from_0)));
-                    System.out.println((getDamage()*(1-distance_from_0)));
                 }
 
-                //flame
+                //ignite
                 if (getSkillAttributes(0)>0)
                 {
-//                    entity.setSecondsOnFire(getSkillAttributes(0));
+                    entity.setSecondsOnFire(getSkillAttributes(0));
+                }
+                //water
+                if (getSkillAttributes(1)> 0)
+                {
+                    entity.clearFire();
                 }
 
             }
@@ -172,10 +183,9 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                     double distance = ((Math.abs(x)+Math.abs(y)+Math.abs(z))/3) *3.14;
                     if(distance < radius)
                     {
-                        float distance_from_0 = (float) distance/radius;
                         block_pos2 = new BlockPos(block_pos.getX()+x, block_pos.getY()+y, block_pos.getZ()+z);
                         reactionOnBlock(block_pos2);
-                        reactionOnEntity(block_pos2, distance_from_0);
+                        reactionOnEntity(block_pos2, (float) distance/radius);
                     }
                 }
             }
@@ -191,11 +201,8 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             BlockPos block_pos = blockPosition();
             //??????????
             getLevel().broadcastEntityEvent(this, (byte) 3);
-
-            if(getSkillAttributes(0) > 0)
-            {
-                this.skillsReactions(block_pos);
-            }
+            //call reactions
+            this.skillsReactions(block_pos);
         }
     }
     //on hit at an entity

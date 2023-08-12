@@ -150,7 +150,7 @@ public class CreateSkills {
         {
             this.value_of_skill += this.value_of_attributes[i] * (int) getSkillAttributes()[i];
         }
-        this.value_of_skill += add;
+        this.value_of_skill *= add;
     }
     public void setPlayerXpSkills()
     {
@@ -168,7 +168,9 @@ public class CreateSkills {
     {
         for(int i = 0; i < (this.respective_skill.length-1); i++)
         {
-            this.damage += (float) (this.getSkillAttributes()[i]) * (this.getPlayerAttributes()[(this.respective_skill[i])]);
+            if (getSkillAttributes()[i] != 0) {
+                this.damage += (float) (this.getSkillAttributes()[i]) * (this.getPlayerAttributes()[(this.respective_skill[i])]);
+            }
         }
     }
     //get
