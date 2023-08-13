@@ -146,11 +146,14 @@ public class CreateSkills {
     }
     private void setValueOfSkillMana(float add)
     {
+        //to 20
         for(int i = 0; i < (this.value_of_attributes.length-1); i++)
         {
             this.value_of_skill += this.value_of_attributes[i] * (int) getSkillAttributes()[i];
         }
-        this.value_of_skill *= add;
+        this.value_of_skill += add;
+        //to 21
+        this.value_of_skill *= getSkillAttributes()[(getPlayerAttributes().length-1)];
     }
     public void setPlayerXpSkills()
     {

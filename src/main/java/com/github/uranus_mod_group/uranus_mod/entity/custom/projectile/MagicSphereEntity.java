@@ -1,13 +1,14 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.*;
 
@@ -129,12 +130,18 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             //ignite
             if (getSkillAttributes(0)>0)
             {
-                getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos2));
+                if (getSkillAttributes(0) > 10)
+                {
+                    if (random.nextInt(126)<= getSkillAttributes(0))
+                    {
+                        getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos2));
+                    }
+                }
             }
             //water
             if (getSkillAttributes(1)>0)
             {
-                getLevel().setBlock(block_pos2, new Blocks().BIG_DRIPLEAF.defaultBlockState(), 3);
+                getLevel().setBlock(block_pos2, new Blocks().WATER.defaultBlockState(), 1);
             }
         }
     }

@@ -11,7 +11,7 @@ public class FirstSpellC2SPacket
     private byte[] skill_attributes =
     {
         0,
-        5,
+        15,
         0,
         0,
         0,
