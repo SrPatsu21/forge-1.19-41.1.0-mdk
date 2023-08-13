@@ -153,7 +153,7 @@ public class CreateSkills {
         }
         this.value_of_skill += add;
         //to 21
-        this.value_of_skill *= getSkillAttributes()[(getPlayerAttributes().length-1)];
+        this.value_of_skill *= getSkillAttributes()[(getSkillAttributes().length-1)];
     }
     public void setPlayerXpSkills()
     {

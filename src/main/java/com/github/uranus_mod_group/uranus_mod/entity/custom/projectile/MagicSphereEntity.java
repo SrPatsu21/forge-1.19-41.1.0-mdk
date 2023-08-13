@@ -1,6 +1,11 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
+import net.minecraft.client.particle.ExplodeParticle;
+import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -11,9 +16,12 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 
 import java.util.List;
+import java.util.Random;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
 {
@@ -130,6 +138,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             //ignite
             if (getSkillAttributes(0)>0)
             {
+                //fire on floor
                 if (getSkillAttributes(0) > 10)
                 {
                     if (random.nextInt(126)<= getSkillAttributes(0))
@@ -141,13 +150,14 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             //water
             if (getSkillAttributes(1)>0)
             {
-                getLevel().setBlock(block_pos2, new Blocks().WATER.defaultBlockState(), 1);
+                //make particles
+//                getLevel().setBlock(block_pos2, new Blocks().WATER.defaultBlockState(), 1);
             }
         }
     }
     public void reactionOnEntity(BlockPos block_pos2, float distance_from_0)
     {
-        List<Entity> list = this.level.getEntities(this.getOwner(), new AABB(
+        List<Entity> list = getLevel().getEntities(this.getOwner(), new AABB(
                 block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
                 (double)block_pos2.getX()+1, (double)block_pos2.getY()+1, (double)block_pos2.getZ()+1
         ));
@@ -157,10 +167,8 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             {
                 Entity entity = list.get(e);
                 //damage
-                if (this.getOwner() != null)
-                {
-                    entity.hurt(DamageSource.thrown(this, this.getOwner()), (getDamage()*(1-distance_from_0)));
-                }
+                System.out.println("value = "+getDamage()*(1-distance_from_0)+ " distance= "+ distance_from_0);
+                entity.hurt(DamageSource.thrown(this, this.getOwner()), (getDamage()*(1-distance_from_0)));
 
                 //ignite
                 if (getSkillAttributes(0)>0)
@@ -209,8 +217,12 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             //??????????
             getLevel().broadcastEntityEvent(this, (byte) 3);
             //call reactions
-            this.skillsReactions(block_pos);
+            if (this.getOwner() != null)
+            {
+                this.skillsReactions(block_pos);
+            }
         }
+        this.discard();
     }
     //on hit at an entity
     protected void onHitEntity(EntityHitResult hitResult)
