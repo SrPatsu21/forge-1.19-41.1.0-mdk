@@ -12,7 +12,6 @@ import com.github.uranus_mod_group.uranus_mod.spells.FirstSpellC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.SubManaC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 import com.github.uranus_mod_group.uranus_mod.util.KeyBinding;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -58,7 +57,7 @@ public class ClientEvents {
             event.register(KeyBinding.SKILLS_2_KEY);
             event.register(KeyBinding.SKILLS_3_KEY);
         }
-        //I dont know now, I think it is mana hud
+        //mana hud
         @SubscribeEvent
         public static void registerGuiOverLays(RegisterGuiOverlaysEvent event)
         {
@@ -78,6 +77,5 @@ public class ClientEvents {
             event.registerLayerDefinition(MasterWizardModel.LAYER_LOCATION, MasterWizardModel::createBodyLayer);
             event.registerLayerDefinition(MagicSphereModel.LAYER_LOCATION, MagicSphereModel::createBodyLayer);
         }
-
     }
 }
