@@ -1,15 +1,21 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
-import com.github.uranus_mod_group.uranus_mod.particles.UranusPaticlesTypes;
+import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.TickingBlockEntity;
 import net.minecraft.world.phys.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
+import java.util.Set;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
 {
@@ -119,6 +125,12 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         return this.skill_attributes[i];
     }
+    //particles
+    @OnlyIn(Dist.CLIENT)
+    protected void particlesSet(ParticleOptions type, BlockPos block_pos)
+    {
+        getLevel().addParticle(type , block_pos.getX(), block_pos.getY(), block_pos.getZ(), 1, 1, 1);
+    }
     //skill functions
     public void reactionOnBlock(BlockPos block_pos2){
         if (getLevel().getBlockState(block_pos2).isAir())
@@ -139,8 +151,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             if (getSkillAttributes(1)>0)
             {
                 //make particles
-                getLevel().addParticle(ParticleTypes.FALLING_WATER, block_pos2.getX(), block_pos2.getY(), block_pos2.getZ()
-                        , 0.1, 0.1, 0.1);
+                particlesSet(ParticleTypes.EXPLOSION_EMITTER, block_pos2);
                 //create water
 //                getLevel().setBlock(block_pos2, new Blocks().WATER.defaultBlockState(), 1);
             }
@@ -169,7 +180,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                 //water
                 if (getSkillAttributes(1)> 0)
                 {
-                    getLevel().addParticle(UranusPaticlesTypes.AUTO_ADD_PARTICLES.get(), block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(), 0, 0, 0);
                     entity.clearFire();
                 }
 
