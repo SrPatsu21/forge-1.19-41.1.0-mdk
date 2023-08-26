@@ -1,31 +1,27 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
-import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.TickingBlockEntity;
 import net.minecraft.world.phys.*;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
-import java.util.Set;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
 {
-    private float gravity = -0.05F;
+    private final float gravity = -0.05F;
     private int life = 200;
     private final float speed = 0.999F;
     private final float speed_on_water_r = -0.1F;
     private final float speed_on_rain_r = -0.07F;
     private float damage = 0.0F;
     private byte[] skill_attributes;
+    private byte radius;
+    private boolean hited = false;
 
     //constructor
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType,Level level)
@@ -44,44 +40,49 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         super.setOwner(entity);
         this.setSkillAttributes(skill_attributes);
         this.setDamage(damage);
+        this.setRadius((byte) (skill_attributes[(skill_attributes.length-1)]+1));
     }
     //on tick event
     public void tick()
     {
         super.tick();
         tickOutSpawn();
-        //position
-        this.checkInsideBlocks();
-        Vec3 vec3delta = this.getDeltaMovement();
-        double d2 = this.getX() + vec3delta.x;
-        double d0 = this.getY() + vec3delta.y;
-        double d1 = this.getZ() + vec3delta.z;
+        if(hited)
+        {
+            //position
+            this.checkInsideBlocks();
+            Vec3 vec3delta = this.getDeltaMovement();
+            double d2 = this.getX() + vec3delta.x;
+            double d0 = this.getY() + vec3delta.y;
+            double d1 = this.getZ() + vec3delta.z;
 
-        this.updateRotation();
-        //speed
-        float f;
-        //if is underwater
-        if (this.isInWater())
-        {
-            f = getSpeed_on_water_r();
-        }
-        else if(this.isInRain())
-        {
-            f = getSpeed_on_rain_r();
-        }
-        else
-        {
-            f = getSpeed();
-        }
-        //set delta movement
-        this.setDeltaMovement(vec3delta.scale(f));
-        //if it has gravity it will move
-        if (!this.isNoGravity()) {
-            Vec3 vec3delta2 = this.getDeltaMovement();
-            this.setDeltaMovement(vec3delta2.x, vec3delta2.y + (double)getGravity(), vec3delta2.z);
+            this.updateRotation();
+            //speed
+            float f;
+            //if is underwater
+            if (this.isInWater())
+            {
+                f = getSpeed_on_water_r();
+            }
+            else if(this.isInRain())
+            {
+                f = getSpeed_on_rain_r();
+            }
+            else
+            {
+                f = getSpeed();
+            }
+            //set delta movement
+            this.setDeltaMovement(vec3delta.scale(f));
+            //if it has gravity it will move
+            if (!this.isNoGravity()) {
+                Vec3 vec3delta2 = this.getDeltaMovement();
+                this.setDeltaMovement(vec3delta2.x, vec3delta2.y + (double)getGravity(), vec3delta2.z);
+            }
+
+            this.setPos(d2, d0, d1);
         }
 
-        this.setPos(d2, d0, d1);
     }
     //tick count to entity disappear
     protected void tickOutSpawn()
@@ -125,11 +126,22 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         return this.skill_attributes[i];
     }
-    //particles
-    @OnlyIn(Dist.CLIENT)
-    protected void particlesSet(ParticleOptions type, BlockPos block_pos)
+    //radius
+    private void setRadius(byte radius)
     {
-        getLevel().addParticle(type , block_pos.getX(), block_pos.getY(), block_pos.getZ(), 1, 1, 1);
+        this.radius = radius;
+    }
+    public byte getRadius()
+    {
+        return radius;
+    }
+
+    //particles
+    public void particlesSet(ParticleOptions type, BlockPos block_pos)
+    {
+        if (this.level.isClientSide){
+            getLevel().addParticle(type, true, block_pos.getX(), block_pos.getY(), block_pos.getZ(), 1, 1, 1);
+        }
     }
     //skill functions
     public void reactionOnBlock(BlockPos block_pos2){
@@ -188,55 +200,54 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     }
     public void skillsReactions(BlockPos block_pos)
     {
-        int radius = (int) getSkillAttributes(21)+1;
+        int radius = getRadius();
         BlockPos block_pos2;
         for(int y = -radius+1; y < radius; y++)
         {
-            for(int z = -radius+1; z < radius; z++)
+        for(int z = -radius+1; z < radius; z++)
+        {
+        for(int x = -radius+1; x < radius; x++)
+        {
+            particlesSet(ParticleTypes.ENCHANTED_HIT, block_pos);
+
+
+            //distance of the 0 point
+            double distance = ((Math.abs(x) + Math.abs(y) + Math.abs(z)) / 3) * 3.14;
+            if (distance < radius)
             {
-                for(int x = -radius+1; x < radius; x++)
+                block_pos2 = new BlockPos(block_pos.getX() + x, block_pos.getY() + y, block_pos.getZ() + z);
+                if (!getLevel().isClientSide)
                 {
-                    //distance of the 0 point
-                    double distance = ((Math.abs(x)+Math.abs(y)+Math.abs(z))/3) *3.14;
-                    if(distance < radius)
-                    {
-                        block_pos2 = new BlockPos(block_pos.getX()+x, block_pos.getY()+y, block_pos.getZ()+z);
-                        reactionOnBlock(block_pos2);
-                        reactionOnEntity(block_pos2, (float) distance/radius);
-                    }
+                    reactionOnBlock(block_pos2);
+                    reactionOnEntity(block_pos2, (float) distance / radius);
                 }
             }
         }
+        }
+        }
+        this.discard();
     }
 
     //on hit
     protected void onHit(HitResult hitResult)
     {
         super.onHit(hitResult);
-        if (!getLevel().isClientSide)
+        BlockPos block_pos = blockPosition();
+        //call reactions
+        if (this.getOwner() != null)
         {
-            BlockPos block_pos = blockPosition();
-            //??????????
-            getLevel().broadcastEntityEvent(this, (byte) 3);
-            //call reactions
-            if (this.getOwner() != null)
-            {
-                this.skillsReactions(block_pos);
-            }
+            this.skillsReactions(block_pos);
         }
-        this.discard();
     }
     //on hit at an entity
     protected void onHitEntity(EntityHitResult hitResult)
     {
         super.onHitEntity(hitResult);
-        this.discard();
     }
     //on hit a block
     protected void onHitBlock(BlockHitResult hitResult)
     {
         super.onHitBlock(hitResult);
-        this.discard();
     }
     @Override
     protected void defineSynchedData()

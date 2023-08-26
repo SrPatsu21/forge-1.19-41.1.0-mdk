@@ -66,7 +66,8 @@ public abstract class AbstractUranusModProjectile extends Projectile {
         //onProjectileImpact is false
         if (hitresult.getType() != HitResult.Type.MISS
                 && !flag
-                && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
+                && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult))
+        {
             this.onHit(hitresult);
         }
     }

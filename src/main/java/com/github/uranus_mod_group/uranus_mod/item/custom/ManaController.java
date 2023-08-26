@@ -23,7 +23,7 @@ public class ManaController extends Item
         {
             player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
             {
-                mana.addML(1);
+                mana.addML(1000);
                 mana.manaStatsReset();
                 player.sendSystemMessage(Component.literal("mana level:"+ mana.getMl()));
             });
