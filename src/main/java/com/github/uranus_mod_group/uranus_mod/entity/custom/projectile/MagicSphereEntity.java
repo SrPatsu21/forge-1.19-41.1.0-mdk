@@ -47,42 +47,45 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         super.tick();
         tickOutSpawn();
-        if(hited)
-        {
-            //position
-            this.checkInsideBlocks();
-            Vec3 vec3delta = this.getDeltaMovement();
-            double d2 = this.getX() + vec3delta.x;
-            double d0 = this.getY() + vec3delta.y;
-            double d1 = this.getZ() + vec3delta.z;
+        //position
+        this.checkInsideBlocks();
+        Vec3 vec3delta = this.getDeltaMovement();
+        double d2 = this.getX() + vec3delta.x;
+        double d0 = this.getY() + vec3delta.y;
+        double d1 = this.getZ() + vec3delta.z;
 
-            this.updateRotation();
-            //speed
-            float f;
-            //if is underwater
-            if (this.isInWater())
-            {
-                f = getSpeed_on_water_r();
-            }
-            else if(this.isInRain())
-            {
-                f = getSpeed_on_rain_r();
-            }
-            else
-            {
-                f = getSpeed();
-            }
+        this.updateRotation();
+        //speed
+        float f;
+        //if is underwater
+        if (this.isInWater())
+        {
+            f = getSpeed_on_water_r();
+        }
+        else if(this.isInRain())
+        {
+            f = getSpeed_on_rain_r();
+        }
+        else
+        {
+            f = getSpeed();
+        }
+        if(!hited)
+        {
             //set delta movement
             this.setDeltaMovement(vec3delta.scale(f));
             //if it has gravity it will move
-            if (!this.isNoGravity()) {
+            if (!this.isNoGravity())
+            {
                 Vec3 vec3delta2 = this.getDeltaMovement();
-                this.setDeltaMovement(vec3delta2.x, vec3delta2.y + (double)getGravity(), vec3delta2.z);
+                this.setDeltaMovement(vec3delta2.x, vec3delta2.y + (double) getGravity(), vec3delta2.z);
             }
-
             this.setPos(d2, d0, d1);
+        }else
+        {
+            //set delta movement
+            this.setDeltaMovement(vec3delta.scale(0));
         }
-
     }
     //tick count to entity disappear
     protected void tickOutSpawn()
@@ -139,9 +142,8 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     //particles
     public void particlesSet(ParticleOptions type, BlockPos block_pos)
     {
-        if (this.level.isClientSide){
-            getLevel().addParticle(type, true, block_pos.getX(), block_pos.getY(), block_pos.getZ(), 1, 1, 1);
-        }
+        getLevel().addParticle(type, true, block_pos.getX()+(0.1), block_pos.getY()+(0.1), block_pos.getZ()+(0.1), 1, 1, 1);
+        System.out.println("particles:");
     }
     //skill functions
     public void reactionOnBlock(BlockPos block_pos2){
@@ -208,14 +210,15 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         {
         for(int x = -radius+1; x < radius; x++)
         {
-            particlesSet(ParticleTypes.ENCHANTED_HIT, block_pos);
-
-
             //distance of the 0 point
             double distance = ((Math.abs(x) + Math.abs(y) + Math.abs(z)) / 3) * 3.14;
             if (distance < radius)
             {
                 block_pos2 = new BlockPos(block_pos.getX() + x, block_pos.getY() + y, block_pos.getZ() + z);
+                if (getLevel().isClientSide)
+                {
+                    particlesSet(ParticleTypes.FALLING_WATER, block_pos2);
+                }
                 if (!getLevel().isClientSide)
                 {
                     reactionOnBlock(block_pos2);
@@ -225,12 +228,12 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         }
         }
         }
-        this.discard();
     }
 
     //on hit
     protected void onHit(HitResult hitResult)
     {
+        this.hited = true;
         super.onHit(hitResult);
         BlockPos block_pos = blockPosition();
         //call reactions
