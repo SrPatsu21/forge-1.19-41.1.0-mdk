@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 public class FirstSpellC2SPacket
 {
+    //the last one need to be the rang of the skill if it`s have
     private byte[] skill_attributes =
     {
         0,

@@ -6,11 +6,12 @@ import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.SkillsDataSyncS2CPacket;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 public class CreateSkills {
     private int skill_kind = 0;
@@ -21,6 +22,7 @@ public class CreateSkills {
     private double value_of_skill = 0.0D;
     private NetworkEvent.Context context;
     private float damage = 0.0F;
+    private ParticleOptions[] particle_options;
 //0    ignite
 //1    water
 //2    stone
@@ -68,6 +70,53 @@ public class CreateSkills {
         40,
         20
     };
+//0    ignite
+//1    water
+//2    stone
+//3    air
+//4    elektron
+//5    lava
+//6    break
+//7    build
+//8    heal
+//9    poison
+//10   wither
+//11   teleport
+//12   light/shadows
+//13   cold/warm
+//14   blood
+//15   give mana
+//16   remove mana
+//17   explosion
+//18   gravitational
+//19   pull/push
+//20   summon
+//21   radius
+    private final ParticleOptions[] PARTICLE_VARIANTS =
+    {
+    ParticleTypes.FLAME,
+    ParticleTypes.FALLING_WATER,
+    ParticleTypes.LARGE_SMOKE,
+    ParticleTypes.SWEEP_ATTACK,
+    ParticleTypes.FLASH,
+    ParticleTypes.FALLING_LAVA,
+    ParticleTypes.POOF,
+    ParticleTypes.POOF,
+    ParticleTypes.HEART,
+    ParticleTypes.EFFECT,
+    ParticleTypes.EFFECT,
+    ParticleTypes.PORTAL,
+    ParticleTypes.GLOW,
+    ParticleTypes.END_ROD,
+    ParticleTypes.SOUL_FIRE_FLAME,
+    ParticleTypes.INSTANT_EFFECT,
+    ParticleTypes.INSTANT_EFFECT,
+    ParticleTypes.EXPLOSION,
+    ParticleTypes.SONIC_BOOM,
+    ParticleTypes.SONIC_BOOM,
+    ParticleTypes.WITCH,
+    ParticleTypes.ENCHANTED_HIT
+    };
     private byte[] player_attributes;
 //0    fire 0 5
 //1    water 1
@@ -84,7 +133,7 @@ public class CreateSkills {
 //12   explosion 17
 //13   gravity 18 19
 //14   summon 20
-    private final byte [] respective_skill =
+    private final byte [] RESPECTIVE_SKILLS =
     {
         0,
         1,
@@ -109,7 +158,7 @@ public class CreateSkills {
         14
     };
     //constructor
-    public CreateSkills(NetworkEvent.Context context, int skill_kind, byte [] attributes)
+    public CreateSkills(@NotNull NetworkEvent.Context context, int skill_kind, byte [] attributes)
     {
         this.setContext(context);
         this.setOwner(context.getSender());
@@ -160,7 +209,7 @@ public class CreateSkills {
         getOwner().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(skill -> {
             for (int i = 0; i < (this.getSkillAttributes().length-1); i++) {
                 if (getSkillAttributes()[i] != 0) {
-                    skill.addSkillXp((this.respective_skill[i]), (this.getSkillAttributes()[i]));
+                    skill.addSkillXp((this.RESPECTIVE_SKILLS[i]), (this.getSkillAttributes()[i]));
                 }
             }
             ModMessages.sendToPlayer(new SkillsDataSyncS2CPacket(skill.getSkillsLevel(), skill.getSkillsXp()), getOwner());
@@ -169,13 +218,36 @@ public class CreateSkills {
     //damage
     private void setDamage()
     {
-        for(int i = 0; i < (this.respective_skill.length-1); i++)
+        for(int i = 0; i < (this.RESPECTIVE_SKILLS.length-1); i++)
         {
             if (getSkillAttributes()[i] != 0) {
-                this.damage += (float) (this.getSkillAttributes()[i]) * (this.getPlayerAttributes()[(this.respective_skill[i])]);
+                this.damage += (float) (this.getSkillAttributes()[i]) * (this.getPlayerAttributes()[(this.RESPECTIVE_SKILLS[i])]);
             }
         }
     }
+    //particles
+    private void setParticles(byte [] attributes)
+    {
+        int i = 0, len = 0, cont = 0;
+        for (i = 0; i < (attributes.length -1); i++)
+        {
+            if(getSkillAttributes()[i] > 0)
+            {
+                len++;
+            }
+        }
+        ParticleOptions[] particle_options = new ParticleOptions[(len)];
+        for (i = 0; i < attributes.length; i++)
+        {
+            if(getSkillAttributes()[i]<0)
+            {
+                particle_options[cont] = PARTICLE_VARIANTS[i];
+                cont++;
+            }
+        }
+        this.particle_options = particle_options;
+    }
+
     //get
     public Level getLevel()
     {
@@ -208,6 +280,10 @@ public class CreateSkills {
     {
         return this.damage;
     }
+    public ParticleOptions[] getParticleOptions()
+    {
+        return this.particle_options;
+    }
     //create skill as set
     public void createSkill(float speed_plus)
     {
@@ -234,8 +310,9 @@ public class CreateSkills {
     }
     public void createMagicSphereEntity (float speed_plus)
     {
+        this.setParticles(getSkillAttributes());
         MagicSphereEntity magic_sphere = new MagicSphereEntity(ModEntityTypes.MAGIC_SPHERE.get() , getLevel(), getOwner()
-                , getSkillAttributes(), getDamage());
+                , getSkillAttributes(), getDamage(), getParticleOptions());
 
         magic_sphere.shootFromRotation(magic_sphere.getOwner(), magic_sphere.getOwner().getXRot(), magic_sphere.getOwner().getYRot()
                 , 0.0F, magic_sphere.getSpeed() * speed_plus, 0.0F);
