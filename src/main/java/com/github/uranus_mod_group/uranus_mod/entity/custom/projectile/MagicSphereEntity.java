@@ -18,7 +18,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     private final float speed = 0.999F;
     private float damage = 0.0F;
     private byte[] skill_attributes;
-    private ParticleOptions[] particle_options;
     private boolean hited = false;
 
     //constructor
@@ -32,13 +31,12 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         this.setPos(x, y, z);
     }
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType, Level level, LivingEntity entity,
-                             byte[] skill_attributes, float damage, ParticleOptions[] particle_options)
+                             byte[] skill_attributes, float damage)
     {
         this(entityEntityType, level, entity.getX(),entity.getEyeY() - (double)0.1F, entity.getZ());
         super.setOwner(entity);
         this.setSkillAttributes(skill_attributes);
         this.setDamage(damage);
-        this.setParticleOptions(particle_options);
     }
     //on tick event
     public void tick()
@@ -78,13 +76,13 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                 Vec3 vec3delta2 = this.getDeltaMovement();
                 this.setDeltaMovement(vec3delta2.x, vec3delta2.y + (double) getGravity(), vec3delta2.z);
             }
-//            particlesUse(this.blockPosition());
             this.setPos(d2, d0, d1);
         }else
         {
             //set delta movement
             this.setDeltaMovement(vec3delta.scale(0));
         }
+        createParticles(this.blockPosition());
     }
     //tick count to entity disappear
     protected void tickOutSpawn()
@@ -134,25 +132,9 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
 //        return (byte) (getSkillAttributes((this.skill_attributes.length-1))+1);
 //    }
     //particles
-    private void setParticleOptions(ParticleOptions[] particle_options)
+    public void createParticles(BlockPos block_pos)
     {
-        this.particle_options = particle_options;
-    }
-    public ParticleOptions[] getParticleOptions()
-    {
-        return this.particle_options;
-    }
-    public void createParticles(ParticleOptions type, BlockPos block_pos)
-    {
-        getLevel().addParticle(type, true, block_pos.getX(), block_pos.getY()+(0.1), block_pos.getZ()+(0.1), 1, 1, 1);
-    }
-    public void particlesUse(BlockPos block_pos)
-    {
-        for (int i = 0; i > getParticleOptions().length; i++)
-        {
-            createParticles(getParticleOptions()[i], block_pos);
-
-        }
+        getLevel().addParticle(ParticleTypes.FALLING_WATER, true, block_pos.getX(), block_pos.getY()+(0.1), block_pos.getZ()+(0.1), 1, 1, 1);
     }
     //skill functions
     public void reactionOnBlock(BlockPos block_pos2){

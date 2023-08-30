@@ -22,7 +22,6 @@ public class CreateSkills {
     private double value_of_skill = 0.0D;
     private NetworkEvent.Context context;
     private float damage = 0.0F;
-    private ParticleOptions[] particle_options;
 //0    ignite
 //1    water
 //2    stone
@@ -69,53 +68,6 @@ public class CreateSkills {
         30,
         40,
         20
-    };
-//0    ignite
-//1    water
-//2    stone
-//3    air
-//4    elektron
-//5    lava
-//6    break
-//7    build
-//8    heal
-//9    poison
-//10   wither
-//11   teleport
-//12   light/shadows
-//13   cold/warm
-//14   blood
-//15   give mana
-//16   remove mana
-//17   explosion
-//18   gravitational
-//19   pull/push
-//20   summon
-//21   radius
-    private final ParticleOptions[] PARTICLE_VARIANTS =
-    {
-    ParticleTypes.FLAME,
-    ParticleTypes.FALLING_WATER,
-    ParticleTypes.LARGE_SMOKE,
-    ParticleTypes.SWEEP_ATTACK,
-    ParticleTypes.FLASH,
-    ParticleTypes.FALLING_LAVA,
-    ParticleTypes.POOF,
-    ParticleTypes.POOF,
-    ParticleTypes.HEART,
-    ParticleTypes.EFFECT,
-    ParticleTypes.EFFECT,
-    ParticleTypes.PORTAL,
-    ParticleTypes.GLOW,
-    ParticleTypes.END_ROD,
-    ParticleTypes.SOUL_FIRE_FLAME,
-    ParticleTypes.INSTANT_EFFECT,
-    ParticleTypes.INSTANT_EFFECT,
-    ParticleTypes.EXPLOSION,
-    ParticleTypes.SONIC_BOOM,
-    ParticleTypes.SONIC_BOOM,
-    ParticleTypes.WITCH,
-    ParticleTypes.ENCHANTED_HIT
     };
     private byte[] player_attributes;
 //0    fire 0 5
@@ -225,29 +177,6 @@ public class CreateSkills {
             }
         }
     }
-    //particles
-    private void setParticles(byte [] attributes)
-    {
-        int i = 0, len = 0, cont = 0;
-        for (i = 0; i < (attributes.length -1); i++)
-        {
-            if(getSkillAttributes()[i] > 0)
-            {
-                len++;
-            }
-        }
-        ParticleOptions[] particle_options = new ParticleOptions[(len)];
-        for (i = 0; i < attributes.length; i++)
-        {
-            if(getSkillAttributes()[i]<0)
-            {
-                particle_options[cont] = PARTICLE_VARIANTS[i];
-                cont++;
-            }
-        }
-        this.particle_options = particle_options;
-    }
-
     //get
     public Level getLevel()
     {
@@ -280,10 +209,6 @@ public class CreateSkills {
     {
         return this.damage;
     }
-    public ParticleOptions[] getParticleOptions()
-    {
-        return this.particle_options;
-    }
     //create skill as set
     public void createSkill(float speed_plus)
     {
@@ -310,9 +235,8 @@ public class CreateSkills {
     }
     public void createMagicSphereEntity (float speed_plus)
     {
-        this.setParticles(getSkillAttributes());
         MagicSphereEntity magic_sphere = new MagicSphereEntity(ModEntityTypes.MAGIC_SPHERE.get() , getLevel(), getOwner()
-                , getSkillAttributes(), getDamage(), getParticleOptions());
+                , getSkillAttributes(), getDamage());
 
         magic_sphere.shootFromRotation(magic_sphere.getOwner(), magic_sphere.getOwner().getXRot(), magic_sphere.getOwner().getYRot()
                 , 0.0F, magic_sphere.getSpeed() * speed_plus, 0.0F);
