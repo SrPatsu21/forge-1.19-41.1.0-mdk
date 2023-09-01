@@ -8,8 +8,11 @@ import com.github.uranus_mod_group.uranus_mod.mana.PlayerMana;
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
+import com.github.uranus_mod_group.uranus_mod.particles.ModParticles;
+import com.github.uranus_mod_group.uranus_mod.particles.custom.MagicParticles;
 import com.github.uranus_mod_group.uranus_mod.skills.PlayerSkillsProvider;
 import com.github.uranus_mod_group.uranus_mod.villager.ModVillagers;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,6 +22,7 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
@@ -177,6 +181,12 @@ public class ModEvents
         public static void entityAttributeEvent (EntityAttributeCreationEvent event)
         {
             event.put(ModEntityTypes.MASTER_WIZARD.get(), MasterWizardEntity.getMasterWizardAttributes().build());
+        }
+        //register particle
+        @SubscribeEvent
+        public static void registerParticleFactories(final RegisterParticleProvidersEvent event) {
+            Minecraft.getInstance().particleEngine.register(ModParticles.MAGIC_PARTICLES.get(),
+                    MagicParticles.Provider::new);
         }
 
     }

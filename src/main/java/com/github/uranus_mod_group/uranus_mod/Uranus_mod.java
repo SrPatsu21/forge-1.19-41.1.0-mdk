@@ -4,6 +4,7 @@ import com.github.uranus_mod_group.uranus_mod.entity.ModEntityTypes;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.block.ModBlocks;
 import com.github.uranus_mod_group.uranus_mod.item.ModItems;
+import com.github.uranus_mod_group.uranus_mod.particles.ModParticles;
 import com.github.uranus_mod_group.uranus_mod.villager.ModVillagers;
 import com.github.uranus_mod_group.uranus_mod.world.feature.ModConfiguredFeatures;
 import com.github.uranus_mod_group.uranus_mod.world.feature.ModPlacedFeatures;
@@ -34,6 +35,7 @@ public class Uranus_mod {
         ModPlacedFeatures.register(modEventBus);
         ModVillagers.register(modEventBus);
         ModEntityTypes.register(modEventBus);
+        ModParticles.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 

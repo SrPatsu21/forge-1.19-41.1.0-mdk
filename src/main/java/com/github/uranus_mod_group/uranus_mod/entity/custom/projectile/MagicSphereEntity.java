@@ -1,10 +1,12 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
+import com.github.uranus_mod_group.uranus_mod.particles.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.phys.*;
@@ -51,20 +53,17 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
 
         this.updateRotation();
         //speed
-        float f;
+        float f = getSpeed();
         //if is underwater
         if (this.isInWater())
         {
-            f = getSpeed_on_water_r();
+            f *= getSpeed_on_water_r();
         }
         else if(this.isInRain())
         {
-            f = getSpeed_on_rain_r();
+            f *= getSpeed_on_rain_r();
         }
-        else
-        {
-            f = getSpeed();
-        }
+
         HitResult hitresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
         if(hitresult.getType() == HitResult.Type.MISS)
         {
@@ -76,27 +75,19 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                 Vec3 vec3delta2 = this.getDeltaMovement();
                 this.setDeltaMovement(vec3delta2.x, vec3delta2.y + (double) getGravity(), vec3delta2.z);
             }
-            createParticles(this.blockPosition());
+            //particles
+            if (tickCount%4 == 0) {
+                getLevel().addParticle(ModParticles.MAGIC_PARTICLES.get(), true,
+                        hitresult.getLocation().x+(random.nextFloat() - random.nextFloat()),
+                        hitresult.getLocation().y+(random.nextFloat() - random.nextFloat()),
+                        hitresult.getLocation().z+(random.nextFloat() - random.nextFloat()),
+                        0D, -0.07D, 0D);
+            }
             this.setPos(d2, d0, d1);
         }else
         {
             this.setDeltaMovement(vec3delta.scale(0));
-            createParticles(this.blockPosition());
             this.setPos(hitresult.getLocation());
-            //particles
-            int radius = getRadius();
-            BlockPos block_pos;
-//            for(int y = -radius+1; y < radius; y++)
-//            {
-//            for (int z = -radius + 1; z < radius; z++)
-//            {
-//            for (int x = -radius + 1; x < radius; x++)
-//            {
-//                block_pos = new BlockPos(this.blockPosition().getX() + x, this.blockPosition().getY() + y, this.blockPosition().getZ() + z);
-//                lacreateParticles(block_pos);
-//            }
-//            }
-//            }
             this.discard();
         }
     }
@@ -115,14 +106,17 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         return this.gravity;
     }
     //speed
-    public float getSpeed(){
+    public float getSpeed()
+    {
         return this.speed;
     }
-    public float getSpeed_on_water_r(){
-        return (this.speed * 0.999F);
+    public float getSpeed_on_water_r()
+    {
+        return 0.999F;
     }
-    public float getSpeed_on_rain_r(){
-        return (this.speed * 0.930F);
+    public float getSpeed_on_rain_r()
+    {
+        return 0.930F;
     }
     //damage
     private void setDamage(float damage)
@@ -152,13 +146,9 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             return 0;
         }
     }
-    //particles
-    public void createParticles(BlockPos block_pos)
-    {
-        getLevel().addParticle(ParticleTypes.CLOUD, true, block_pos.getX(), block_pos.getY()+(0.1), block_pos.getZ()+(0.1), 1, 1, 1);
-    }
     //skill functions
-    public void reactionOnBlock(BlockPos block_pos2){
+    public void reactionOnBlock(BlockPos block_pos2)
+    {
         if (getLevel().getBlockState(block_pos2).isAir())
         {
             //ignite
@@ -243,7 +233,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         //call reactions
         if (this.getOwner() != null && this.skill_attributes != null)
         {
-            this.skillsReactions(block_pos);
+//            this.skillsReactions(block_pos);
         }
     }
     //on hit at an entity
