@@ -6,8 +6,6 @@ import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.SkillsDataSyncS2CPacket;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;

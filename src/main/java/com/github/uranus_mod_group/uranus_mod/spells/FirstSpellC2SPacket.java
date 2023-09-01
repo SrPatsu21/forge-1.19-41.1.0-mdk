@@ -11,8 +11,8 @@ public class FirstSpellC2SPacket
     //the last one need to be the rang of the skill if it`s have
     private byte[] skill_attributes =
     {
-        0,
-        15,
+        11,
+        1,
         0,
         0,
         0,
@@ -52,7 +52,7 @@ public class FirstSpellC2SPacket
     public boolean handle(Supplier<NetworkEvent.Context> supplier)
     {
         NetworkEvent.Context context = supplier.get();
-        new CreateSkills(context, 1, this.skill_attributes).createSkill(1F);
+        new CreateSkills(context, 1, this.skill_attributes).createSkill(2F);
         return true;
     }
 }

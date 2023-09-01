@@ -1,13 +1,14 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.phys.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -18,7 +19,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     private final float speed = 0.999F;
     private float damage = 0.0F;
     private byte[] skill_attributes;
-    private boolean hited = false;
 
     //constructor
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType,Level level)
@@ -30,6 +30,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         this(entityEntityType, level);
         this.setPos(x, y, z);
     }
+    @NotNull
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType, Level level, LivingEntity entity,
                              byte[] skill_attributes, float damage)
     {
@@ -66,7 +67,8 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         {
             f = getSpeed();
         }
-        if(!hited)
+        HitResult hitresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
+        if(hitresult.getType() == HitResult.Type.MISS)
         {
             //set delta movement
             this.setDeltaMovement(vec3delta.scale(f));
@@ -76,13 +78,29 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                 Vec3 vec3delta2 = this.getDeltaMovement();
                 this.setDeltaMovement(vec3delta2.x, vec3delta2.y + (double) getGravity(), vec3delta2.z);
             }
+            createParticles(this.blockPosition());
             this.setPos(d2, d0, d1);
         }else
         {
-            //set delta movement
             this.setDeltaMovement(vec3delta.scale(0));
+            createParticles(this.blockPosition());
+            this.setPos(hitresult.getLocation());
+            //particles
+//            int radius = getRadius();
+//            BlockPos block_pos;
+//            for(int y = -radius+1; y < radius; y++)
+//            {
+//            for (int z = -radius + 1; z < radius; z++)
+//            {
+//            for (int x = -radius + 1; x < radius; x++)
+//            {
+//                block_pos = new BlockPos(this.blockPosition().getX() + x, this.blockPosition().getY() + y, this.blockPosition().getZ() + z);
+//                createParticles(block_pos);
+//            }
+//            }
+//            }
+            this.discard();
         }
-        createParticles(this.blockPosition());
     }
     //tick count to entity disappear
     protected void tickOutSpawn()
@@ -127,14 +145,14 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         return this.skill_attributes[i];
     }
     //radius
-//    public byte getRadius()
-//    {
-//        return (byte) (getSkillAttributes((this.skill_attributes.length-1))+1);
-//    }
+    public byte getRadius()
+    {
+        return (byte) (getSkillAttributes((this.skill_attributes.length-1))+1);
+    }
     //particles
     public void createParticles(BlockPos block_pos)
     {
-        getLevel().addParticle(ParticleTypes.FALLING_WATER, true, block_pos.getX(), block_pos.getY()+(0.1), block_pos.getZ()+(0.1), 1, 1, 1);
+        getLevel().addParticle(ParticleTypes.CLOUD, true, block_pos.getX(), block_pos.getY()+(0.1), block_pos.getZ()+(0.1), 1, 1, 1);
     }
     //skill functions
     public void reactionOnBlock(BlockPos block_pos2){
@@ -172,7 +190,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             {
                 Entity entity = list.get(e);
                 //damage
-                System.out.println("value = "+getDamage()*(1-distance_from_0)+ " distance= "+ distance_from_0);
                 entity.hurt(DamageSource.thrown(this, this.getOwner()), (getDamage()*(1-distance_from_0)));
 
                 //ignite
@@ -191,8 +208,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     }
     public void skillsReactions(BlockPos block_pos)
     {
-//        int radius = (int) getRadius();
-        int radius = 3;
+        int radius = getRadius();
         BlockPos block_pos2;
         for(int y = -radius+1; y < radius; y++)
         {
@@ -219,11 +235,10 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     //on hit
     protected void onHit(HitResult hitResult)
     {
-        this.hited = true;
         super.onHit(hitResult);
         BlockPos block_pos = blockPosition();
         //call reactions
-        if (this.getOwner() != null)
+        if (this.getOwner() != null && this.skill_attributes != null)
         {
             this.skillsReactions(block_pos);
         }
