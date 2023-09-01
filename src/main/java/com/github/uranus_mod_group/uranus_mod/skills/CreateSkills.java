@@ -108,7 +108,7 @@ public class CreateSkills {
         14
     };
     //constructor
-    public CreateSkills(@NotNull NetworkEvent.Context context, int skill_kind, byte [] attributes)
+    public CreateSkills(@NotNull NetworkEvent.Context context, int skill_kind,@NotNull byte [] attributes)
     {
         this.setContext(context);
         this.setOwner(context.getSender());

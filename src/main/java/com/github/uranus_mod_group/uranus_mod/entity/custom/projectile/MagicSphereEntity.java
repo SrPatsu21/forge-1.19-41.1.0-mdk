@@ -8,7 +8,6 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.phys.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -30,7 +29,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         this(entityEntityType, level);
         this.setPos(x, y, z);
     }
-    @NotNull
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType, Level level, LivingEntity entity,
                              byte[] skill_attributes, float damage)
     {
@@ -86,8 +84,8 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             createParticles(this.blockPosition());
             this.setPos(hitresult.getLocation());
             //particles
-//            int radius = getRadius();
-//            BlockPos block_pos;
+            int radius = getRadius();
+            BlockPos block_pos;
 //            for(int y = -radius+1; y < radius; y++)
 //            {
 //            for (int z = -radius + 1; z < radius; z++)
@@ -95,7 +93,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
 //            for (int x = -radius + 1; x < radius; x++)
 //            {
 //                block_pos = new BlockPos(this.blockPosition().getX() + x, this.blockPosition().getY() + y, this.blockPosition().getZ() + z);
-//                createParticles(block_pos);
+//                lacreateParticles(block_pos);
 //            }
 //            }
 //            }
@@ -147,7 +145,12 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     //radius
     public byte getRadius()
     {
-        return (byte) (getSkillAttributes((this.skill_attributes.length-1))+1);
+        if (this.skill_attributes != null){
+            return (byte) (getSkillAttributes((this.skill_attributes.length-1))+1);
+        }else
+        {
+            return 0;
+        }
     }
     //particles
     public void createParticles(BlockPos block_pos)
