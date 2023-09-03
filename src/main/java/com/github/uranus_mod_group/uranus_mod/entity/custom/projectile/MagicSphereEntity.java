@@ -2,11 +2,9 @@ package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
 import com.github.uranus_mod_group.uranus_mod.particles.ModParticles;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.phys.*;
@@ -88,7 +86,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         {
             this.setDeltaMovement(vec3delta.scale(0));
             this.setPos(hitresult.getLocation());
-            this.discard();
+            spawnFoundParticles(hitresult.getLocation());
         }
     }
     //tick count to entity disappear
@@ -126,6 +124,18 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     public float getDamage()
     {
         return this.damage;
+    }
+    //particles
+    private void spawnFoundParticles(Vec3 vec3) {
+        for (int y = 0; y < 360; y += 15) {
+            for (int x = 0; x < 360; x += 15) {
+                getLevel().addParticle(ModParticles.MAGIC_PARTICLES.get(),
+                        vec3.x + Math.sin(x)*Math.cos(y),
+                        vec3.y + Math.sin(y),
+                        vec3.z - Math.cos(x)*Math.cos(y),
+                        0D, 0D, 0D);
+            }
+        }
     }
     //skill attributes
     private void setSkillAttributes(byte[] attributes)
@@ -223,6 +233,8 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         }
         }
         }
+        //this discard the particle
+        this.life = 2;
     }
 
     //on hit
@@ -233,7 +245,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         //call reactions
         if (this.getOwner() != null && this.skill_attributes != null)
         {
-//            this.skillsReactions(block_pos);
+            this.skillsReactions(block_pos);
         }
     }
     //on hit at an entity
