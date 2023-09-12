@@ -52,7 +52,7 @@ public class FirstSpellC2SPacket
     public boolean handle(Supplier<NetworkEvent.Context> supplier)
     {
         NetworkEvent.Context context = supplier.get();
-        new CreateSkills(context, 1, this.skill_attributes).createSkill(2F);
+        new CreateSkills(context, 1, this.skill_attributes).createSkill(0F);
         return true;
     }
 }
