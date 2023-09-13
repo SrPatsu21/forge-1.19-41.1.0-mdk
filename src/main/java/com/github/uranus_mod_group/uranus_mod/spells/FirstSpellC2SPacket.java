@@ -8,11 +8,9 @@ import java.util.function.Supplier;
 
 public class FirstSpellC2SPacket
 {
-    //the last one need to be the rang of the skill if it`s have
     private byte[] skill_attributes =
     {
         11,
-        1,
         0,
         0,
         0,
@@ -32,7 +30,7 @@ public class FirstSpellC2SPacket
         0,
         0,
         0,
-        3
+        0
     };
 
     public FirstSpellC2SPacket()
@@ -52,7 +50,7 @@ public class FirstSpellC2SPacket
     public boolean handle(Supplier<NetworkEvent.Context> supplier)
     {
         NetworkEvent.Context context = supplier.get();
-        new CreateSkills(context, 1, this.skill_attributes).createSkill(0F);
+        new CreateSkills(context, 1, this.skill_attributes).createSkill(3F);
         return true;
     }
 }

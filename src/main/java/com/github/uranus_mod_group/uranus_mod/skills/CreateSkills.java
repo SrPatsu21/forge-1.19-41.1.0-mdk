@@ -41,7 +41,6 @@ public class CreateSkills {
 //18   gravitational
 //19   pull/push
 //20   summon
-//21   radius
     private byte[] value_of_attributes =
     {
         10,
@@ -65,7 +64,6 @@ public class CreateSkills {
         30,
         30,
         40,
-        20
     };
     private byte[] player_attributes;
 //0    fire 0 5
@@ -237,7 +235,7 @@ public class CreateSkills {
                 , getSkillAttributes(), getDamage());
 
         magic_sphere.shootFromRotation(magic_sphere.getOwner(), magic_sphere.getOwner().getXRot(), magic_sphere.getOwner().getYRot()
-                , 0.0F, magic_sphere.getSpeed() * speed_plus, 0.0F);
+                , 0.0F, 1 * speed_plus, 0.0F);
 
         level.addFreshEntity(magic_sphere);
     }
