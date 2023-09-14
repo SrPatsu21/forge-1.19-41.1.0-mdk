@@ -2,6 +2,7 @@ package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
 import com.github.uranus_mod_group.uranus_mod.particles.ModParticles;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -158,9 +159,18 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             {
                 //getLevel().setBlock(block_pos2, new Blocks().WATER.defaultBlockState(), 120);
             }
+            //stone
+        }else
+        {
+            //air
+            if(getLevel().getBlockState(block_pos2).is(BlockTags.LEAVES) &&
+                    random.nextInt(126)<= getSkillAttributes(3))
+            {
+                getLevel().destroyBlock(block_pos2, true, getOwner());
+            }
         }
     }
-    protected void reactionOnEntity(BlockPos block_pos2)
+    protected void reactionOnEntity(BlockPos block_pos2, Vec3 vec3)
     {
         List<Entity> list = getLevel().getEntities(this.getOwner(), new AABB(
                 block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
@@ -183,6 +193,16 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                 {
                     entity.clearFire();
                 }
+                //stone
+                //air
+                if (getSkillAttributes(3)> 0)
+                {
+                    entity.moveTo(new Vec3(
+                            vec3.x+((vec3.x - block_pos2.getX())),
+                            vec3.y+((vec3.y - block_pos2.getY())),
+                            vec3.z+((vec3.z - block_pos2.getZ()))
+                    ));
+                }
             }
         }
     }
@@ -200,7 +220,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             {
                 block_pos = new BlockPos(vec3.x + x, vec3.y + y, vec3.z + z);
                     reactionOnBlock(block_pos);
-                    reactionOnEntity(block_pos);
+                    reactionOnEntity(block_pos, vec3);
             }
         }
         }
