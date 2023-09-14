@@ -9,6 +9,8 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.phys.*;
+import org.openjdk.nashorn.api.tree.BlockTree;
+import org.openjdk.nashorn.api.tree.Tree;
 
 import java.util.List;
 
@@ -90,6 +92,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         {
             this.setDeltaMovement(vec3delta.scale(0));
             this.setPos(hit_result.getLocation());
+            spawnFoundParticles(hit_result.getLocation());
         }
     }
     //tick count to entity disappear
@@ -143,15 +146,14 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     //skill functions
     protected void reactionOnBlock(BlockPos block_pos2)
     {
-        if (getLevel().getBlockState(block_pos2).isAir())
+        if (getLevel().getBlockState(block_pos2).isAir() && getLevel().getBlockState(block_pos2.below()).isCollisionShapeFullBlock(getLevel(), block_pos2.below()))
         {
-            //ignite
-            if (getSkillAttributes(0)>=10)
+            //fire on floor
+            if (getSkillAttributes(0)>=10 || getSkillAttributes(4) >= 5)
             {
-                //fire on floor
-                if (random.nextInt(126)<= getSkillAttributes(0))
+                if (random.nextInt(120)<= getSkillAttributes(0)+getSkillAttributes(4)*2)
                 {
-                    getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos2));
+                    getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos2.below()));
                 }
             }
             //water
@@ -159,7 +161,12 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             {
                 //getLevel().setBlock(block_pos2, new Blocks().WATER.defaultBlockState(), 120);
             }
-            //stone
+            //stone 2
+            //lava
+            if (random.nextInt(126) <= getSkillAttributes(4) && getSkillAttributes(4) > 20)
+            {
+               getLevel().setBlock(block_pos2, new Blocks().LAVA.defaultBlockState(), 120);
+            }
         }else
         {
             //air
