@@ -18,10 +18,10 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     private float damage = 0.0F;
     private byte[] skill_attributes;
     private final int RADIUS = 5;
-    public final float GRAVITY = -0.05F;
-    public final float SPEED = 0.999F;
-    public final float SPEED_ON_WATER_R = 0.93F;
-    public final float SPEED_ON_RAIN_R = 0.997F;
+    public final float GRAVITY = -0.02F;
+    public final float SPEED = 0.96F;
+    public final float SPEED_ON_WATER_R = 0.91F;
+    public final float SPEED_ON_RAIN_R = 0.94F;
 
     //constructor
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType,Level level)
@@ -59,11 +59,11 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         //if is underwater
         if (this.isInWater())
         {
-            f *= SPEED_ON_WATER_R;
+            f = SPEED_ON_WATER_R;
         }
         else if(this.isInRain())
         {
-            f *= SPEED_ON_RAIN_R;
+            f = SPEED_ON_RAIN_R;
         }
 
         HitResult hit_result = ProjectileUtil.getHitResult(this, this::canHitEntity);
