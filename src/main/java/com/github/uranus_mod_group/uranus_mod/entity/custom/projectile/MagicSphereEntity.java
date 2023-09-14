@@ -145,7 +145,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         if (getLevel().getBlockState(block_pos2).isAir())
         {
             //ignite
-            if (getSkillAttributes(0)>10)
+            if (getSkillAttributes(0)>=10)
             {
                 //fire on floor
                 if (random.nextInt(126)<= getSkillAttributes(0))
@@ -156,8 +156,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             //water
             if (getSkillAttributes(1)>0)
             {
-                //create water
-//                getLevel().setBlock(block_pos2, new Blocks().WATER.defaultBlockState(), 1);
+                //getLevel().setBlock(block_pos2, new Blocks().WATER.defaultBlockState(), 120);
             }
         }
     }
@@ -218,7 +217,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             this.skillsReactions(hitResult.getLocation());
         }
         spawnFoundParticles(hitResult.getLocation());
-        this.life = 2;
+        this.life = 1;
     }
     //on hit at an entity
     protected void onHitEntity(EntityHitResult hitResult)
