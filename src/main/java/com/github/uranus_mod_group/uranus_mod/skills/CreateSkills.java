@@ -155,7 +155,7 @@ public class CreateSkills {
     public void setPlayerXpSkills()
     {
         getOwner().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(skill -> {
-            for (int i = 0; i < (this.getSkillAttributes().length-1); i++) {
+            for (int i = 0; i < this.getSkillAttributes().length; i++) {
                 if (getSkillAttributes()[i] != 0) {
                     skill.addSkillXp((this.RESPECTIVE_SKILLS[i]), (this.getSkillAttributes()[i]));
                 }
@@ -166,7 +166,7 @@ public class CreateSkills {
     //damage
     private void setDamage()
     {
-        for(int i = 0; i < (this.RESPECTIVE_SKILLS.length-1); i++)
+        for(int i = 0; i < this.RESPECTIVE_SKILLS.length; i++)
         {
             if (getSkillAttributes()[i] != 0) {
                 this.damage += (float) (this.getSkillAttributes()[i]) * (this.getPlayerAttributes()[(this.RESPECTIVE_SKILLS[i])]);

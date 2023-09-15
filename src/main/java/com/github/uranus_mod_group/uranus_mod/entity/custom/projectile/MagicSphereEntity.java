@@ -4,14 +4,23 @@ import com.github.uranus_mod_group.uranus_mod.particles.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.ElderGuardian;
+import net.minecraft.world.entity.monster.Guardian;
+import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.*;
 import org.openjdk.nashorn.api.tree.BlockTree;
 import org.openjdk.nashorn.api.tree.Tree;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
@@ -151,15 +160,18 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             //fire on floor
             if (getSkillAttributes(0)>=10 || getSkillAttributes(4) >= 5)
             {
-                if (random.nextInt(120)<= getSkillAttributes(0)+getSkillAttributes(4)*2)
+                if (random.nextInt(120)<= getSkillAttributes(0)+(getSkillAttributes(4)*2))
                 {
                     getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos2.below()));
                 }
             }
             //water
-            if (getSkillAttributes(1)>0)
+            if (getSkillAttributes(1)>19)
             {
-                //getLevel().setBlock(block_pos2, new Blocks().WATER.defaultBlockState(), 120);
+                if (random.nextInt(120)<= getSkillAttributes(1))
+                {
+                    getLevel().setBlock(block_pos2, new Blocks().WATER.defaultBlockState(), 120);
+                }
             }
             //stone 2
             //lava
@@ -191,9 +203,10 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                 //damage
                 entity.hurt(DamageSource.thrown(this, this.getOwner()), getDamage());
                 //ignite
-                if (getSkillAttributes(0)>0)
+                //lava
+                if (getSkillAttributes(0)>3 || getSkillAttributes(4)>0)
                 {
-                    entity.setSecondsOnFire(getSkillAttributes(0));
+                    entity.setSecondsOnFire(getSkillAttributes(0)+(getSkillAttributes(4)*2));
                 }
                 //water
                 if (getSkillAttributes(1)> 0)
@@ -209,6 +222,13 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                             vec3.y+((vec3.y - block_pos2.getY())),
                             vec3.z+((vec3.z - block_pos2.getZ()))
                     ));
+                }
+                //sticky
+                if(getSkillAttributes(5)>1)
+                {
+//                    ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, getSkillAttributes(5), 2));
+//                    ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, getSkillAttributes(5), 2));
+//public MobEffectInstance(MobEffect effect, int duration, int amplifier, boolean ambient, boolean visible, boolean showIcon, @Nullable MobEffectInstance hiddenEffect, Optional<MobEffectInstance.FactorData> factorData) {
                 }
             }
         }
