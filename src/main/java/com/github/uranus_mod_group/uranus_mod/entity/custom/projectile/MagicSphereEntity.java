@@ -199,36 +199,37 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         {
             for(int e = 0; e < list.size(); e++)
             {
-                Entity entity = list.get(e);
-                //damage
-                entity.hurt(DamageSource.thrown(this, this.getOwner()), getDamage());
-                //ignite
-                //lava
-                if (getSkillAttributes(0)>3 || getSkillAttributes(4)>0)
-                {
-                    entity.setSecondsOnFire(getSkillAttributes(0)+(getSkillAttributes(4)*2));
-                }
-                //water
-                if (getSkillAttributes(1)> 0)
-                {
-                    entity.clearFire();
-                }
-                //stone
-                //air
-                if (getSkillAttributes(3)> 0)
-                {
-                    entity.moveTo(new Vec3(
-                            vec3.x+((vec3.x - block_pos2.getX())),
-                            vec3.y+((vec3.y - block_pos2.getY())),
-                            vec3.z+((vec3.z - block_pos2.getZ()))
-                    ));
-                }
-                //sticky
-                if(getSkillAttributes(5)>1)
-                {
-//                    ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, getSkillAttributes(5), 2));
-//                    ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, getSkillAttributes(5), 2));
-//public MobEffectInstance(MobEffect effect, int duration, int amplifier, boolean ambient, boolean visible, boolean showIcon, @Nullable MobEffectInstance hiddenEffect, Optional<MobEffectInstance.FactorData> factorData) {
+                if (list.get(e).showVehicleHealth()){
+                    Entity entity = list.get(e);
+                    //damage
+                    entity.hurt(DamageSource.thrown(this, this.getOwner()), getDamage());
+                    //lava || ignite
+                    if (getSkillAttributes(0)>3 || getSkillAttributes(4)>0)
+                    {
+                        entity.setSecondsOnFire(getSkillAttributes(0)+(getSkillAttributes(4)*2));
+                    }
+                    //water
+                    if (getSkillAttributes(1)> 0)
+                    {
+                        entity.clearFire();
+                    }
+                    //stone
+                    //air
+                    if (getSkillAttributes(3)> 0)
+                    {
+                        entity.moveTo(new Vec3(
+                                vec3.x+((vec3.x - block_pos2.getX())),
+                                vec3.y+((vec3.y - block_pos2.getY())),
+                                vec3.z+((vec3.z - block_pos2.getZ()))
+                        ));
+                    }
+                    //sticky
+                    if(getSkillAttributes(5)>1)
+                    {
+//                        ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, getSkillAttributes(5), 2));
+    //                    ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, getSkillAttributes(5), 2));
+    //public MobEffectInstance(MobEffect effect, int duration, int amplifier, boolean ambient, boolean visible, boolean showIcon, @Nullable MobEffectInstance hiddenEffect, Optional<MobEffectInstance.FactorData> factorData) {
+                    }
                 }
             }
         }
