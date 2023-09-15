@@ -13,6 +13,7 @@ import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.enchantment.ProtectionEnchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -226,9 +227,10 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                 //sticky
                 if(getSkillAttributes(5)>1)
                 {
-//                    ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, getSkillAttributes(5), 2));
-//                    ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, getSkillAttributes(5), 2));
-//public MobEffectInstance(MobEffect effect, int duration, int amplifier, boolean ambient, boolean visible, boolean showIcon, @Nullable MobEffectInstance hiddenEffect, Optional<MobEffectInstance.FactorData> factorData) {
+                    if (entity instanceof LivingEntity) {
+                        ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, getSkillAttributes(5)*10, 2));
+                        ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, getSkillAttributes(5), 2));
+                    }
                 }
             }
         }
