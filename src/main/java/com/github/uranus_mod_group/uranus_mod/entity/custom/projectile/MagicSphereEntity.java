@@ -107,11 +107,11 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     //tick count to entity disappear
     protected void tickOutSpawn()
     {
-        this.life--;
         if (this.life <= 0)
         {
             this.discard();
         }
+        this.life--;
     }
     //damage
     protected void setDamage(float damage)
@@ -228,10 +228,9 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                     {
                         if(entity instanceof LivingEntity)
                         {
-                            ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, getSkillAttributes(5)*10, ((int) 1+(getSkillAttributes(5)/6)) ));
-                            ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, getSkillAttributes(5)*10, ((int)1+ (getSkillAttributes(5)/6)) ));
+                            ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, getSkillAttributes(5)*10, ((int)(getSkillAttributes(5)/6))+1 ));
+                            ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, getSkillAttributes(5)*10, ((int)(getSkillAttributes(5)/6))+1 ));
                         }
-                        //public MobEffectInstance(MobEffect effect, int duration, int amplifier, boolean ambient, boolean visible, boolean showIcon, @Nullable MobEffectInstance hiddenEffect, Optional<MobEffectInstance.FactorData> factorData) {
                     }
                 }
             }

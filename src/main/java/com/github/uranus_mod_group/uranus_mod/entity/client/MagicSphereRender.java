@@ -49,16 +49,14 @@ public class MagicSphereRender extends EntityRenderer<MagicSphereEntity>
         this.model.setupAnim(entity, 0.0F, 0.0F, 0.0F, f, f1);
         //texture
         VertexConsumer vertexconsumer = bufferSource.getBuffer(this.model.renderType(MAGIC_SPHERE_LOCATION));
-        //model proportion
         this.model.renderToBuffer(poseStack, vertexconsumer, p_115867_,
-                OverlayTexture.NO_OVERLAY, 0.3F, 0.0F, 0.3F, 1.0F);
+                OverlayTexture.NO_OVERLAY, 0.0F, 0.4F, 0.6F, 1.0F);
         //scale
         poseStack.scale(2F, 2F, 2F);
         //
         VertexConsumer vertexconsumer1 = bufferSource.getBuffer(RENDER_TYPE);
-        //I dont know
         this.model.renderToBuffer(poseStack, vertexconsumer1, p_115867_, OverlayTexture.NO_OVERLAY
-                , 1.0F, 0.0F, 0.0F, 1.0F);
+                , 0.0F, 0.0F, 0.0F, 0.0F);
         //set poseStack to ".removeLast()" ???
         poseStack.popPose();
         //call the superrender
