@@ -108,11 +108,11 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     //tick count to entity disappear
     protected void tickOutSpawn()
     {
+        this.life--;
         if (this.life <= 0)
         {
             this.discard();
         }
-        this.life--;
     }
     //damage
     protected void setDamage(float damage)
@@ -184,7 +184,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             }
             //elektron
             if (getSkillAttributes(7) > 10){
-                if (random.nextInt(504) <= getSkillAttributes(7))
+                if (random.nextInt(380) <= getSkillAttributes(7))
                 {
                     LightningBolt lightningbolt = new LightningBolt(EntityType.LIGHTNING_BOLT, getLevel());
                     lightningbolt.setDamage(getSkillAttributes(7));
