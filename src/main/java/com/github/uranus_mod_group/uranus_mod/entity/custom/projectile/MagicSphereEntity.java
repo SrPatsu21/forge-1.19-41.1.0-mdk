@@ -13,6 +13,7 @@ import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -175,9 +176,21 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             }
             //stone 2
             //lava
-            if (random.nextInt(126) <= getSkillAttributes(4) && getSkillAttributes(4) > 20)
-            {
-               getLevel().setBlock(block_pos2, new Blocks().LAVA.defaultBlockState(), 120);
+            if (getSkillAttributes(4) > 20){
+                if (random.nextInt(126) <= getSkillAttributes(4))
+                {
+                    getLevel().setBlock(block_pos2, new Blocks().LAVA.defaultBlockState(), 120);
+                }
+            }
+            //elektron
+            if (getSkillAttributes(7) > 10){
+                if (random.nextInt(504) <= getSkillAttributes(7))
+                {
+                    LightningBolt lightningbolt = new LightningBolt(EntityType.LIGHTNING_BOLT, getLevel());
+                    lightningbolt.setDamage(getSkillAttributes(7));
+                    lightningbolt.setPos(block_pos2.getX(), block_pos2.getY(), block_pos2.getZ());
+                    getLevel().addFreshEntity(lightningbolt);
+                }
             }
         }else
         {
@@ -268,7 +281,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             this.skillsReactions(hitResult.getLocation());
         }
         spawnFoundParticles(hitResult.getLocation());
-        this.life = 1;
+        this.life = 2;
     }
     //on hit at an entity
     protected void onHitEntity(EntityHitResult hitResult)
