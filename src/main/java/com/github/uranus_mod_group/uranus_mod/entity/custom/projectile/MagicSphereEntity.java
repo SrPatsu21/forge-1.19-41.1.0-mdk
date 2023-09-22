@@ -4,22 +4,13 @@ import com.github.uranus_mod_group.uranus_mod.particles.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.monster.ElderGuardian;
-import net.minecraft.world.entity.monster.Guardian;
-import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.ArrowItem;
-import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.*;
-import org.openjdk.nashorn.api.tree.BlockTree;
-import org.openjdk.nashorn.api.tree.Tree;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -236,13 +227,30 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
                                 vec3.z+((vec3.z - block_pos2.getZ()))
                         ));
                     }
-                    //sticky
-                    if(getSkillAttributes(5)>1)
+                    if(entity instanceof LivingEntity)
                     {
-                        if(entity instanceof LivingEntity)
+                        //sticky
+                        if (getSkillAttributes(5) > 1) {
+                            ((LivingEntity) entity).addEffect(
+                                    new MobEffectInstance(MobEffects.DIG_SLOWDOWN,
+                                            getSkillAttributes(5) * 10,
+                                            ((int) (getSkillAttributes(5) / 6)) + 1));
+                            ((LivingEntity) entity).addEffect(
+                                    new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
+                                            getSkillAttributes(5) * 10,
+                                            ((int) (getSkillAttributes(5) / 6)) + 1));
+                        }
+                        ///lux
+                        if (getSkillAttributes(8) > 0)
                         {
-                            ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, getSkillAttributes(5)*10, ((int)(getSkillAttributes(5)/6))+1 ));
-                            ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, getSkillAttributes(5)*10, ((int)(getSkillAttributes(5)/6))+1 ));
+                            ((LivingEntity) entity).addEffect(
+                                    new MobEffectInstance(MobEffects.GLOWING,
+                                    getSkillAttributes(8) * 20));
+                        }else if (getSkillAttributes(8) < 0)
+                        {
+                            ((LivingEntity) entity).addEffect(
+                                    new MobEffectInstance(MobEffects.BLINDNESS,
+                                            getSkillAttributes(8) * 10*-1));
                         }
                     }
                 }
