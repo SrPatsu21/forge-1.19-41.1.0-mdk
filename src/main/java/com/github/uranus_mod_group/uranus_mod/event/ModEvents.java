@@ -10,10 +10,8 @@ import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
 import com.github.uranus_mod_group.uranus_mod.particles.ModParticles;
 import com.github.uranus_mod_group.uranus_mod.particles.custom.MagicParticles;
-import com.github.uranus_mod_group.uranus_mod.skills.PlayerSkillsProvider;
 import com.github.uranus_mod_group.uranus_mod.villager.ModVillagers;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -56,10 +54,6 @@ public class ModEvents
                 {
                     event.addCapability(new ResourceLocation(Uranus_mod.ModId, "properties_u_mana"), new PlayerManaProvider());
                 }
-                if(!event.getObject().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).isPresent())
-                {
-                    event.addCapability(new ResourceLocation(Uranus_mod.ModId, "properties_u_skills"), new PlayerSkillsProvider());
-                }
             }
         }
         //if player die
@@ -74,14 +68,6 @@ public class ModEvents
                 event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(oldStore ->
                 {
                     event.getEntity().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(newStore ->
-                    {
-                        newStore.copyFrom(oldStore);
-                    });
-                });
-                //skills
-                event.getOriginal().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(oldStore ->
-                {
-                    event.getEntity().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(newStore ->
                     {
                         newStore.copyFrom(oldStore);
                     });
@@ -109,17 +95,6 @@ public class ModEvents
                         //will be regen
                         int add = (int) (mana.getMaxMana() * mana.getManaRegen());
                         mana.addMana(add);
-                        //xp to up
-                        mana.addMxp(add);
-                        //mana xp enough to up
-                        if (mana.getMxp() >= mana.getManaToUp())
-                        {
-                            mana.manaUpProcess();
-                        }
-                        //message
-//                        event.player.sendSystemMessage(Component.literal("mana add " + mana.getMana() +
-//                                "/" + mana.getMaxMana() + " mana xp:" + mana.getMxp() + " mana level:" + mana.getMl() +
-//                                " tick that happened:" + event.player.getCommandSenderWorld().getGameTime() + " xp to up:"+ mana.getManaToUp()));
                         //send mana
                         ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), ((ServerPlayer) event.player));
                     }

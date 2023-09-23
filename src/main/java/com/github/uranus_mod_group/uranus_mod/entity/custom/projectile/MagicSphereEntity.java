@@ -12,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.phys.*;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
@@ -106,7 +105,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         }
     }
     //damage
-    protected void setDamage(float damage)
+    private void setDamage(float damage)
     {
         this.damage = damage;
     }
@@ -136,16 +135,16 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         }
     }
     //skill attributes
-    protected void setSkillAttributes(byte[] attributes)
+    private void setSkillAttributes(byte[] attributes)
     {
         this.skill_attributes = attributes;
     }
-    protected byte getSkillAttributes(int i)
+    private byte getSkillAttributes(int i)
     {
         return this.skill_attributes[i];
     }
     //skill functions
-    protected void reactionOnBlock(BlockPos block_pos2)
+    private void reactionOnBlock(BlockPos block_pos2)
     {
         if (getLevel().getBlockState(block_pos2).isAir() && getLevel().getBlockState(block_pos2.below()).isCollisionShapeFullBlock(getLevel(), block_pos2.below()))
         {
@@ -193,7 +192,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             }
         }
     }
-    protected void reactionOnEntity(BlockPos block_pos2, Vec3 vec3)
+    private void reactionOnEntity(BlockPos block_pos2, Vec3 vec3)
     {
         List<Entity> list = getLevel().getEntities(this.getOwner(), new AABB(
                 block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
@@ -257,7 +256,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             }
         }
     }
-    protected void skillsReactions(Vec3 vec3)
+    private void skillsReactions(Vec3 vec3)
     {
         BlockPos block_pos;
         for(int y = -RADIUS+1; y < RADIUS; y++)

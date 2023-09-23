@@ -2,7 +2,7 @@ package com.github.uranus_mod_group.uranus_mod.networking;
 
 import com.github.uranus_mod_group.uranus_mod.networking.packet.AddManaC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.SkillsDataSyncS2CPacket;
-import com.github.uranus_mod_group.uranus_mod.spells.FirstSpellC2SPacket;
+import com.github.uranus_mod_group.uranus_mod.skills.FirstSpellC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.SubManaC2SPacket;
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;

@@ -1,6 +1,5 @@
-package com.github.uranus_mod_group.uranus_mod.spells;
+package com.github.uranus_mod_group.uranus_mod.skills;
 
-import com.github.uranus_mod_group.uranus_mod.skills.CreateSkills;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -17,12 +16,7 @@ public class FirstSpellC2SPacket
         0,
         0,
         0,
-        11,
-        0,
-        0,
-        0,
-        0,
-        0,
+        1,
         0,
         0,
         0,

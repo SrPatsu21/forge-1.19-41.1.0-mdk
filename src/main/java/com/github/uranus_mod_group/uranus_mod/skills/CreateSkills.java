@@ -5,7 +5,6 @@ import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.MagicSphe
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
-import com.github.uranus_mod_group.uranus_mod.networking.packet.SkillsDataSyncS2CPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
@@ -15,105 +14,111 @@ public class CreateSkills {
     private int skill_kind = 0;
     private Level level;
     //just for test
-    private byte[] skill_attributes;
     private ServerPlayer owner;
     private double value_of_skill = 0.0D;
     private NetworkEvent.Context context;
     private float damage = 0.0F;
-//0    ignite
-//1    water
-//2    stone
-//3    air
-//4    elektron
-//5    lava
-//6    break
-//7    build
-//8    heal
-//9    poison
-//10   wither
-//11   teleport
-//12   light/shadows
-//13   cold/warm
-//14   blood
-//15   give mana
-//16   remove mana
-//17   explosion
-//18   gravitational
-//19   pull/push
-//20   summon
-    private byte[] value_of_attributes =
-    {
-        10,
-        10,
-        20,
-        10,
-        30,
-        30,
-        20,
-        40,
-        50,
-        40,
-        60,
-        40,
-        50,
-        35,
-        20,
-        20,
-        30,
-        80,
-        30,
-        30,
-        40,
-    };
-    private byte[] player_attributes;
-//0    fire 0 5
-//1    water 1
-//2    stone 2
-//3    air 3
-//4    elektron 4
-//5    construct 6 7
-//6    body manipulation 8 9 10
-//7    ender magic 11
-//8    lux 12
-//9    heat 13
-//10   blood 14
-//11   mana manipulation 15 16
-//12   explosion 17
-//13   gravity 18 19
-//14   summon 20
-    private final byte [] RESPECTIVE_SKILLS =
+//    ignite
+//    water
+//    stone
+//    air
+//    lava
+//    sticky
+//    metal
+//    elektron
+//    lux
+//    dark
+//    heat
+//    heal
+//    poison
+//    wither
+//    teleport
+//    gravitational
+//    push
+    private byte[] skill_attributes =
     {
         0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    };
+    private final byte[] VALUE_OF_ATTRIBUTES =
+    {
+        20,
+        10,
+        30,
+        20,
+        60,
+        20,
+        90,
+        40,
+        5,
+        40,
+        40,
+        40,
+        80,
+        100,
+        40,
+        40
+    };
+    private final float[] DAMAGE_MULTIPLAYER = {
+        1,
+        1,
+        1.5F,
         1,
         2,
-        3,
-        4,
+        1,
+        2,
+        1,
+        0.5F,
         0,
-        5,
-        5,
-        6,
-        6,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        11,
-        12,
-        13,
-        13,
-        14
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
     };
+//    private final byte [] RESPECTIVE_SKILLS =
+//    {
+//        0,
+//        0,
+//        0,
+//        0,
+//        1,
+//        1,
+//        1,
+//        2,
+//        2,
+//        2,
+//        2,
+//        3,
+//        3,
+//        3,
+//        4,
+//        4,
+//        4
+//    };
     //constructor
-    public CreateSkills(@NotNull NetworkEvent.Context context, int skill_kind,@NotNull byte [] attributes)
+    public CreateSkills(@NotNull NetworkEvent.Context context, int skill_kind,byte [] attributes)
     {
         this.setContext(context);
         this.setOwner(context.getSender());
         this.setLevel(context.getSender().getLevel());
         this.setSkillKind(skill_kind);
         this.setSkillAttributes(attributes);
-        this.setPlayerAttributes(getOwner());
         this.setDamage();
     }
     //set
@@ -136,40 +141,35 @@ public class CreateSkills {
     public void setContext(NetworkEvent.Context context) {
         this.context = context;
     }
-    public void setPlayerAttributes(ServerPlayer owner)
-    {
-        owner.getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(skill ->
-                this.player_attributes = skill.getSkillsLevel());
-    }
     private void setValueOfSkillMana(float add)
     {
-        //to 20
-        for(int i = 0; i < (this.value_of_attributes.length-1); i++)
+        for(int i = 0; i < this.VALUE_OF_ATTRIBUTES.length; i++)
         {
-            this.value_of_skill += this.value_of_attributes[i] * (int) getSkillAttributes()[i];
-        }
-        this.value_of_skill += add;
-        //to 21
-        this.value_of_skill *= getSkillAttributes()[(getSkillAttributes().length-1)];
-    }
-    public void setPlayerXpSkills()
-    {
-        getOwner().getCapability(PlayerSkillsProvider.PLAYER_SKILLS).ifPresent(skill -> {
-            for (int i = 0; i < this.getSkillAttributes().length; i++) {
-                if (getSkillAttributes()[i] != 0) {
-                    skill.addSkillXp((this.RESPECTIVE_SKILLS[i]), (this.getSkillAttributes()[i]));
+            if (getSkillAttributes()[i] != 0){
+                if (getSkillAttributes()[i] < 0)
+                {
+                    this.value_of_skill += VALUE_OF_ATTRIBUTES[i] * (int) getSkillAttributes()[i]*-1;
+                } else
+                {
+                    this.value_of_skill += VALUE_OF_ATTRIBUTES[i] * (int) getSkillAttributes()[i];
                 }
             }
-            ModMessages.sendToPlayer(new SkillsDataSyncS2CPacket(skill.getSkillsLevel(), skill.getSkillsXp()), getOwner());
-        });
+        }
+        this.value_of_skill *= add;
     }
     //damage
     private void setDamage()
     {
-        for(int i = 0; i < this.RESPECTIVE_SKILLS.length; i++)
+        for(int i = 0; i < DAMAGE_MULTIPLAYER.length; i++)
         {
-            if (getSkillAttributes()[i] != 0) {
-                this.damage += (float) (this.getSkillAttributes()[i]) * (this.getPlayerAttributes()[(this.RESPECTIVE_SKILLS[i])]);
+            if (getSkillAttributes()[i] != 0){
+                if (getSkillAttributes()[i] < 0)
+                {
+                    this.damage += DAMAGE_MULTIPLAYER[i] * getSkillAttributes()[i]*-1;
+                } else
+                {
+                    this.damage += DAMAGE_MULTIPLAYER[i] * getSkillAttributes()[i];
+                }
             }
         }
     }
@@ -185,10 +185,6 @@ public class CreateSkills {
     public byte[] getSkillAttributes()
     {
         return this.skill_attributes;
-    }
-    public byte [] getPlayerAttributes()
-    {
-        return this.player_attributes;
     }
     public ServerPlayer getOwner()
     {
@@ -210,17 +206,21 @@ public class CreateSkills {
     {
         if(getSkill_kind() != 0)
         {
-            setPlayerXpSkills();
             getContext().enqueueWork(() ->
             {
                 //magic sphere
                 if (getSkill_kind() == 1) {
-                    setValueOfSkillMana(10.0F);
+                    setValueOfSkillMana(1.0F);
                     //if player has mana, works
                     getOwner().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
                     {
-                        if (mana.getMana() >= getValue_of_skill()) {
+                        if (mana.getMana() >= getValue_of_skill() && getValue_of_skill() != 0) {
                             createMagicSphereEntity(speed_plus);
+                            mana.addMxp((int)getValue_of_skill());
+                            if (mana.getMxp() >= mana.getManaToUp())
+                            {
+                                mana.manaUpProcess();
+                            }
                         }
                         mana.subMana(getValue_of_skill());
                         ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), getOwner());
@@ -234,13 +234,13 @@ public class CreateSkills {
         MagicSphereEntity magic_sphere = new MagicSphereEntity(ModEntityTypes.MAGIC_SPHERE.get() , getLevel(), getOwner()
                 , getSkillAttributes(), getDamage());
 
-        magic_sphere.shootFromRotation(magic_sphere.getOwner(), magic_sphere.getOwner().getXRot(), magic_sphere.getOwner().getYRot()
+        magic_sphere.shootFromRotation(getOwner(), getOwner().getXRot(), getOwner().getYRot()
                 , 0.0F, 1 * speed_plus, 0.0F);
 
         level.addFreshEntity(magic_sphere);
     }
-    public void createFailMagicSkill()
-    {
-
-    }
+//    public void createFailMagicSkill()
+//    {
+//
+//    }
 }
