@@ -13,18 +13,19 @@ public class FirstSpellC2SPacket
         0,
         0,
         0,
-        0,
-        0,
-        0,
         1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        4,
+        4,
+        4
     };
 
     public FirstSpellC2SPacket()
@@ -44,7 +45,7 @@ public class FirstSpellC2SPacket
     public boolean handle(Supplier<NetworkEvent.Context> supplier)
     {
         NetworkEvent.Context context = supplier.get();
-        new CreateSkills(context, 1, this.skill_attributes).createSkill(3F);
+        new CreateSkills(context, 1, this.skill_attributes).createSkill();
         return true;
     }
 }
