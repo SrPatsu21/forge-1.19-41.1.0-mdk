@@ -85,6 +85,10 @@ public class PlayerMana {
     {
         return proficiency[i];
     }
+    public byte[] getProficiency()
+    {
+        return proficiency;
+    }
     public int getProficiencyXpToUp(int i)
     {
         return getProficiency(i)*3000;
