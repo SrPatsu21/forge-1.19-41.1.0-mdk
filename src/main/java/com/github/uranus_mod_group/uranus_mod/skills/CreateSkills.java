@@ -94,23 +94,22 @@ public class CreateSkills {
     };
     public final byte [] RESPECTIVE_SKILLS =
     {
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1,
-        2,
-        2,
-        2,
-        2,
-        3,
-        3,
-        3,
-        4,
-        4,
-        4
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            3,
+            3,
+            3,
+            4,
+            4,
+            4
     };
     public byte [] proficiency;
     //constructor
@@ -161,15 +160,15 @@ public class CreateSkills {
     }
     private void setValueOfSkillMana(float add)
     {
-            for (int i = 0; i < VALUE_OF_ATTRIBUTES.length; i++) {
-                if (getSkillAttributes()[i] != 0 && getProficiency(RESPECTIVE_SKILLS[i]) > -1) {
-                    if (getSkillAttributes()[i] < 0) {
-                        this.value_of_skill += (VALUE_OF_ATTRIBUTES[i] * getSkillAttributes()[i] * -1);
-                    } else {
-                        this.value_of_skill += (VALUE_OF_ATTRIBUTES[i] * getSkillAttributes()[i]);
-                    }
+        for (int i = 0; i < VALUE_OF_ATTRIBUTES.length; i++) {
+            if (getSkillAttributes()[i] != 0 && getProficiency(RESPECTIVE_SKILLS[i]) > -1) {
+                if (getSkillAttributes()[i] < 0) {
+                    this.value_of_skill += (VALUE_OF_ATTRIBUTES[i] * getSkillAttributes()[i] * -1)*(1-getProficiency(RESPECTIVE_SKILLS[i])*0.005);
+                } else {
+                    this.value_of_skill += (VALUE_OF_ATTRIBUTES[i] * getSkillAttributes()[i])*(1-getProficiency(RESPECTIVE_SKILLS[i])* 0.005);
                 }
             }
+        }
         this.value_of_skill *= add;
     }
     //damage
@@ -186,8 +185,20 @@ public class CreateSkills {
                     this.damage += (DAMAGE_MULTIPLAYER[i] * getSkillAttributes()[i])*(1+getProficiency(RESPECTIVE_SKILLS[i])*0.01);
                 }
             }
-            System.out.println(this.damage);
         }
+    }
+    public void setProficiencyXp(ServerPlayer player, byte[] skill_attributes)
+    {
+        player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent( mana ->{
+            for(int i = 0; i < skill_attributes.length; i++)
+            {
+                if (!(skill_attributes[i] <= 0))
+                {
+                    mana.addProficiencyXp(RESPECTIVE_SKILLS[i], skill_attributes[i]);
+                }
+                System.out.println(RESPECTIVE_SKILLS[i] + "/" + skill_attributes[i]);
+            }
+        });
     }
     //get
     public Level getLevel()
@@ -238,6 +249,7 @@ public class CreateSkills {
                         if (mana.getMana() >= getValue_of_skill() && getValue_of_skill() != 0) {
                             setDamage();
                             mana.addMxp((int)getValue_of_skill());
+                            setProficiencyXp(getOwner(), getSkillAttributes());
                             createMagicSphereEntity(3);
                         }
                         mana.subMana(getValue_of_skill());

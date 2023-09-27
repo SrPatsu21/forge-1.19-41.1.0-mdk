@@ -9,23 +9,22 @@ public class FirstSpellC2SPacket
 {
     private byte[] skill_attributes =
     {
-        0,
-        0,
-        0,
-        0,
         1,
         1,
         1,
-        2,
-        2,
-        2,
-        2,
-        3,
-        3,
-        3,
-        4,
-        4,
-        4
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        3
     };
 
     public FirstSpellC2SPacket()
