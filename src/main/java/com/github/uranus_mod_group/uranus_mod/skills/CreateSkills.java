@@ -2,7 +2,6 @@ package com.github.uranus_mod_group.uranus_mod.skills;
 
 import com.github.uranus_mod_group.uranus_mod.entity.ModEntityTypes;
 import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.MagicSphereEntity;
-import com.github.uranus_mod_group.uranus_mod.mana.PlayerMana;
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
 import com.github.uranus_mod_group.uranus_mod.networking.packet.ManaDataSyncS2CPacket;
@@ -94,22 +93,22 @@ public class CreateSkills {
     };
     public final byte [] RESPECTIVE_SKILLS =
     {
-            0,
-            0,
-            0,
-            0,
-            1,
-            1,
-            1,
-            2,
-            2,
-            2,
-            3,
-            3,
-            3,
-            4,
-            4,
-            4
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        4,
+        4,
+        4
     };
     public byte [] proficiency;
     //constructor
@@ -196,7 +195,6 @@ public class CreateSkills {
                 {
                     mana.addProficiencyXp(RESPECTIVE_SKILLS[i], skill_attributes[i]);
                 }
-                System.out.println(RESPECTIVE_SKILLS[i] + "/" + skill_attributes[i]);
             }
         });
     }

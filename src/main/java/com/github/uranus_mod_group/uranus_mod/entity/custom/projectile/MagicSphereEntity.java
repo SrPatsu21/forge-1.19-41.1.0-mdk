@@ -1,30 +1,26 @@
 package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 
 import com.github.uranus_mod_group.uranus_mod.particles.ModParticles;
+import com.github.uranus_mod_group.uranus_mod.skills.ReactionsOutPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
 import net.minecraft.world.phys.*;
 
 import java.util.List;
 
 public class MagicSphereEntity extends AbstractUranusModProjectile
 {
-    private int life = 200;
-    private float damage = 0.0F;
-    private byte[] skill_attributes;
     private final int RADIUS = 5;
     public final float GRAVITY = -0.02F;
     public final float SPEED = 0.96F;
     public final float SPEED_ON_WATER_R = 0.91F;
     public final float SPEED_ON_RAIN_R = 0.94F;
-
+    private int life = 200;
+    private float damage = 0.0F;
+    private byte[] skill_attributes;
+    private ReactionsOutPlayer reaction;
     //constructor
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType,Level level)
     {
@@ -42,6 +38,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         super.setOwner(entity);
         this.setSkillAttributes(skill_attributes);
         this.setDamage(damage);
+        reaction = new ReactionsOutPlayer(getOwner(), getLevel(), getSkillAttributes(), getDamage(), this);
     }
     //on tick event
     public void tick()
@@ -139,123 +136,11 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         this.skill_attributes = attributes;
     }
-    private byte getSkillAttributes(int i)
+    private byte[] getSkillAttributes()
     {
-        return this.skill_attributes[i];
+        return this.skill_attributes;
     }
     //skill functions
-    private void reactionOnBlock(BlockPos block_pos2)
-    {
-        if (getLevel().getBlockState(block_pos2).isAir() && getLevel().getBlockState(block_pos2.below()).isCollisionShapeFullBlock(getLevel(), block_pos2.below()))
-        {
-            //fire on floor
-            if (getSkillAttributes(0)>=10 || getSkillAttributes(4) >= 5)
-            {
-                if (random.nextInt(120)<= getSkillAttributes(0)+(getSkillAttributes(4)*2))
-                {
-                    getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos2.below()));
-                }
-            }
-            //water
-            if (getSkillAttributes(1)>19)
-            {
-                if (random.nextInt(120)<= getSkillAttributes(1))
-                {
-                    getLevel().setBlock(block_pos2, new Blocks().WATER.defaultBlockState(), 120);
-                }
-            }
-            //stone 2
-            //lava
-            if (getSkillAttributes(4) > 20){
-                if (random.nextInt(126) <= getSkillAttributes(4))
-                {
-                    getLevel().setBlock(block_pos2, new Blocks().LAVA.defaultBlockState(), 120);
-                }
-            }
-            //elektron
-            if (getSkillAttributes(7) > 10){
-                if (random.nextInt(380) <= getSkillAttributes(7))
-                {
-                    LightningBolt lightningbolt = new LightningBolt(EntityType.LIGHTNING_BOLT, getLevel());
-                    lightningbolt.setDamage(getSkillAttributes(7));
-                    lightningbolt.setPos(block_pos2.getX(), block_pos2.getY(), block_pos2.getZ());
-                    getLevel().addFreshEntity(lightningbolt);
-                }
-            }
-        }else
-        {
-            //air
-            if(getLevel().getBlockState(block_pos2).is(BlockTags.LEAVES) &&
-                    random.nextInt(126)<= getSkillAttributes(3))
-            {
-                getLevel().destroyBlock(block_pos2, true, getOwner());
-            }
-        }
-    }
-    private void reactionOnEntity(BlockPos block_pos2, Vec3 vec3)
-    {
-        List<Entity> list = getLevel().getEntities(this.getOwner(), new AABB(
-                block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
-                (double)block_pos2.getX()+1, (double)block_pos2.getY()+1, (double)block_pos2.getZ()+1
-        ));
-        if(list != null)
-        {
-            for(int e = 0; e < list.size(); e++)
-            {
-                if (list.get(e).showVehicleHealth()){
-                    Entity entity = list.get(e);
-                    //damage
-                    entity.hurt(DamageSource.thrown(this, this.getOwner()), getDamage());
-                    //lava || ignite
-                    if (getSkillAttributes(0)>3 || getSkillAttributes(4)>0)
-                    {
-                        entity.setSecondsOnFire(getSkillAttributes(0)+(getSkillAttributes(4)*2));
-                    }
-                    //water
-                    if (getSkillAttributes(1)> 0)
-                    {
-                        entity.clearFire();
-                    }
-                    //stone
-                    //air
-                    if (getSkillAttributes(3)> 0)
-                    {
-                        entity.moveTo(new Vec3(
-                                vec3.x+((vec3.x - block_pos2.getX())),
-                                vec3.y+((vec3.y - block_pos2.getY())),
-                                vec3.z+((vec3.z - block_pos2.getZ()))
-                        ));
-                    }
-                    if(entity instanceof LivingEntity)
-                    {
-                        //sticky
-                        if (getSkillAttributes(5) > 1) {
-                            ((LivingEntity) entity).addEffect(
-                                    new MobEffectInstance(MobEffects.DIG_SLOWDOWN,
-                                            getSkillAttributes(5) * 10,
-                                            ((int) (getSkillAttributes(5) / 6)) + 1));
-                            ((LivingEntity) entity).addEffect(
-                                    new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
-                                            getSkillAttributes(5) * 10,
-                                            ((int) (getSkillAttributes(5) / 6)) + 1));
-                        }
-                        ///lux
-                        if (getSkillAttributes(8) > 0)
-                        {
-                            ((LivingEntity) entity).addEffect(
-                                    new MobEffectInstance(MobEffects.GLOWING,
-                                    getSkillAttributes(8) * 20));
-                        }else if (getSkillAttributes(8) < 0)
-                        {
-                            ((LivingEntity) entity).addEffect(
-                                    new MobEffectInstance(MobEffects.BLINDNESS,
-                                            getSkillAttributes(8) * 10*-1));
-                        }
-                    }
-                }
-            }
-        }
-    }
     private void skillsReactions(Vec3 vec3)
     {
         BlockPos block_pos;
@@ -269,8 +154,8 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             if (((int)((Math.abs(x) + Math.abs(y) + Math.abs(z)) / 3) * 3.14) < this.RADIUS)
             {
                 block_pos = new BlockPos(vec3.x + x, vec3.y + y, vec3.z + z);
-                    reactionOnBlock(block_pos);
-                    reactionOnEntity(block_pos, vec3);
+                    reaction.reactionOnBlock(block_pos);
+                    reaction.reactionOnEntity(block_pos, vec3);
             }
         }
         }
