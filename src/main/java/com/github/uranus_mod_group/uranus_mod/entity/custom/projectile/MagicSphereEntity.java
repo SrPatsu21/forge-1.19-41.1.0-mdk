@@ -8,8 +8,6 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 
-import java.util.List;
-
 public class MagicSphereEntity extends AbstractUranusModProjectile
 {
     private final int RADIUS = 5;
@@ -184,9 +182,9 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         super.onHitBlock(hitResult);
     }
-    @Override
-    protected void defineSynchedData()
-    {
-
-    }
+//    @Override
+//    protected void defineSynchedData()
+//    {
+//
+//    }
 }

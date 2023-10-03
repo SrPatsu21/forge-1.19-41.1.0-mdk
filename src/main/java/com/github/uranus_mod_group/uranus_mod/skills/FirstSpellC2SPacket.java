@@ -7,24 +7,43 @@ import java.util.function.Supplier;
 
 public class FirstSpellC2SPacket
 {
+//    private byte[] skill_attributes =
+//    {
+//        0,
+//        0,
+//        0,
+//        0,
+//        0,
+//        0,
+//        0,
+//        0,
+//        0,
+//        0,
+//        0,
+//        0,
+//        0,
+//        0,
+//        0,
+//        0
+//    };
     private byte[] skill_attributes =
     {
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        3
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21
     };
 
     public FirstSpellC2SPacket()

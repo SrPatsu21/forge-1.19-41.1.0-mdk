@@ -13,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.WaterlilyBlock;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -140,9 +141,14 @@ public class ReactionsOutPlayer
             }
         }
     }
+
     public void reactionOnBlock(BlockPos block_pos2)
     {
-        if (getLevel().getBlockState(block_pos2).isAir() && getLevel().getBlockState(block_pos2.below()).isCollisionShapeFullBlock(getLevel(), block_pos2.below()))
+        if (
+                (getLevel().getBlockState(block_pos2).isAir() || getLevel().getBlockState(block_pos2).is(Blocks.WATER) || getLevel().getBlockState(block_pos2).is(BlockTags.REPLACEABLE_PLANTS)) &&
+                !(getLevel().getBlockState(block_pos2.below()).isAir() || getLevel().getBlockState(block_pos2.below()).is(Blocks.WATER) ||
+                        getLevel().getBlockState(block_pos2.below()).is(BlockTags.REPLACEABLE_PLANTS) || getLevel().getBlockState(block_pos2.below()).is(Blocks.FIRE)
+                ))
         {
             //fire on floor
             if (getSkillAttributes(0)>=10 || getSkillAttributes(4) >= 5)
@@ -155,7 +161,7 @@ public class ReactionsOutPlayer
             //water
             if (getSkillAttributes(1)>19)
             {
-                if (random.nextInt(120)<= getSkillAttributes(1))
+                if (random.nextInt(120)<= getSkillAttributes(1) && !getLevel().dimensionType().ultraWarm())
                 {
                     getLevel().setBlock(block_pos2, new Blocks().WATER.defaultBlockState(), 120);
                 }
@@ -181,7 +187,8 @@ public class ReactionsOutPlayer
         }else
         {
             //air
-            if(getLevel().getBlockState(block_pos2).is(BlockTags.LEAVES) &&
+            if((getLevel().getBlockState(block_pos2).is(BlockTags.LEAVES) ||
+                    getLevel().getBlockState(block_pos2).is(BlockTags.REPLACEABLE_PLANTS)) &&
                     random.nextInt(126)<= getSkillAttributes(3))
             {
                 getLevel().destroyBlock(block_pos2, true, getOwner());
