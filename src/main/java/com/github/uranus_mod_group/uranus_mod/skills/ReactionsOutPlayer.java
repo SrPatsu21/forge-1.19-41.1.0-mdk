@@ -91,10 +91,12 @@ public class ReactionsOutPlayer
                     Entity entity = list.get(e);
                     //damage
                     entity.hurt(DamageSource.thrown(getEntity_use(), getOwner()), getDamage());
-                    //lava || ignite
-                    if (getSkillAttributes(0)>3 || getSkillAttributes(4)>0)
+                    //lava || ignite || heat
+                    if (getSkillAttributes(0)>3 || getSkillAttributes(4)>0 || getSkillAttributes(9) > 10)
                     {
-                        entity.setSecondsOnFire(getSkillAttributes(0)+(getSkillAttributes(4)*2));
+                        entity.setSecondsOnFire(getSkillAttributes(0)+
+                                (getSkillAttributes(4)*2)+
+                                ((int)getSkillAttributes(9)/4));
                     }
                     //water
                     if (getSkillAttributes(1)> 0)
@@ -151,9 +153,9 @@ public class ReactionsOutPlayer
                 ))
         {
             //fire on floor
-            if (getSkillAttributes(0)>=10 || getSkillAttributes(4) >= 5)
+            if (getSkillAttributes(0)>=10 || getSkillAttributes(4) >= 5 || getSkillAttributes(9) >= 20)
             {
-                if (random.nextInt(120)<= getSkillAttributes(0)+(getSkillAttributes(4)*2))
+                if (random.nextInt(120)<= getSkillAttributes(0)+(getSkillAttributes(4)*2)+(getSkillAttributes(9)/4))
                 {
                     getLevel().setBlockAndUpdate(block_pos2, BaseFireBlock.getState(this.level, block_pos2.below()));
                 }
@@ -163,7 +165,7 @@ public class ReactionsOutPlayer
             {
                 if (random.nextInt(120)<= getSkillAttributes(1) && !getLevel().dimensionType().ultraWarm())
                 {
-                    getLevel().setBlock(block_pos2, new Blocks().WATER.defaultBlockState(), 120);
+                    getLevel().setBlockAndUpdate(block_pos2, new Blocks().WATER.defaultBlockState());
                 }
             }
             //stone 2
@@ -171,7 +173,7 @@ public class ReactionsOutPlayer
             if (getSkillAttributes(4) > 20){
                 if (random.nextInt(126) <= getSkillAttributes(4))
                 {
-                    getLevel().setBlock(block_pos2, new Blocks().LAVA.defaultBlockState(), 120);
+                    getLevel().setBlockAndUpdate(block_pos2, new Blocks().LAVA.defaultBlockState());
                 }
             }
             //elektron
@@ -187,11 +189,49 @@ public class ReactionsOutPlayer
         }else
         {
             //air
-            if((getLevel().getBlockState(block_pos2).is(BlockTags.LEAVES) ||
-                    getLevel().getBlockState(block_pos2).is(BlockTags.REPLACEABLE_PLANTS)) &&
-                    random.nextInt(126)<= getSkillAttributes(3))
+            if(getSkillAttributes(3) != 0)
             {
-                getLevel().destroyBlock(block_pos2, true, getOwner());
+                if((getLevel().getBlockState(block_pos2).is(BlockTags.LEAVES) ||
+                        getLevel().getBlockState(block_pos2).is(BlockTags.REPLACEABLE_PLANTS)) &&
+                        random.nextInt(126)<= getSkillAttributes(3))
+                {
+                    getLevel().destroyBlock(block_pos2, true, getOwner());
+                }
+            }
+            //heat
+            if(getSkillAttributes(9) != 0) {
+                if(getSkillAttributes(9) > 10){
+                    if(getLevel().getBlockState(block_pos2).is(Blocks.ICE))
+                    {
+                        getLevel().destroyBlock(block_pos2, true, getOwner(), 0);
+                    }
+                    if (random.nextInt(126) <= getSkillAttributes(9)) {
+                        if (getLevel().getBlockState(block_pos2).is(Blocks.WATER) && getSkillAttributes(9) > 10) {
+                            getLevel().setBlockAndUpdate(block_pos2, new Blocks().AIR.defaultBlockState());
+                        } else if (getLevel().getBlockState(block_pos2).is(BlockTags.SAND)) {
+                            getLevel().setBlockAndUpdate(block_pos2, new Blocks().GLASS.defaultBlockState());
+                        } else if (getLevel().getBlockState(block_pos2).is(Blocks.COBBLESTONE)) {
+                            getLevel().setBlockAndUpdate(block_pos2, new Blocks().STONE.defaultBlockState());
+                        } else if (getLevel().getBlockState(block_pos2).is(Blocks.COBBLED_DEEPSLATE)) {
+                            getLevel().setBlockAndUpdate(block_pos2, new Blocks().DEEPSLATE.defaultBlockState());
+                        }
+                    }
+                }else if(getSkillAttributes(9)<-10)
+                {
+                    if(-1*random.nextInt(126) >= getSkillAttributes(9))
+                    {
+                        if (getLevel().getBlockState(block_pos2).is(Blocks.WATER) && getSkillAttributes(9) > 10)
+                        {
+                            getLevel().setBlockAndUpdate(block_pos2, new Blocks().ICE.defaultBlockState());
+                        } else if (
+                                !(getLevel().getBlockState(block_pos2.below()).isAir() || getLevel().getBlockState(block_pos2.below()).is(Blocks.WATER) ||
+                                        getLevel().getBlockState(block_pos2.below()).is(BlockTags.REPLACEABLE_PLANTS) || getLevel().getBlockState(block_pos2.below()).is(Blocks.FIRE)
+                                ))
+                        {
+                            getLevel().setBlockAndUpdate(block_pos2, new Blocks().SNOW.defaultBlockState());
+                        }
+                    }
+                }
             }
         }
     }
