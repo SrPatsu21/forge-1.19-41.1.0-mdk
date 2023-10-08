@@ -89,8 +89,13 @@ public class ReactionsOutPlayer
             {
                 if (list.get(e).showVehicleHealth()){
                     Entity entity = list.get(e);
-                    //damage
-                    entity.hurt(DamageSource.thrown(getEntity_use(), getOwner()), getDamage());
+                    //damage || heal
+                    if (getDamage() + getSkillAttributes(10)*-1 > 0){
+                        entity.hurt(DamageSource.thrown(getEntity_use(), getOwner()), getDamage() + getSkillAttributes(10)*-1);
+                    }else if (getSkillAttributes(10) > 0)
+                    {
+                        ((LivingEntity) entity).heal(getSkillAttributes(10)-getDamage());
+                    }
                     //lava || ignite || heat
                     if (getSkillAttributes(0)>3 || getSkillAttributes(4)>0 || getSkillAttributes(9) > 10)
                     {
@@ -104,8 +109,8 @@ public class ReactionsOutPlayer
                         entity.clearFire();
                     }
                     //stone
-                    //air
-                    if (getSkillAttributes(3)> 0)
+                    //air || push
+                    if (getSkillAttributes(3) > 0 || getSkillAttributes(15) != 0)
                     {
                         entity.moveTo(new Vec3(
                                 vec3.x+((vec3.x - block_pos2.getX())),
@@ -137,6 +142,41 @@ public class ReactionsOutPlayer
                             ((LivingEntity) entity).addEffect(
                                     new MobEffectInstance(MobEffects.BLINDNESS,
                                             getSkillAttributes(8) * 10*-1));
+                        }
+                        //poison
+                        if(getSkillAttributes(11) > 0)
+                        {
+                            ((LivingEntity) entity).addEffect(
+                                    new MobEffectInstance(MobEffects.POISON,
+                                            getSkillAttributes(11) * 10, (int)(getSkillAttributes(11)*0.1F)));
+                        }else if(getSkillAttributes(11) < 0)
+                        {
+                            ((LivingEntity) entity).addEffect(
+                                    new MobEffectInstance(MobEffects.HEAL,
+                                            getSkillAttributes(11) * 10*-1, (int)(getSkillAttributes(11)*0.1F)));
+                        }
+                        //wither
+                        if (getSkillAttributes(12) > 0)
+                        {
+                            ((LivingEntity) entity).addEffect(
+                                    new MobEffectInstance(MobEffects.WITHER,
+                                            getSkillAttributes(12) * 5, (int)(getSkillAttributes(12)*0.05F)));
+                        }
+                        //teleport
+                        if (getSkillAttributes(13) > 0)
+                        {
+                            ((LivingEntity) entity).randomTeleport(
+                                    entity.getX() + random.nextInt(getSkillAttributes(13)),
+                                    entity.getY()+ random.nextInt(getSkillAttributes(13)),
+                                    entity.getZ() + random.nextInt(getSkillAttributes(13)),
+                                    true);
+                        }
+                        //gravitational
+                        if (getSkillAttributes(14) > 0)
+                        {
+                            ((LivingEntity) entity).addEffect(
+                                    new MobEffectInstance(MobEffects.LEVITATION,
+                                            getSkillAttributes(14) * 10, 1));
                         }
                     }
                 }
@@ -232,6 +272,7 @@ public class ReactionsOutPlayer
                         }
                     }
                 }
+
             }
         }
     }

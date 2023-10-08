@@ -65,7 +65,7 @@ public class CreateSkills {
         90,
         40,
         5,
-        40,
+        80,
         40,
         40,
         80,
