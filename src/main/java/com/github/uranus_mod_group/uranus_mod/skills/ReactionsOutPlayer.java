@@ -13,7 +13,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.WaterlilyBlock;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -89,33 +88,27 @@ public class ReactionsOutPlayer
             {
                 if (list.get(e).showVehicleHealth()){
                     Entity entity = list.get(e);
+
                     //damage || heal
-                    if (getDamage() + getSkillAttributes(10)*-1 > 0){
-                        entity.hurt(DamageSource.thrown(getEntity_use(), getOwner()), getDamage() + getSkillAttributes(10)*-1);
-                    }else if (getSkillAttributes(10) > 0)
-                    {
-                        ((LivingEntity) entity).heal(getSkillAttributes(10)-getDamage());
-                    }
+                    lifeDealt(entity, getDamage(),getSkillAttributes(10));
                     //lava || ignite || heat
                     if (getSkillAttributes(0)>3 || getSkillAttributes(4)>0 || getSkillAttributes(9) > 10)
                     {
-                        entity.setSecondsOnFire(getSkillAttributes(0)+
-                                (getSkillAttributes(4)*2)+
-                                ((int)getSkillAttributes(9)/4));
+                        setFire(entity, (int)(getSkillAttributes(0) + (getSkillAttributes(4)*2) + getSkillAttributes(9)/4) );
                     }
                     //water
-                    if (getSkillAttributes(1)> 0)
+                    if (getSkillAttributes(1)> 0 || getSkillAttributes(3) > 20)
                     {
                         entity.clearFire();
                     }
-                    //stone
+                    //stonep
                     //air || push
                     if (getSkillAttributes(3) != 0 || getSkillAttributes(15) != 0)
                     {
                         entity.moveTo(new Vec3(
-                                vec3.x+((vec3.x - block_pos2.getX())),
-                                vec3.y+((vec3.y - block_pos2.getY())),
-                                vec3.z+((vec3.z - block_pos2.getZ()))
+                                vec3.x,
+                                vec3.y,
+                                vec3.z
                         ));
                     }
                     if(entity instanceof LivingEntity)
@@ -148,19 +141,22 @@ public class ReactionsOutPlayer
                         {
                             ((LivingEntity) entity).addEffect(
                                     new MobEffectInstance(MobEffects.POISON,
-                                            getSkillAttributes(11) * 10, (int)(getSkillAttributes(11)*0.1F)));
+                                            getSkillAttributes(11) * 10,
+                                            (int)(getSkillAttributes(11)*0.1F)));
                         }else if(getSkillAttributes(11) < 0)
                         {
                             ((LivingEntity) entity).addEffect(
-                                    new MobEffectInstance(MobEffects.HEAL,
-                                            getSkillAttributes(11) * 10*-1, (int)(getSkillAttributes(11)*0.1F)));
+                                    new MobEffectInstance(MobEffects.REGENERATION,
+                                            getSkillAttributes(11) * 10*-1,
+                                            (int)(getSkillAttributes(11)*0.1F)));
                         }
                         //wither
                         if (getSkillAttributes(12) > 0)
                         {
                             ((LivingEntity) entity).addEffect(
                                     new MobEffectInstance(MobEffects.WITHER,
-                                            getSkillAttributes(12) * 5, (int)(getSkillAttributes(12)*0.05F)));
+                                            getSkillAttributes(12) * 5,
+                                            (int)(getSkillAttributes(12)*0.05F)));
                         }
                         //teleport
                         if (getSkillAttributes(13) > 0)
@@ -180,6 +176,21 @@ public class ReactionsOutPlayer
                 }
             }
         }
+    }
+    public void lifeDealt(Entity entity, double damage, int bonus)
+    {
+        if ((damage + (bonus*-1)) > 0){
+            entity.hurt(DamageSource.thrown(getEntity_use(), getOwner()), (float)(damage + (bonus*-1)/2));
+        }else if (bonus > 0)
+        {
+            ((LivingEntity) entity).addEffect(
+                    new MobEffectInstance(MobEffects.HEAL,
+                            1, (int)(bonus-damage)/2));
+        }
+    }
+    public void setFire(Entity entity, int time)
+    {
+        entity.setSecondsOnFire(time);
     }
 
     public void reactionOnBlock(BlockPos block_pos2)

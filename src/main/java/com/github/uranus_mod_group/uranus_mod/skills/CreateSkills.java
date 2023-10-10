@@ -89,7 +89,7 @@ public class CreateSkills {
         0,
         0,
         0,
-        1
+        0
     };
     public final byte [] RESPECTIVE_SKILLS =
     {
