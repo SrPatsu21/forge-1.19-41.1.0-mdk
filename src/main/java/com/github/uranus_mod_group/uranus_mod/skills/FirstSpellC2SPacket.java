@@ -23,8 +23,8 @@ public class FirstSpellC2SPacket
         0,
         0,
         0,
-        1,
-        0
+        0,
+        20
     };
 //    private byte[] skill_attributes =
 //    {

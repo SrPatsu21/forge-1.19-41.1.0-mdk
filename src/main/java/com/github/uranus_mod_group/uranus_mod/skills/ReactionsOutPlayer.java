@@ -110,7 +110,7 @@ public class ReactionsOutPlayer
                     }
                     //stone
                     //air || push
-                    if (getSkillAttributes(3) > 0 || getSkillAttributes(15) != 0)
+                    if (getSkillAttributes(3) != 0 || getSkillAttributes(15) != 0)
                     {
                         entity.moveTo(new Vec3(
                                 vec3.x+((vec3.x - block_pos2.getX())),
@@ -172,11 +172,9 @@ public class ReactionsOutPlayer
                                     true);
                         }
                         //gravitational
-                        if (getSkillAttributes(14) > 0)
+                        if (getSkillAttributes(14) != 0)
                         {
-                            ((LivingEntity) entity).addEffect(
-                                    new MobEffectInstance(MobEffects.LEVITATION,
-                                            getSkillAttributes(14) * 10, 1));
+                            entity.setDeltaMovement(0 ,(getSkillAttributes(14)/15), 0);
                         }
                     }
                 }
@@ -233,7 +231,7 @@ public class ReactionsOutPlayer
             {
                 if((getLevel().getBlockState(block_pos2).is(BlockTags.LEAVES) ||
                         getLevel().getBlockState(block_pos2).is(BlockTags.REPLACEABLE_PLANTS)) &&
-                        random.nextInt(126)<= getSkillAttributes(3))
+                        random.nextInt(126)<= Math.abs(getSkillAttributes(3)))
                 {
                     getLevel().destroyBlock(block_pos2, true, getOwner());
                 }
