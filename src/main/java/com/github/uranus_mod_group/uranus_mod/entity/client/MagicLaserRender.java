@@ -42,16 +42,6 @@ public class MagicLaserRender extends EntityRenderer<MagicLaserEntity>
                        MultiBufferSource bufferSource, int p_115867_)
     {
         poseStack.pushPose();
-        //animation
-        float f = Mth.rotlerp(entity.yRotO, entity.getYRot(), p_115864_);
-        float f1 = Mth.lerp(p_115864_, entity.xRotO, entity.getXRot());
-        float f2 = (float)entity.tickCount + p_115864_;
-        poseStack.translate(0.0D, (double)0.15F, 0.0D);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(Mth.sin(f2 * 0.1F) * 180.0F));
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(Mth.cos(f2 * 0.1F) * 180.0F));
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.sin(f2 * 0.1F) * 180.0F));
-        poseStack.scale(1F, 1F, 1F);
-        this.model.setupAnim(entity, 0.0F, 0.0F, 0.0F, f, f1);
         //texture
         VertexConsumer vertexconsumer = bufferSource.getBuffer(this.model.renderType(MAGIC_LASER_LOCATION));
         this.model.renderToBuffer(poseStack, vertexconsumer, p_115867_,
