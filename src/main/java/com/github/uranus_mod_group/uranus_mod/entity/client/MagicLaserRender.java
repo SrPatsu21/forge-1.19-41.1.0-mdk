@@ -1,8 +1,8 @@
 package com.github.uranus_mod_group.uranus_mod.entity.client;
 
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
-import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.MagicSphereEntity;
-import com.github.uranus_mod_group.uranus_mod.entity.model.MagicSphereModel;
+import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.MagicLaserEntity;
+import com.github.uranus_mod_group.uranus_mod.entity.model.MagicLaserModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
@@ -15,24 +15,30 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class MagicSphereRender extends EntityRenderer<MagicSphereEntity>
+public class MagicLaserRender extends EntityRenderer<MagicLaserEntity>
 {
-    public static final ResourceLocation MAGIC_SPHERE_LOCATION = new ResourceLocation(
-            Uranus_mod.ModId, "textures/entity/spells/magic_sphere.png");
-    public static final RenderType RENDER_TYPE = RenderType.entityDecal(MAGIC_SPHERE_LOCATION);
-    public final MagicSphereModel<MagicSphereEntity> model;
+    public static final ResourceLocation MAGIC_LASER_LOCATION = new ResourceLocation(
+            Uranus_mod.ModId, "textures/entity/spells/magic_laser.png");
+    public static final RenderType RENDER_TYPE = RenderType.entityDecal(MAGIC_LASER_LOCATION);
+    public final MagicLaserModel<MagicLaserEntity> model;
 
-    public MagicSphereRender(EntityRendererProvider.Context manager)
+    public MagicLaserRender(EntityRendererProvider.Context manager)
     {
         super(manager);
-        this.model = new MagicSphereModel<>(manager.bakeLayer(MagicSphereModel.LAYER_LOCATION));
+        this.model = new MagicLaserModel<>(manager.bakeLayer(MagicLaserModel.LAYER_LOCATION));
     }
-    protected int getBlockLightLevel(MagicSphereEntity entity, BlockPos position)
+
+    @Override
+    public ResourceLocation getTextureLocation(MagicLaserEntity p_114482_) {
+        return MAGIC_LASER_LOCATION;
+    }
+
+    protected int getBlockLightLevel(MagicLaserEntity entity, BlockPos position)
     {
         return 15;
     }
     //how does it work?
-    public void render(MagicSphereEntity entity, float p_115863_, float p_115864_, PoseStack poseStack,
+    public void render(MagicLaserEntity entity, float p_115863_, float p_115864_, PoseStack poseStack,
                        MultiBufferSource bufferSource, int p_115867_)
     {
         poseStack.pushPose();
@@ -47,7 +53,7 @@ public class MagicSphereRender extends EntityRenderer<MagicSphereEntity>
         poseStack.scale(1F, 1F, 1F);
         this.model.setupAnim(entity, 0.0F, 0.0F, 0.0F, f, f1);
         //texture
-        VertexConsumer vertexconsumer = bufferSource.getBuffer(this.model.renderType(MAGIC_SPHERE_LOCATION));
+        VertexConsumer vertexconsumer = bufferSource.getBuffer(this.model.renderType(MAGIC_LASER_LOCATION));
         this.model.renderToBuffer(poseStack, vertexconsumer, p_115867_,
                 OverlayTexture.NO_OVERLAY, 0.0F, 0.4F, 0.6F, 1.0F);
         //scale
@@ -60,10 +66,5 @@ public class MagicSphereRender extends EntityRenderer<MagicSphereEntity>
         poseStack.popPose();
         //call the superrender
         super.render(entity, p_115863_, p_115864_, poseStack, bufferSource, p_115867_);
-    }
-
-    public ResourceLocation getTextureLocation(MagicSphereEntity Projectile)
-    {
-        return MAGIC_SPHERE_LOCATION;
     }
 }

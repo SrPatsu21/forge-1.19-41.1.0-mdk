@@ -1,6 +1,7 @@
 package com.github.uranus_mod_group.uranus_mod.entity;
 
 import com.github.uranus_mod_group.uranus_mod.Uranus_mod;
+import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.MagicLaserEntity;
 import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.MagicSphereEntity;
 import com.github.uranus_mod_group.uranus_mod.entity.custom.MasterWizardEntity;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +22,14 @@ public class ModEntityTypes{
                             .sized(0.4f, 0.4f)
                             //I think it is to find teh texture
                             .build(new ResourceLocation(Uranus_mod.ModId, "magic_sphere").toString())
+            );
+    //magic laser
+    public static RegistryObject<EntityType<MagicLaserEntity>> MAGIC_LASER =
+            ENTITY_TYPES.register("magic_laser", () -> EntityType.Builder.<MagicLaserEntity>of(MagicLaserEntity::new, MobCategory.MISC)
+                    //hit box
+                    .sized(0.4f, 0.4f)
+                    //I think it is to find teh texture
+                    .build(new ResourceLocation(Uranus_mod.ModId, "magic_laser").toString())
             );
     //master wizard
     public  static final RegistryObject<EntityType<MasterWizardEntity>> MASTER_WIZARD =

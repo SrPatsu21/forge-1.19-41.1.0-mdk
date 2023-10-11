@@ -16,9 +16,13 @@ import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nullable;
 
-public abstract class AbstractUranusModProjectile extends Projectile {
+public abstract class AbstractUranusModProjectile extends Projectile
+{
+    private float damage = 0.0F;
+    private byte[] skill_attributes;
     //constructor
-    protected AbstractUranusModProjectile(EntityType<? extends Projectile> entity_type, Level level) {
+    protected AbstractUranusModProjectile(EntityType<? extends Projectile> entity_type, Level level)
+    {
         super(entity_type, level);
     }
     //render distance
@@ -74,6 +78,24 @@ public abstract class AbstractUranusModProjectile extends Projectile {
     protected boolean isInRain()
     {
         return this.level.isRainingAt(this.blockPosition()) || this.level.isRainingAt(new BlockPos((double)this.blockPosition().getX(), this.getBoundingBox().maxY, (double)this.blockPosition().getZ()));
+    }
+    //damage
+    protected void setDamage(float damage)
+    {
+        this.damage = damage;
+    }
+    public float getDamage()
+    {
+        return this.damage;
+    }
+    //attributes
+    protected void setSkillAttributes(byte[] attributes)
+    {
+        this.skill_attributes = attributes;
+    }
+    public byte[] getSkillAttributes()
+    {
+        return this.skill_attributes;
     }
     //owner
     public void setOwner(@Nullable Entity entity)

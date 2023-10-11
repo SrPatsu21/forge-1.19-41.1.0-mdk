@@ -16,8 +16,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     public final float SPEED_ON_WATER_R = 0.91F;
     public final float SPEED_ON_RAIN_R = 0.94F;
     private int life = 200;
-    private float damage = 0.0F;
-    private byte[] skill_attributes;
     private ReactionsOutPlayer reaction;
     //constructor
     public MagicSphereEntity(EntityType<? extends MagicSphereEntity> entityEntityType,Level level)
@@ -99,15 +97,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             this.discard();
         }
     }
-    //damage
-    private void setDamage(float damage)
-    {
-        this.damage = damage;
-    }
-    public float getDamage()
-    {
-        return this.damage;
-    }
     //particles
     public void spawnFoundParticles(Vec3 vec3)
     {
@@ -128,15 +117,6 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
         }
         }
         }
-    }
-    //skill attributes
-    private void setSkillAttributes(byte[] attributes)
-    {
-        this.skill_attributes = attributes;
-    }
-    private byte[] getSkillAttributes()
-    {
-        return this.skill_attributes;
     }
     //skill functions
     private void skillsReactions(Vec3 vec3)
@@ -165,7 +145,7 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         super.onHit(hitResult);
         //call reactions
-        if (this.getOwner() != null && this.skill_attributes != null)
+        if (this.getOwner() != null && this.getSkillAttributes() != null)
         {
             this.skillsReactions(hitResult.getLocation());
         }
@@ -182,9 +162,9 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
     {
         super.onHitBlock(hitResult);
     }
-//    @Override
-//    protected void defineSynchedData()
-//    {
-//
-//    }
+    @Override
+    protected void defineSynchedData()
+    {
+
+    }
 }
