@@ -1,6 +1,7 @@
 package com.github.uranus_mod_group.uranus_mod.skills;
 
 import com.github.uranus_mod_group.uranus_mod.entity.ModEntityTypes;
+import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.MagicLaserEntity;
 import com.github.uranus_mod_group.uranus_mod.entity.custom.projectile.MagicSphereEntity;
 import com.github.uranus_mod_group.uranus_mod.mana.PlayerManaProvider;
 import com.github.uranus_mod_group.uranus_mod.networking.ModMessages;
@@ -239,9 +240,10 @@ public class CreateSkills {
             getContext().enqueueWork(() ->
             {
                 //magic sphere
-                if (getSkill_kind() == 1) {
+                if (getSkill_kind() == 1)
+                {
                     //if player has mana, works
-                    setValueOfSkillMana(2.0F);
+                    setValueOfSkillMana(10.0F);
                     getOwner().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
                     {
                         if (mana.getMana() >= getValue_of_skill() && getValue_of_skill() != 0) {
@@ -249,6 +251,22 @@ public class CreateSkills {
                             mana.addMxp((int)getValue_of_skill());
                             setProficiencyXp(getOwner(), getSkillAttributes());
                             createMagicSphereEntity(3);
+                        }
+                        mana.subMana(getValue_of_skill());
+                        ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), getOwner());
+                    });
+                }else if(getSkill_kind() == 2)
+                {
+                    //if player has mana, works
+                    setValueOfSkillMana(3.0F);
+                    getOwner().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana ->
+                    {
+                        if (mana.getMana() >= getValue_of_skill() && getValue_of_skill() != 0)
+                        {
+                            setDamage();
+                            mana.addMxp((int)getValue_of_skill());
+                            setProficiencyXp(getOwner(), getSkillAttributes());
+                            createMagicLaserEntity(3);
                         }
                         mana.subMana(getValue_of_skill());
                         ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), getOwner());
@@ -266,6 +284,16 @@ public class CreateSkills {
                 , 0.0F, 1 * speed_plus, 0.0F);
 
         level.addFreshEntity(magic_sphere);
+    }
+    public void createMagicLaserEntity (float speed_plus)
+    {
+        MagicLaserEntity magic_laser = new MagicLaserEntity(ModEntityTypes.MAGIC_LASER.get() , getLevel(), getOwner()
+                , getSkillAttributes(), getDamage());
+
+        magic_laser.shootFromRotation(getOwner(), getOwner().getXRot(), getOwner().getYRot()
+                , 0.0F, 1 * speed_plus, 0.0F);
+
+        level.addFreshEntity(magic_laser);
     }
     public void createFailMagicSkill()
     {

@@ -9,23 +9,24 @@ public class FirstSpellC2SPacket
 {
     private byte[] skill_attributes =
     {
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        20
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        0
     };
+    private int skill_kind = 2;
 //    private byte[] skill_attributes =
 //    {
 //        21,
@@ -63,7 +64,7 @@ public class FirstSpellC2SPacket
     public boolean handle(Supplier<NetworkEvent.Context> supplier)
     {
         NetworkEvent.Context context = supplier.get();
-        new CreateSkills(context, 1, this.skill_attributes).createSkill();
+        new CreateSkills(context, skill_kind, this.skill_attributes).createSkill();
         return true;
     }
 }
