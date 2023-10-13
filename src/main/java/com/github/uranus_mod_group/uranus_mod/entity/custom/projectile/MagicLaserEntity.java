@@ -3,10 +3,8 @@ package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 import com.github.uranus_mod_group.uranus_mod.particles.ModParticles;
 import com.github.uranus_mod_group.uranus_mod.skills.ReactionsOutPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
@@ -18,7 +16,7 @@ import net.minecraft.world.phys.Vec3;
 public class MagicLaserEntity extends AbstractUranusModProjectile
 {
     public final float GRAVITY = -0.02F;
-    public final float SPEED = 0.995F;
+    public final float SPEED = 0.99F;
     public final float SPEED_ON_WATER_R = 0.95F;
     public final float SPEED_ON_RAIN_R = 0.97F;
     private int life = 200;
@@ -42,7 +40,6 @@ public class MagicLaserEntity extends AbstractUranusModProjectile
         this.setDamage(damage);
         reaction = new ReactionsOutPlayer(getOwner(), getLevel(), getSkillAttributes(), getDamage(), this);
     }
-
     //on tick event
     public void tick()
     {
@@ -52,25 +49,17 @@ public class MagicLaserEntity extends AbstractUranusModProjectile
         this.checkInsideBlocks();
         Vec3 vec3delta = this.getDeltaMovement();
 
-        if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
-            this.setYRot((float)(Mth.atan2(vec3delta.x, vec3delta.z) * (double)(180F / (float)Math.PI)));
-            this.setXRot((float)(Mth.atan2(vec3delta.y, vec3delta.horizontalDistance()) * (double)(180F / (float)Math.PI)));
-            this.yRotO = this.getYRot();
-            this.xRotO = this.getXRot();
-        }
-
         double d2 = this.getX() + vec3delta.x;
         double d0 = this.getY() + vec3delta.y;
         double d1 = this.getZ() + vec3delta.z;
 
-        if (this.isNoPhysics()) {
-            this.setYRot((float)(Mth.atan2(-vec3delta.x, -vec3delta.y) * (double)(180F / (float)Math.PI)));
-        } else {
-            this.setYRot((float)(Mth.atan2(vec3delta.x, vec3delta.y) * (double)(180F / (float)Math.PI)));
-        }
-        this.setXRot((float)(Mth.atan2(vec3delta.y, vec3delta.horizontalDistance()) * (double)(180F / (float)Math.PI)));
-        this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
-        this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
+//        if (this.isNoPhysics()) {
+//            this.setYRot((float)(Mth.atan2(-vec3delta.x, -vec3delta.y) * (double)(180F / (float)Math.PI)));
+//        } else {
+//            this.setYRot((float)(Mth.atan2(vec3delta.x, vec3delta.y) * (double)(180F / (float)Math.PI)));
+//        }
+//        this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
+//        this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
         //speed
         float f = SPEED;
         //if is underwater
@@ -91,7 +80,7 @@ public class MagicLaserEntity extends AbstractUranusModProjectile
             //if it has gravity it will move
             if (!this.isNoGravity())
             {
-                Vec3 vec3delta2 = this.getDeltaMovement();
+                Vec3 vec3delta2 = getDeltaMovement();
                 this.setDeltaMovement(vec3delta2.x, vec3delta2.y + (double) GRAVITY, vec3delta2.z);
             }
             //particles

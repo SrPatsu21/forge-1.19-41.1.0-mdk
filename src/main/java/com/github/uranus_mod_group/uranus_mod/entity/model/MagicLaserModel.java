@@ -31,7 +31,7 @@ public class MagicLaserModel<T extends Entity> extends EntityModel<T>
 				PartPose.offset(0.0F, -3.0F, 0.0F));
 		//group parts
 		PartDefinition cube_r1 = main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 8).
-						addBox(-2.0F, -2.0F, -2.0F, 16.0F, 2.0F, 2.0F,
+						addBox(-1.0F, -2.0F, -1.0F, 16.0F, 2.0F, 2.0F,
 								new CubeDeformation(0.0F)),
 				PartPose.offsetAndRotation(0.0F, 3.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 		//mash is the png

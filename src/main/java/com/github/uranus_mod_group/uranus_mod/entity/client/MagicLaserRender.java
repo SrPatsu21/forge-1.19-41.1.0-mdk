@@ -29,7 +29,7 @@ public class MagicLaserRender extends EntityRenderer<MagicLaserEntity>
     }
 
     @Override
-    public ResourceLocation getTextureLocation(MagicLaserEntity p_114482_) {
+    public ResourceLocation getTextureLocation(MagicLaserEntity entity) {
         return MAGIC_LASER_LOCATION;
     }
 
@@ -42,6 +42,10 @@ public class MagicLaserRender extends EntityRenderer<MagicLaserEntity>
                        MultiBufferSource bufferSource, int p_115867_)
     {
         poseStack.pushPose();
+        poseStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(p_115864_, entity.yRotO, entity.getYRot()) - 90.0F));
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(p_115864_, entity.xRotO, entity.getXRot())));
+        poseStack.mulPose(Vector3f.XP.rotationDegrees(45.0F));
+
         //texture
         VertexConsumer vertexconsumer = bufferSource.getBuffer(this.model.renderType(MAGIC_LASER_LOCATION));
         this.model.renderToBuffer(poseStack, vertexconsumer, p_115867_,
