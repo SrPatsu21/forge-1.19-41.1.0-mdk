@@ -3,6 +3,7 @@ package com.github.uranus_mod_group.uranus_mod.entity.custom.projectile;
 import com.github.uranus_mod_group.uranus_mod.particles.ModParticles;
 import com.github.uranus_mod_group.uranus_mod.skills.ReactionsOutPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -52,14 +53,6 @@ public class MagicLaserEntity extends AbstractUranusModProjectile
         double d2 = this.getX() + vec3delta.x;
         double d0 = this.getY() + vec3delta.y;
         double d1 = this.getZ() + vec3delta.z;
-
-//        if (this.isNoPhysics()) {
-//            this.setYRot((float)(Mth.atan2(-vec3delta.x, -vec3delta.y) * (double)(180F / (float)Math.PI)));
-//        } else {
-//            this.setYRot((float)(Mth.atan2(vec3delta.x, vec3delta.y) * (double)(180F / (float)Math.PI)));
-//        }
-//        this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
-//        this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
         //speed
         float f = SPEED;
         //if is underwater

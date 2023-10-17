@@ -27,7 +27,7 @@ public class ModEntityTypes{
     public static RegistryObject<EntityType<MagicLaserEntity>> MAGIC_LASER =
             ENTITY_TYPES.register("magic_laser", () -> EntityType.Builder.<MagicLaserEntity>of(MagicLaserEntity::new, MobCategory.MISC)
                     //hit box
-                    .sized(-0.2f, -1.0f)
+                    .sized(0.25f, 0.25f)
                     .clientTrackingRange(4)
                     .updateInterval(20)
                     //I think it is to find teh texture
