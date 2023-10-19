@@ -240,11 +240,11 @@ public class ReactionsOutPlayer
             //air
             if(getSkillAttributes(3) != 0)
             {
-                if((getLevel().getBlockState(block_pos2).is(BlockTags.LEAVES) ||
+                if((getLevel().getBlockState(block_pos2.below()).is(BlockTags.LEAVES) ||
                         getLevel().getBlockState(block_pos2).is(BlockTags.REPLACEABLE_PLANTS)) &&
                         random.nextInt(126)<= Math.abs(getSkillAttributes(3)))
                 {
-                    getLevel().destroyBlock(block_pos2, true, getOwner());
+                    getLevel().destroyBlock(block_pos2.below(), true, getOwner());
                 }
             }
             //heat
