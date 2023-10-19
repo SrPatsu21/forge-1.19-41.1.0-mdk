@@ -10,20 +10,20 @@ public class FirstSpellC2SPacket
     private byte[] skill_attributes =
     {
         20,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         20,
-        20,
-        20,
-        20,
-        20,
-        20,
-        20,
-        20,
-        20,
-        20,
-        20,
-        20,
-        20,
-        20,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         0
     };
     private int skill_kind = 2;

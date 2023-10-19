@@ -129,7 +129,7 @@ public class MagicLaserEntity extends AbstractUranusModProjectile
         super.onHitBlock(hitResult);
         if (this.getOwner() != null && this.getSkillAttributes() != null)
         {
-            reaction.reactionOnBlock(hitResult.getBlockPos());
+            reaction.reactionOnBlock(hitResult.getBlockPos().above());
         }
     }
 //    @Override

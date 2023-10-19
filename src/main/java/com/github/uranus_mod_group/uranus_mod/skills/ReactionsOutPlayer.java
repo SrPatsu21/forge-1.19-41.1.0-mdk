@@ -231,7 +231,7 @@ public class ReactionsOutPlayer
                 {
                     LightningBolt lightningbolt = new LightningBolt(EntityType.LIGHTNING_BOLT, getLevel());
                     lightningbolt.setDamage(getSkillAttributes(7));
-                    lightningbolt.setPos(block_pos2.getX(), block_pos2.getY(), block_pos2.getZ());
+                    lightningbolt.setPos(block_pos2.getX(), block_pos2.getY()+1, block_pos2.getZ());
                     getLevel().addFreshEntity(lightningbolt);
                 }
             }
