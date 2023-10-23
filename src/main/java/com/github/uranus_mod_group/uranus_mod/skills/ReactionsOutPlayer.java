@@ -196,7 +196,8 @@ public class ReactionsOutPlayer
     public void reactionOnBlock(BlockPos block_pos2)
     {
         if (
-                (getLevel().getBlockState(block_pos2).isAir() || getLevel().getBlockState(block_pos2).is(Blocks.WATER) || getLevel().getBlockState(block_pos2).is(BlockTags.REPLACEABLE_PLANTS)) &&
+                (getLevel().getBlockState(block_pos2).isAir() || getLevel().getBlockState(block_pos2).is(Blocks.WATER) || getLevel().getBlockState(block_pos2).is(BlockTags.REPLACEABLE_PLANTS))
+                        &&
                 !(getLevel().getBlockState(block_pos2.below()).isAir() || getLevel().getBlockState(block_pos2.below()).is(Blocks.WATER) ||
                         getLevel().getBlockState(block_pos2.below()).is(BlockTags.REPLACEABLE_PLANTS) || getLevel().getBlockState(block_pos2.below()).is(Blocks.FIRE)
                 ))
@@ -255,29 +256,34 @@ public class ReactionsOutPlayer
                         getLevel().destroyBlock(block_pos2, true, getOwner(), 0);
                     }
                     if (random.nextInt(126) <= getSkillAttributes(9)) {
-                        if (getLevel().getBlockState(block_pos2).is(Blocks.WATER) && getSkillAttributes(9) > 10) {
-                            getLevel().setBlockAndUpdate(block_pos2, new Blocks().AIR.defaultBlockState());
-                        } else if (getLevel().getBlockState(block_pos2).is(BlockTags.SAND)) {
-                            getLevel().setBlockAndUpdate(block_pos2, new Blocks().GLASS.defaultBlockState());
-                        } else if (getLevel().getBlockState(block_pos2).is(Blocks.COBBLESTONE)) {
-                            getLevel().setBlockAndUpdate(block_pos2, new Blocks().STONE.defaultBlockState());
-                        } else if (getLevel().getBlockState(block_pos2).is(Blocks.COBBLED_DEEPSLATE)) {
-                            getLevel().setBlockAndUpdate(block_pos2, new Blocks().DEEPSLATE.defaultBlockState());
+                        if (getLevel().getBlockState(block_pos2.below()).is(Blocks.WATER) && getSkillAttributes(9) > 10) {
+                            getLevel().setBlockAndUpdate(block_pos2.below(), new Blocks().AIR.defaultBlockState());
+                        } else if (getLevel().getBlockState(block_pos2.below()).is(BlockTags.SAND)) {
+                            getLevel().setBlockAndUpdate(block_pos2.below(), new Blocks().GLASS.defaultBlockState());
+                        } else if (getLevel().getBlockState(block_pos2.below()).is(Blocks.COBBLESTONE)) {
+                            getLevel().setBlockAndUpdate(block_pos2.below(), new Blocks().STONE.defaultBlockState());
+                        } else if (getLevel().getBlockState(block_pos2.below()).is(Blocks.COBBLED_DEEPSLATE)) {
+                            getLevel().setBlockAndUpdate(block_pos2.below(), new Blocks().DEEPSLATE.defaultBlockState());
                         }
                     }
                 }else if(getSkillAttributes(9)<-10)
                 {
+                    System.out.println(-1);
                     if(-1*random.nextInt(126) >= getSkillAttributes(9))
                     {
-                        if (getLevel().getBlockState(block_pos2).is(Blocks.WATER) && getSkillAttributes(9) > 10)
+                        System.out.println(0);
+                        if (getLevel().getBlockState(block_pos2.below()).is(Blocks.WATER) && getSkillAttributes(9) > 10)
                         {
-                            getLevel().setBlockAndUpdate(block_pos2, new Blocks().ICE.defaultBlockState());
+                            System.out.println(1);
+                            getLevel().setBlockAndUpdate(block_pos2.below(), new Blocks().ICE.defaultBlockState());
                         } else if (
                                 !(getLevel().getBlockState(block_pos2.below()).isAir() || getLevel().getBlockState(block_pos2.below()).is(Blocks.WATER) ||
                                         getLevel().getBlockState(block_pos2.below()).is(BlockTags.REPLACEABLE_PLANTS) || getLevel().getBlockState(block_pos2.below()).is(Blocks.FIRE)
                                 ))
+                            System.out.println(2);
                         {
                             getLevel().setBlockAndUpdate(block_pos2, new Blocks().SNOW.defaultBlockState());
+                            System.out.println(3);
                         }
                     }
                 }
