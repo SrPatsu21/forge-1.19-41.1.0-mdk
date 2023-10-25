@@ -8,6 +8,8 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 
+import java.util.List;
+
 public class MagicSphereEntity extends AbstractUranusModProjectile
 {
     private final int RADIUS = 5;
@@ -133,7 +135,14 @@ public class MagicSphereEntity extends AbstractUranusModProjectile
             {
                 block_pos = new BlockPos(vec3.x + x, vec3.y + y, vec3.z + z);
                     reaction.reactionOnBlock(block_pos);
-                    reaction.reactionOnEntity(block_pos, vec3);
+                    List<Entity> list = getLevel().getEntities(this.getOwner(), new AABB(
+                            block_pos.getX(), block_pos.getY(), block_pos.getZ(),
+                            (double)block_pos.getX()+1, (double)block_pos.getY()+1, (double)block_pos.getZ()+1
+                    ));
+                for(int e = 0; e < list.size(); e++)
+                {
+                    reaction.reactionOnEntity(list.get(e), vec3);
+                }
             }
         }
         }

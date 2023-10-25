@@ -76,103 +76,92 @@ public class ReactionsOutPlayer
     }
 
     //skill
-    public void reactionOnEntity(BlockPos block_pos2, Vec3 vec3)
+    public void reactionOnEntity(Entity entity, Vec3 vec3)
     {
-        List<Entity> list = getLevel().getEntities(this.getOwner(), new AABB(
-                block_pos2.getX(), block_pos2.getY(), block_pos2.getZ(),
-                (double)block_pos2.getX()+1, (double)block_pos2.getY()+1, (double)block_pos2.getZ()+1
-        ));
-        if(list != null)
+        if (entity.showVehicleHealth())
         {
-            for(int e = 0; e < list.size(); e++)
+            //damage || heal
+            lifeDealt(entity, getDamage(),getSkillAttributes(10));
+            //lava || ignite || heat
+            if (getSkillAttributes(0)>3 || getSkillAttributes(4)>0 || getSkillAttributes(9) > 10)
             {
-                if (list.get(e).showVehicleHealth()){
-                    Entity entity = list.get(e);
-
-                    //damage || heal
-                    lifeDealt(entity, getDamage(),getSkillAttributes(10));
-                    //lava || ignite || heat
-                    if (getSkillAttributes(0)>3 || getSkillAttributes(4)>0 || getSkillAttributes(9) > 10)
-                    {
-                        setFire(entity, (int)(getSkillAttributes(0) + (getSkillAttributes(4)*2) + getSkillAttributes(9)/4) );
-                    }
-                    //water
-                    if (getSkillAttributes(1)> 0 || getSkillAttributes(3) > 20)
-                    {
-                        entity.clearFire();
-                    }
-                    //stonep
-                    //air || push
-                    if (getSkillAttributes(3) != 0 || getSkillAttributes(15) != 0)
-                    {
-                        entity.moveTo(new Vec3(
-                                vec3.x,
-                                vec3.y,
-                                vec3.z
-                        ));
-                    }
-                    if(entity instanceof LivingEntity)
-                    {
-                        //sticky
-                        if (getSkillAttributes(5) > 1) {
-                            ((LivingEntity) entity).addEffect(
-                                    new MobEffectInstance(MobEffects.DIG_SLOWDOWN,
-                                            getSkillAttributes(5) * 10,
-                                            ((int) (getSkillAttributes(5) / 6)) + 1));
-                            ((LivingEntity) entity).addEffect(
-                                    new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
-                                            getSkillAttributes(5) * 10,
-                                            ((int) (getSkillAttributes(5) / 6)) + 1));
-                        }
-                        ///lux
-                        if (getSkillAttributes(8) > 0)
-                        {
-                            ((LivingEntity) entity).addEffect(
-                                    new MobEffectInstance(MobEffects.GLOWING,
-                                            getSkillAttributes(8) * 20));
-                        }else if (getSkillAttributes(8) < 0)
-                        {
-                            ((LivingEntity) entity).addEffect(
-                                    new MobEffectInstance(MobEffects.BLINDNESS,
-                                            getSkillAttributes(8) * 10*-1));
-                        }
-                        //poison
-                        if(getSkillAttributes(11) > 0)
-                        {
-                            ((LivingEntity) entity).addEffect(
-                                    new MobEffectInstance(MobEffects.POISON,
-                                            getSkillAttributes(11) * 10,
-                                            (int)(getSkillAttributes(11)*0.1F)));
-                        }else if(getSkillAttributes(11) < 0)
-                        {
-                            ((LivingEntity) entity).addEffect(
-                                    new MobEffectInstance(MobEffects.REGENERATION,
-                                            getSkillAttributes(11) * 10*-1,
-                                            (int)(getSkillAttributes(11)*0.1F)));
-                        }
-                        //wither
-                        if (getSkillAttributes(12) > 0)
-                        {
-                            ((LivingEntity) entity).addEffect(
-                                    new MobEffectInstance(MobEffects.WITHER,
-                                            getSkillAttributes(12) * 5,
-                                            (int)(getSkillAttributes(12)*0.05F)));
-                        }
-                        //teleport
-                        if (getSkillAttributes(13) > 0)
-                        {
-                            ((LivingEntity) entity).randomTeleport(
-                                    entity.getX() + random.nextInt(getSkillAttributes(13)),
-                                    entity.getY()+ random.nextInt(getSkillAttributes(13)),
-                                    entity.getZ() + random.nextInt(getSkillAttributes(13)),
-                                    true);
-                        }
-                        //gravitational
-                        if (getSkillAttributes(14) != 0)
-                        {
-                            entity.setDeltaMovement(0 ,(getSkillAttributes(14)/15), 0);
-                        }
-                    }
+                setFire(entity, (int)(getSkillAttributes(0) + (getSkillAttributes(4)*2) + getSkillAttributes(9)/4) );
+            }
+            //water
+            if (getSkillAttributes(1)> 0 || getSkillAttributes(3) > 20)
+            {
+                entity.clearFire();
+            }
+            //stonep
+            //air || push
+            if (getSkillAttributes(3) != 0 || getSkillAttributes(15) != 0)
+            {
+                entity.moveTo(new Vec3(
+                        vec3.x,
+                        vec3.y,
+                        vec3.z
+                ));
+            }
+            if(entity instanceof LivingEntity)
+            {
+                //sticky
+                if (getSkillAttributes(5) > 1) {
+                    ((LivingEntity) entity).addEffect(
+                            new MobEffectInstance(MobEffects.DIG_SLOWDOWN,
+                                    getSkillAttributes(5) * 10,
+                                    ((int) (getSkillAttributes(5) / 6)) + 1));
+                    ((LivingEntity) entity).addEffect(
+                            new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
+                                    getSkillAttributes(5) * 10,
+                                    ((int) (getSkillAttributes(5) / 6)) + 1));
+                }
+                ///lux
+                if (getSkillAttributes(8) > 0)
+                {
+                    ((LivingEntity) entity).addEffect(
+                            new MobEffectInstance(MobEffects.GLOWING,
+                                    getSkillAttributes(8) * 20));
+                }else if (getSkillAttributes(8) < 0)
+                {
+                    ((LivingEntity) entity).addEffect(
+                            new MobEffectInstance(MobEffects.BLINDNESS,
+                                    getSkillAttributes(8) * 10*-1));
+                }
+                //poison
+                if(getSkillAttributes(11) > 0)
+                {
+                    ((LivingEntity) entity).addEffect(
+                            new MobEffectInstance(MobEffects.POISON,
+                                    getSkillAttributes(11) * 10,
+                                    (int)(getSkillAttributes(11)*0.1F)));
+                }else if(getSkillAttributes(11) < 0)
+                {
+                    ((LivingEntity) entity).addEffect(
+                            new MobEffectInstance(MobEffects.REGENERATION,
+                                    getSkillAttributes(11) * 10*-1,
+                                    (int)(getSkillAttributes(11)*0.1F)));
+                }
+                //wither
+                if (getSkillAttributes(12) > 0)
+                {
+                    ((LivingEntity) entity).addEffect(
+                            new MobEffectInstance(MobEffects.WITHER,
+                                    getSkillAttributes(12) * 5,
+                                    (int)(getSkillAttributes(12)*0.05F)));
+                }
+                //teleport
+                if (getSkillAttributes(13) > 0)
+                {
+                    ((LivingEntity) entity).randomTeleport(
+                            entity.getX() + random.nextInt(getSkillAttributes(13)),
+                            entity.getY()+ random.nextInt(getSkillAttributes(13)),
+                            entity.getZ() + random.nextInt(getSkillAttributes(13)),
+                            true);
+                }
+                //gravitational
+                if (getSkillAttributes(14) != 0)
+                {
+                    entity.setDeltaMovement(0 ,(getSkillAttributes(14)/15.0), 0);
                 }
             }
         }
@@ -215,7 +204,7 @@ public class ReactionsOutPlayer
             {
                 if (random.nextInt(120)<= getSkillAttributes(1) && !getLevel().dimensionType().ultraWarm())
                 {
-                    getLevel().setBlockAndUpdate(block_pos2, new Blocks().WATER.defaultBlockState());
+                    getLevel().setBlockAndUpdate(block_pos2, Blocks.WATER.defaultBlockState());
                 }
             }
             //stone 2
@@ -223,7 +212,7 @@ public class ReactionsOutPlayer
             if (getSkillAttributes(4) > 20){
                 if (random.nextInt(126) <= getSkillAttributes(4))
                 {
-                    getLevel().setBlockAndUpdate(block_pos2, new Blocks().LAVA.defaultBlockState());
+                    getLevel().setBlockAndUpdate(block_pos2, Blocks.LAVA.defaultBlockState());
                 }
             }
             //elektron
@@ -257,32 +246,30 @@ public class ReactionsOutPlayer
                     getLevel().destroyBlock(block_pos2, true, getOwner(), 0);
                 }
                 if (random.nextInt(126) <= getSkillAttributes(9)) {
-                    if (getLevel().getBlockState(block_pos2.below()).is(Blocks.WATER) && getSkillAttributes(9) > 10) {
-                        getLevel().setBlockAndUpdate(block_pos2.below(), new Blocks().AIR.defaultBlockState());
+                    if (getLevel().getBlockState(block_pos2).is(Blocks.WATER) && getSkillAttributes(9) > 10) {
+                        getLevel().setBlockAndUpdate(block_pos2, Blocks.AIR.defaultBlockState());
+                        System.out.println(1);
                     } else if (getLevel().getBlockState(block_pos2.below()).is(BlockTags.SAND)) {
-                        getLevel().setBlockAndUpdate(block_pos2.below(), new Blocks().GLASS.defaultBlockState());
+                        getLevel().setBlockAndUpdate(block_pos2.below(), Blocks.GLASS.defaultBlockState());
                     } else if (getLevel().getBlockState(block_pos2.below()).is(Blocks.COBBLESTONE)) {
-                        getLevel().setBlockAndUpdate(block_pos2.below(), new Blocks().STONE.defaultBlockState());
+                        getLevel().setBlockAndUpdate(block_pos2.below(), Blocks.STONE.defaultBlockState());
                     } else if (getLevel().getBlockState(block_pos2.below()).is(Blocks.COBBLED_DEEPSLATE)) {
-                        getLevel().setBlockAndUpdate(block_pos2.below(), new Blocks().DEEPSLATE.defaultBlockState());
+                        getLevel().setBlockAndUpdate(block_pos2.below(), Blocks.DEEPSLATE.defaultBlockState());
                     }
                 }
             }else if(getSkillAttributes(9)<-10)
             {
                 if(-1*random.nextInt(126) >= getSkillAttributes(9))
                 {
-                    System.out.println(0);
-                    if (getLevel().getBlockState(block_pos2.below()).is(Blocks.WATER) && getSkillAttributes(9) > 10)
+                    if (getLevel().getBlockState(block_pos2).is(Blocks.WATER) && getSkillAttributes(9) < -10)
                     {
-                        System.out.println(1);
-                        getLevel().setBlockAndUpdate(block_pos2.below(), new Blocks().ICE.defaultBlockState());
+                        getLevel().setBlockAndUpdate(block_pos2, Blocks.ICE.defaultBlockState());
                     } else if (
-                            (getLevel().getBlockState(block_pos2.above()).isAir() || getLevel().getBlockState(block_pos2.above()).is(Blocks.WATER) ||
+                            (getLevel().getBlockState(block_pos2).isAir() || getLevel().getBlockState(block_pos2.above()).is(Blocks.WATER) ||
                                     getLevel().getBlockState(block_pos2.below()).is(BlockTags.REPLACEABLE_PLANTS) || getLevel().getBlockState(block_pos2.below()).is(Blocks.FIRE)
                             ))
                     {
-//                        getLevel().setBlockAndUpdate(block_pos2, new Blocks().SNOW.defaultBlockState());
-                        System.out.println(3);
+                        getLevel().setBlockAndUpdate(block_pos2, Blocks.SNOW.defaultBlockState());
                     }
                 }
             }
